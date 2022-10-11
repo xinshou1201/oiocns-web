@@ -68,8 +68,8 @@ export default () => {
       options={[
         { label: '奥集能', value: '奥集能' },
         {
-          label: 'Ant Design',
-          value: 'Ant Design',
+          label: '奥集能',
+          value: '奥集能',
         },
         {
           label: 'Pro Table',
@@ -238,8 +238,8 @@ RightContent 是以上几个组件的组合，同时新增了 plugins 的 `Selec
         value: 'umi ui',
       },
       {
-        label: <a href="next.ant.design">Ant Design</a>,
-        value: 'Ant Design',
+        label: <a href="next.ant.design">奥集能</a>,
+        value: '奥集能',
       },
       {
         label: <a href="https://protable.ant.design/">Pro Table</a>,

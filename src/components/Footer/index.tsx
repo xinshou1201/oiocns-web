@@ -31,8 +31,8 @@ const Footer: React.FC = () => {
           blankTarget: true,
         },
         {
-          key: 'Ant Design',
-          title: 'Ant Design',
+          key: '奥集能',
+          title: '奥集能',
           href: 'https://ant.design',
           blankTarget: true,
         },
