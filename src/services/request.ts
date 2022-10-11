@@ -1,9 +1,6 @@
 // @ts-nocheck
-import Qs from 'qs';
 import axios from 'axios';
-import { TIMEOUT } from '@/constant';
-import router from '@/router';
-import { ElMessage } from 'element-plus';
+import Qs from 'qs';
 
 export const requestInstance = axios.create({});
 
@@ -31,35 +28,10 @@ function responseLog(response) {
 
   switch (data.code) {
     case 500:
-      ElMessage({
-        message: data.msg.replace(/[^\u4E00-\u9FA5]/g, ''),
-        type: 'warning',
-      });
       break;
 
     default:
       break;
-  }
-  return;
-  if (process.env.NODE_ENV === 'development') {
-    const randomColor = `rgba(${Math.round(Math.random() * 255)},${Math.round(
-      Math.random() * 255,
-    )},${Math.round(Math.random() * 255)})`;
-    console.log(
-      '%c┍------------------------------------------------------------------┑',
-      `color:${randomColor};`,
-    );
-    console.log('| 请求地址：', response.config.url);
-    console.log('| 请求参数：', Qs.parse(response.config.data));
-    console.log('| 返回数据：', response.data);
-    console.log(
-      '%c┕------------------------------------------------------------------┙',
-      `color:${randomColor};`,
-    );
-  } else {
-    console.log('| 请求地址：', response.config.url);
-    console.log('| 请求参数：', Qs.parse(response.config.data));
-    console.log('| 返回数据：', response.data);
   }
 }
 
@@ -99,20 +71,14 @@ const axiosResponse = {
     if (code === 'ECONNABORTED') {
       // Timeout error
       console.log('Timeout error', code);
-      ElMessage({
-        message: codeMessage[504],
-        type: 'error',
-      });
     }
     if (response) {
       const { status, statusText } = response;
-      ElMessage({
-        message: codeMessage[status] || statusText,
-        type: 'error',
-      });
+      console.log('出错了', status, statusText);
+
       switch (status) {
         case 401:
-          router.push({ path: '/login' });
+          console.error('跳登录');
           break;
         default:
           break;
@@ -129,17 +95,14 @@ const axiosResponse = {
   },
 };
 
-requestInstance.interceptors.response.use(
-  axiosResponse.success,
-  axiosResponse.error,
-);
+requestInstance.interceptors.response.use(axiosResponse.success, axiosResponse.error);
 
 /**
  * 基于axios ajax请求
  * @param url
  * @param method
  * @param timeout
- * @param prefix 用来拼接url地址
+//  * @param prefix 用来拼接url地址
  * @param data
  * @param params
  * @param headers
@@ -150,23 +113,19 @@ export default function request(
   url,
   {
     method = 'post',
-    timeout = TIMEOUT,
-    prefix = '',
+    timeout = 10 * 1000,
     data = {},
     params = {},
     headers = {},
     dataType = 'json',
   },
 ) {
-  const baseURL = autoMatchBaseUrl(prefix);
-
   const formatHeaders = {
     'Content-Type': 'application/json; charset=UTF-8',
     ...headers,
   };
 
   const defaultConfig = {
-    baseURL,
     url,
     method,
     params: params,
@@ -175,9 +134,7 @@ export default function request(
     headers: formatHeaders,
     responseType: dataType,
     // 这里将 response.data 为 string 做了 JSON.parse 的转换处理
-    transformResponse: axios.defaults.transformResponse.concat(function (
-      resData: any,
-    ) {
+    transformResponse: axios.defaults.transformResponse.concat(function (resData: any) {
       if (typeof resData === 'string' && resData.length) {
         try {
           return JSON.parse(resData);

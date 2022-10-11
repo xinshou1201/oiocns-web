@@ -1,14 +1,9 @@
-const fabric = require('@umijs/fabric');
-
 module.exports = {
-  ...fabric.prettier,
-  singleQuote: true,
+  semi: true,
   trailingComma: 'all',
-  printWidth: 80,
-  overrides: [
-    {
-      files: '.prettierrc',
-      options: { parser: 'json' },
-    },
-  ],
+  singleQuote: true,
+  printWidth: 90,
+  tabWidth: 2,
+  jsxBracketSameLine: true,
+  endOfLine: 'auto',
 };

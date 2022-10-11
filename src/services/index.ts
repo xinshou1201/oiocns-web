@@ -1,7 +1,7 @@
 import request from './request';
 import urls from './RESTFULURL';
-const FUNS: Record<string, any> = {};
-const APPFUNS: Record<string, any> = {};
+let FUNS: { [key: string]: any } = {};
+let APPFUNS: any = {};
 
 const LoadToken = (options: any, loadToken: boolean) => {
   // eslint-disable-next-line no-param-reassign
@@ -15,14 +15,10 @@ const LoadToken = (options: any, loadToken: boolean) => {
   }
   return options;
 };
-const InitRequests = (
-  req: any,
-  urlsObj: any,
-  loadToken: boolean,
-  ignores: string[],
-) => {
+const InitRequests = (req: any, urlsObj: any, loadToken: boolean, ignores: string[]) => {
   Object.keys(urlsObj).forEach((key) => {
     const sub = urlsObj[key];
+
     switch (typeof sub) {
       case 'function':
         if (!ignores.includes(key)) {
@@ -44,9 +40,10 @@ const InitRequests = (
       case 'object':
         req[key] = {};
         if (key === 'person' && !loadToken) {
-          const ignores2 = ['login', 'logout', 'register', 'changeWorkspace'];
-          InitRequests(req[key], sub, loadToken, ignores2);
+          ignores = ['login', 'logout', 'register', 'changeWorkspace'];
         }
+        InitRequests(req[key], sub, loadToken, ignores);
+
         break;
       default:
         throw new Error('Configuration not supported.');

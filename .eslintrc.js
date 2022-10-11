@@ -1,25 +1,44 @@
 module.exports = {
-  extends: [require.resolve('@umijs/fabric/dist/eslint')],
-  globals: {
-    ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION: true,
-    page: true,
-    REACT_APP_ENV: true,
+  root: true,
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaVersion: 2020,
+    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true,
+    },
   },
+  settings: {
+    react: {
+      version: 'detect',
+    },
+  },
+  env: {
+    browser: true,
+    amd: true,
+    node: true,
+  },
+  extends: [
+    'eslint:recommended',
+    'plugin:react/recommended',
+    'plugin:jsx-a11y/recommended',
+    'plugin:prettier/recommended', // Make sure this is always the last element in the array.
+  ],
+  plugins: ['simple-import-sort', 'prettier'],
   rules: {
-    //0--不启用； 1--出现问题会有警告； 2--出现问题会报错
-    'react/jsx-first-prop-new-line': 'error',
-    indent: [
-      0,
-      2,
+    'prettier/prettier': ['error', {}, { usePrettierrc: true }],
+    'react/react-in-jsx-scope': 'off',
+    'jsx-a11y/accessible-emoji': 'off',
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    'simple-import-sort/imports': 'error',
+    'simple-import-sort/exports': 'error',
+    'jsx-a11y/anchor-is-valid': [
+      'error',
       {
-        SwitchCase: 1, // （默认：0）指定 switch-case 语句的缩进级别
+        components: ['Link'],
+        specialLink: ['hrefLeft', 'hrefRight'],
+        aspects: ['invalidHref', 'preferButton'],
       },
-    ], // 强制使用一致的缩进
-    eqeqeq: [2, 'always'], // 要求使用 === 和 !==
-    eqeqeq: ['off'], // 关闭要求使用 === he !==
-    // semi: [2, 'never'], // 要求或禁止使用分号代替 ASI
-    quotes: [1, 'single'], // 强制使用一致的反勾号、双引号或单引号
-    'no-console': 'off',
-    camelcase: 2, //强制驼峰法命名
+    ],
   },
 };
