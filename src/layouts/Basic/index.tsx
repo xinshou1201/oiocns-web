@@ -17,13 +17,13 @@ const BasicLayout: React.FC<{ route: IRouteConfig }> = ({ route }) => {
   // }
 
   return (
-    <Layout style={{ height: '100%' }}>
+    <Layout style={{ height: '100vh' }}>
+      {/* 公共头部 */}
       <MyHeader />
+      {/* 内容区域 */}
       <Layout style={{ height: '100%' }}>
         {/* <MyMenu /> */}
-        <Content style={{ height: 'calc(100vh - 60px)' }}>
-          {renderRoutes(route.routes)}
-        </Content>
+        <Content>{renderRoutes(route.routes)}</Content>
       </Layout>
     </Layout>
   );
