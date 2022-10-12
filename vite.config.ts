@@ -44,11 +44,39 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       proxy: createProxy(),
     },
     build: {
+      target: 'modules',
+      outDir: 'dist', // 指定输出路径
+      assetsDir: 'static', // 指定生成静态资源的存放路径
+      minify: 'terser', // 混淆器,terser构建后文件体积更小
+      sourcemap: false, // 输出.map文件
+      chunkSizeWarningLimit: 1024,
       terserOptions: {
         compress: {
-          keep_infinity: true,
-          // Used to delete console in production environment
-          drop_console: VITE_DROP_CONSOLE,
+          drop_console: VITE_DROP_CONSOLE, // 生产环境移除console
+          drop_debugger: true, // 生产环境移除debugger
+          pure_funcs: ['console.log'],
+        },
+        output: {
+          // 去掉注释内容
+          comments: true,
+        },
+      },
+      rollupOptions: {
+        // 确保外部化处理那些你不想打包进库的依赖
+        // external: ['react', 'antd'], // 注意看这里
+        output: {
+          chunkFileNames: 'static/js/[name]-[hash].js',
+          entryFileNames: 'static/js/[name]-[hash].js',
+          assetFileNames: 'static/[ext]/[name]-[hash].[ext]',
+          manualChunks(id) {
+            // if (id.includes('components')) {
+            //   // 把 components 文件里面的文件都打包到 components.js 中
+            //   return 'components'
+            // }
+            if (id.includes('node_modules')) {
+              return id.toString().split('node_modules/')[1].split('/')[0].toString();
+            }
+          },
         },
       },
     },
