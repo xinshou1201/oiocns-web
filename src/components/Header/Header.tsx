@@ -1,7 +1,7 @@
 import { Avatar, Dropdown, Layout, Menu, Space } from 'antd';
 import React from 'react';
 
-import logo from '@/assets/img/logo.png';
+import logo from '@/assets/imgs/logo.png';
 import useStore from '@/store';
 
 import cls from './index.module.less';
