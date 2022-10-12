@@ -3,6 +3,7 @@
 
 // # 主要type
 // feat:     增加新功能
+// add:     增加新文件
 // fix:      修复bug
 
 // # 特殊type
@@ -32,6 +33,7 @@ module.exports = {
       [
         'feat',
         'fix',
+        'add',
         'perf',
         'style',
         'docs',
