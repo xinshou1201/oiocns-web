@@ -1,8 +1,8 @@
 import { Card } from 'antd';
 import React from 'react';
 
-const AbputPage3 = () => {
-  return <Card>About Page</Card>;
+const Market = () => {
+  return <Card>市场</Card>;
 };
 
-export default AbputPage3;
+export default Market;

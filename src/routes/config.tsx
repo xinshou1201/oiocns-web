@@ -1,7 +1,7 @@
 import React from 'react';
 
-import BasicLayout from '@/layouts/BasicLayout';
-import UserLayout from '@/layouts/UserLayout';
+import BasicLayout from '@/layouts/Basic';
+import PassportLayout from '@/layouts/Passport';
 import Redirect from '@/pages/Redirect';
 export interface IRouteConfig {
   // 路由路径
@@ -28,6 +28,34 @@ const layouts: IRouteConfig[] = [
     component: Redirect,
   },
   {
+    path: '/passport',
+    component: PassportLayout,
+    title: '通行证',
+    redirect: '/passport/login',
+    routes: [
+      {
+        path: '/passport/login',
+        component: React.lazy(() => import('@/pages/Passport/Login')),
+        title: '登录',
+      },
+      {
+        path: '/passport/info',
+        component: React.lazy(() => import('@/pages/Passport/Register')),
+        title: '填写信息',
+      },
+      {
+        path: '/passport/register',
+        component: React.lazy(() => import('@/pages/Passport/Register')),
+        title: '注册',
+      },
+      {
+        path: '/passport/lock',
+        component: React.lazy(() => import('@/pages/Passport/Register')),
+        title: '锁屏',
+      },
+    ],
+  },
+  {
     path: '/org',
     component: BasicLayout,
     title: '系统路由',
@@ -38,30 +66,6 @@ const layouts: IRouteConfig[] = [
         title: '首页',
         icon: 'home',
         component: React.lazy(() => import('@/pages/Home')),
-      },
-      {
-        path: '/org/about',
-        title: '关于',
-        icon: 'home',
-        component: React.lazy(() => import('@/pages/About')),
-      },
-    ],
-  },
-  {
-    path: '/user',
-    component: UserLayout,
-    title: '用户路由',
-    redirect: '/user/login',
-    routes: [
-      {
-        path: '/user/login',
-        component: React.lazy(() => import('@/pages/User/Login')),
-        title: '登录',
-      },
-      {
-        path: '/user/register',
-        component: React.lazy(() => import('@/pages/User/Register')),
-        title: '注册',
       },
     ],
   },
