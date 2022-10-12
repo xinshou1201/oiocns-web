@@ -1,6 +1,6 @@
-import { ProLayout } from '@ant-design/pro-components';
+// import { ProLayout } from '@ant-design/pro-components';
 import { Layout } from 'antd';
-import { createBrowserHistory } from 'history';
+// import { createBrowserHistory } from 'history';
 import React from 'react';
 import { renderRoutes } from 'react-router-config';
 
@@ -11,22 +11,22 @@ import { IRouteConfig } from '@/routes/config';
 const { Content } = Layout;
 
 const BasicLayout: React.FC<{ route: IRouteConfig }> = ({ route }) => {
-  const history = createBrowserHistory();
+  // const history = createBrowserHistory();
 
-  if (!localStorage.getItem('Token')) {
-    history.push('/user/login');
-  }
+  // if (!localStorage.getItem('Token')) {
+  //   history.push('/user/login');
+  // }
 
   return (
-    <ProLayout layout="top">
+    <Layout style={{ height: '100%' }}>
       <MyHeader />
-      <Layout>
+      <Layout style={{ height: '100%' }}>
         <MyMenu />
         <Content style={{ height: 'calc(100vh - 60px)' }}>
           {renderRoutes(route.routes)}
         </Content>
       </Layout>
-    </ProLayout>
+    </Layout>
   );
 };
 

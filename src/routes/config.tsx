@@ -67,6 +67,18 @@ const layouts: IRouteConfig[] = [
         icon: 'home',
         component: React.lazy(() => import('@/pages/Home')),
       },
+      {
+        path: '/org/app',
+        title: 'APP',
+        icon: 'home',
+        component: React.lazy(() => import('@/pages/App')),
+      },
+      {
+        path: '/org/chat',
+        title: '聊天',
+        icon: 'home',
+        component: React.lazy(() => import('@/pages/Chat')),
+      },
     ],
   },
   {
