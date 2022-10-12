@@ -1,17 +1,13 @@
 {
-  "name": "OIOCNS-WEB",
+  "name": "oiocns-web",
   "version": "0.0.1",
-  "description": "Vite2 + Typescript + React + Antd + Less + Eslint + Prettier",
-  "author": {
-    "name": "SEN"
-  },
+  "description": "Vite + Typescript + React + Antd + Less + Eslint + Prettier",
   "keywords": [
     "OIOCNS-WEB",
     "奥集能"
   ],
   "license": "MIT",
   "scripts": {
-    "postinstall": "husky install",
     "serve": "npm run dev",
     "dev": "vite --mode development",
     "build": "vite build",
@@ -20,6 +16,7 @@
     "build:legacy": "vite build --mode legacy ",
     "build:deploy": "vite build --base=/vite-react-ts/",
     "deploy": "gh-pages -d dist",
+    "postinstall": "husky install",
     "commitlint": "commitlint --from=master",
     "lint:fix": "eslint --cache --ext .js,.jsx,.ts,.tsx --no-error-on-unmatched-pattern --quiet --fix ./src",
     "clean:cache": "rimraf node_modules/.cache/ && rimraf node_modules/.vite"

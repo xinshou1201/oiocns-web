@@ -12,9 +12,7 @@ const UserLayout: React.FC<{ route: IRouteConfig }> = ({ route }) => {
     <Layout>
       <Content>{renderRoutes(route.routes)}</Content>
       <Footer>
-        <Text>
-          Vite2.0 + React + Antd <Text type="secondary"></Text>
-        </Text>
+        <Text>奥集能开发平台</Text>
       </Footer>
     </Layout>
   );
