@@ -18,6 +18,7 @@
 // perf:     提高性能的改动
 // ci:       与CI（持续集成服务）有关的改动
 // chore:    不修改src或者test的其余修改，例如构建过程或辅助工具的变动
+// other:    其他
 
 module.exports = {
   extends: ['@commitlint/config-conventional'],
@@ -47,6 +48,7 @@ module.exports = {
         'workflow',
         'types',
         'release',
+        'other',
       ],
     ],
   },

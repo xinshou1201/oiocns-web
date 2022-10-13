@@ -1,36 +1,46 @@
 import { Layout } from 'antd';
+// import { createBrowserHistory } from 'history';
 import React from 'react';
 import { renderRoutes } from 'react-router-config';
 
+// import CustomHeader from '@/components/Header/Header';
+import CustomMenu from '@/components/Menu';
 import { IRouteConfig } from '@/routes/config';
 
-import HeaderApp from './HeaderApp';
-import HeaderChat from './HeaderChat';
-import HeaderHome from './HeaderHome';
-import HeaderSearch from './HeaderSearch';
-import HeaderSetting from './HeaderSetting';
-import HeaderStore from './HeaderStore';
-import HeaderUser from './HeaderUser';
-import HeaderWorkSpace from './HeaderWorkSpace';
-const { Content, Header } = Layout;
+import ContentBreadcrumb from './ContentBreadcrumb';
+import CustomHeader from './Header';
+type BasicLayoutProps = {
+  route: IRouteConfig;
+};
+const { Content } = Layout;
 
-const BasicLayout: React.FC<{ route: IRouteConfig }> = ({ route }) => {
+const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
+  const { route } = props;
+  // const history = createBrowserHistory();
+
+  // if (!localStorage.getItem('Token')) {
+  //   history.push('/user/login');
+  // }
+  console.log('router', route);
+
   return (
     <Layout>
-      <Header>
-        <HeaderWorkSpace />
-        <HeaderSearch />
-        <HeaderHome />
-        <HeaderChat />
-        <HeaderStore />
-        <HeaderApp />
-        <HeaderUser />
-        <HeaderSetting />
-        <HeaderUser />
-      </Header>
-      <Content style={{ height: 'calc(100vh - 60px)' }}>
-        {renderRoutes(route.routes)}
-      </Content>
+      {/* 公共头部 */}
+      <CustomHeader />
+      {/* 内容区域 */}
+      <Layout>
+        <CustomMenu />
+        <Layout style={{ marginLeft: 16, marginTop: 16 }}>
+          <ContentBreadcrumb />
+          <Content
+            style={{
+              marginTop: 12,
+              backgroundColor: '#fff',
+            }}>
+            {renderRoutes(route.routes)}
+          </Content>
+        </Layout>
+      </Layout>
     </Layout>
   );
 };

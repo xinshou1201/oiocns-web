@@ -11,7 +11,7 @@ export default function configMockPlugin(isBuild: boolean) {
       {
         libraryName: 'antd',
         esModule: true,
-        resolveStyle: (name) => {
+        resolveStyle: (name: any) => {
           return `antd/es/${name}/style/index`;
         },
       },

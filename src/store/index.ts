@@ -3,8 +3,7 @@
 import create from 'zustand';
 
 // import { login } from '@/api/user';
-import $services from '@/services';
-console.log('$services', $services);
+import $API from '@/services';
 
 // 数据持久化，会缓存到 storage
 // import { persist } from 'zustand/middleware';
@@ -39,12 +38,12 @@ let dataSource = [
 
 // 创建 store
 const useStore = create<StateProps>((set, get) => ({
-  user: null,
+  user: { name: 'hahah' },
   list: [],
   loading: false,
   editItem: undefined,
   login: async (val) => {
-    const res = await $services.person.login({
+    const res = await $API.person.login({
       data: val,
     });
     console.log('登陆成功', res);
@@ -52,13 +51,13 @@ const useStore = create<StateProps>((set, get) => ({
       set({ user: res.data });
       localStorage.setItem('Token', res.data.accessToken);
       console.log('res', res);
-      window.location.href = '/org/home';
+      window.location.href = '/home';
     }
   },
-  setUser: async () => {
+  setUser: async (data: any) => {
     await sleep(1000);
     window.location.href = '/';
-    // set({ user:  });
+    set({ user: data });
   },
   setLoading: (val) => set({ loading: val }),
   setEditItem: (params: any) => set({ editItem: params }),
