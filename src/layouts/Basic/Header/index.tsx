@@ -1,6 +1,8 @@
 import { Layout } from 'antd';
 import React from 'react';
 
+import { IRouteConfig } from '@/routes/config';
+
 // import logo from '@/assets/img/logo.png';
 // import useStore from '@/store';
 import styles from './index.module.less';
@@ -9,8 +11,8 @@ import RightContent from './RightContent';
 
 const { Header } = Layout;
 
-const MyHeader: React.FC = () => {
-  //   const user = useStore((state) => state.user);
+const customHeader: React.FC<{ routes?: IRouteConfig[] }> = (props) => {
+  const { routes } = props;
 
   //   const handleChange = (e: { key: string }) => {
   //     if (e.key === '0') {
@@ -27,7 +29,7 @@ const MyHeader: React.FC = () => {
   return (
     <Header className={styles[`layout-header`]}>
       <LeftContent />
-      <RightContent />
+      <RightContent routes={routes} />
       {/* <Dropdown overlay={menu}>
         <Space>
           <Avatar src={logo} />
@@ -38,4 +40,4 @@ const MyHeader: React.FC = () => {
   );
 };
 
-export default MyHeader;
+export default customHeader;

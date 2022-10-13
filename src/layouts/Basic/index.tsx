@@ -1,4 +1,4 @@
-import { Layout } from 'antd';
+import { ConfigProvider, Layout } from 'antd';
 // import { createBrowserHistory } from 'history';
 import React from 'react';
 import { renderRoutes } from 'react-router-config';
@@ -16,6 +16,7 @@ const { Content } = Layout;
 
 const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   const { route } = props;
+
   // const history = createBrowserHistory();
 
   // if (!localStorage.getItem('Token')) {
@@ -23,24 +24,26 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   // }
   console.log(props);
   return (
-    <Layout>
-      {/* 公共头部 */}
-      <CustomHeader />
-      {/* 内容区域 */}
-      <Layout>
-        <CustomMenu />
-        <Layout style={{ marginLeft: 16, marginTop: 16 }}>
-          <ContentBreadcrumb />
-          <Content
-            style={{
-              marginTop: 12,
-              backgroundColor: '#fff',
-            }}>
-            {renderRoutes(route.routes)}
-          </Content>
+    <ConfigProvider>
+      <Layout style={{ height: '100%' }}>
+        {/* 公共头部 */}
+        <CustomHeader routes={route?.routes} />
+        {/* 内容区域 */}
+        <Layout>
+          <CustomMenu />
+          <Layout style={{ marginLeft: 16, marginTop: 16 }}>
+            <ContentBreadcrumb />
+            <Content
+              style={{
+                marginTop: 12,
+                backgroundColor: '#fff',
+              }}>
+              {renderRoutes(route.routes)}
+            </Content>
+          </Layout>
         </Layout>
       </Layout>
-    </Layout>
+    </ConfigProvider>
   );
 };
 
