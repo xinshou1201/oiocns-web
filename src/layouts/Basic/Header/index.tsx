@@ -3,7 +3,6 @@ import React from 'react';
 
 import { IRouteConfig } from '@/routes/config';
 
-// import logo from '@/assets/img/logo.png';
 // import useStore from '@/store';
 import styles from './index.module.less';
 import LeftContent from './LeftContent';

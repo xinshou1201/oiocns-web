@@ -1,53 +1,45 @@
-// @import '~antd/es/style/themes/index';
+@import '~antd/es/style/themes/index';
+
+@header-height: 56px;
+@pro-header-hover-bg: rgba(0, 0, 0, 0.025);
+
 .layout-header {
-  height: 56px;
-  line-height: 56px;
+  height: @header-height;
+  line-height: @header-height;
   margin-bottom: 2px;
   background-color: #fff;
   box-shadow: 0 2px 8px #f0f1f2;
   display: flex;
   justify-content: space-between;
 }
-@pro-header-hover-bg: rgba(0, 0, 0, 0.025);
-// /* 头部导航设置 */
-// :global(.ant-pro-top-nav-header-menu ul) {
-//   justify-content: flex-end;
-// }
-// :global(.ant-pro-top-nav-header .ant-menu-item-selected .ant-pro-base-menu-item-icon) {
-//   color: var(--ant-primary-color);
-// }
-// :global(.ant-pro-top-nav-header .ant-menu-item .anticon + span) {
-//   display: none;
-// }
 
-// .menu {
-//   :global(.anticon) {
-//     margin-right: 8px;
-//   }
-//   :global(.ant-dropdown-menu-item) {
-//     min-width: 160px;
-//   }
-// }
+.menu {
+  :global(.anticon) {
+    margin-right: 8px;
+  }
+  :global(.ant-dropdown-menu-item) {
+    min-width: 160px;
+  }
+}
 
 .right {
   display: flex;
-
-  height: 48px;
+  height: @header-height;
   margin-left: auto;
   overflow: hidden;
 
   .name {
     width: 70px;
-    height: 48px;
+    height: @header-height;
     overflow: hidden;
-    line-height: 48px;
+    line-height: @header-height;
     white-space: nowrap;
     text-overflow: ellipsis;
   }
   .action {
     display: flex;
     align-items: center;
-    height: 48px;
+    height: @header-height;
     padding: 0 12px;
     cursor: pointer;
     transition: all 0.3s;
@@ -77,24 +69,24 @@
   }
 }
 
-// @media only screen and (max-width: @screen-md) {
-//   :global(.ant-divider-vertical) {
-//     vertical-align: unset;
-//   }
-//   .name {
-//     display: none;
-//   }
-//   .right {
-//     position: absolute;
-//     top: 0;
-//     right: 12px;
-//     .account {
-//       .avatar {
-//         margin-right: 0;
-//       }
-//     }
-//     .search {
-//       display: none;
-//     }
-//   }
-// }
+@media only screen and (max-width: @screen-md) {
+  :global(.ant-divider-vertical) {
+    vertical-align: unset;
+  }
+  .name {
+    display: none;
+  }
+  .right {
+    position: absolute;
+    top: 0;
+    right: 12px;
+    .account {
+      .avatar {
+        margin-right: 0;
+      }
+    }
+    .search {
+      display: none;
+    }
+  }
+}

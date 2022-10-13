@@ -1,10 +1,9 @@
 import { ConfigProvider, Layout } from 'antd';
-// import { createBrowserHistory } from 'history';
 import React from 'react';
 import { renderRoutes } from 'react-router-config';
 
 // import CustomHeader from '@/components/Header/Header';
-import CustomMenu from '@/components/Menu';
+// import CustomMenu from '@/components/Menu';
 import { IRouteConfig } from '@/routes/config';
 
 import ContentBreadcrumb from './ContentBreadcrumb';
@@ -30,7 +29,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
         <CustomHeader routes={route?.routes} />
         {/* 内容区域 */}
         <Layout>
-          <CustomMenu />
+          {/* <CustomMenu /> */}
           <Layout style={{ marginLeft: 16, marginTop: 16 }}>
             <ContentBreadcrumb />
             <Content

@@ -1,12 +1,10 @@
-// import { QuestionCircleOutlined } from '@ant-design/icons';
-
 import { Space } from 'antd';
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { IconFont } from '@/components/IconFont';
 import { IRouteConfig } from '@/routes/config';
 
-// import { useHistory } from 'react-router-dom';
 import Avatar from './AvatarDropdown';
 import styles from './index.module.less';
 
@@ -17,19 +15,14 @@ const GlobalHeaderRight: React.FC<{ routes?: IRouteConfig[] }> = (props) => {
       {routes?.map((item: IRouteConfig) => {
         return (
           <Link to={item.path} className={styles.action} key={item.path}>
-            {item.title}
-            {/* {route?.icon &&
-                React.createElement(Icon[route.icon], {
-                  style: { fontSize: 16 },
-                })} */}
+            {item?.icon ? (
+              <IconFont type={item?.icon} style={{ color: '#A6AEC7', fontSize: 22 }} />
+            ) : (
+              item?.title
+            )}
           </Link>
         );
       })}
-
-      {/* <span className={styles.action}>消息</span>
-      <span className={styles.action}>待办</span>
-      <span className={styles.action}>设置</span>
-      <span className={styles.action}>仓库</span> */}
       <Avatar />
     </Space>
   );
