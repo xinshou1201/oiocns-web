@@ -3,7 +3,7 @@ import { Layout } from 'antd';
 import React from 'react';
 import { renderRoutes } from 'react-router-config';
 
-import MyHeader from '@/components/Header/Header';
+import CustomHeader from '@/components/Header/Header';
 // import MyMenu from '@/components/Menu';
 import { IRouteConfig } from '@/routes/config';
 
@@ -19,7 +19,7 @@ const BasicLayout: React.FC<{ route: IRouteConfig }> = ({ route }) => {
   return (
     <Layout style={{ height: '100vh' }}>
       {/* 公共头部 */}
-      <MyHeader />
+      <CustomHeader />
       {/* 内容区域 */}
       <Layout style={{ height: '100%' }}>
         {/* <MyMenu /> */}
