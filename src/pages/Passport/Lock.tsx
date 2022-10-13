@@ -5,6 +5,7 @@ import React from 'react';
 import useStore from '../../store';
 import cls from './index.module.less';
 
+// TODO 锁屏：获取用户账户和头像，填写密码登录
 const PassportLock: React.FC = () => {
   const { login, loading } = useStore((state) => ({ ...state }));
   return (
