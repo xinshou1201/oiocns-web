@@ -21,7 +21,8 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   // if (!localStorage.getItem('Token')) {
   //   history.push('/user/login');
   // }
-  console.log(props);
+  console.log('router', route);
+
   return (
     <ConfigProvider>
       <Layout style={{ height: '100%' }}>

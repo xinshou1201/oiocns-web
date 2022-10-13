@@ -23,7 +23,8 @@
   },
   "include": [
     "src/",
-    "typings/**/*",
+    "src/**/*.d.ts",
+    "typings/*",
     "config/**/*",
     "vite.config.ts",
     "mock/_createProductionServer.ts"

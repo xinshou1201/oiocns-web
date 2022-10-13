@@ -39,8 +39,18 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
       ],
     },
     server: {
+      // 是否主动唤醒浏览器
+      open: true,
+      // 占用端口 开发环境启动的端口
+      port: PORT,
+      // 是否使用https请求
+      //  https: ,
+      // 扩展访问端口
       host: true,
-      port: PORT, // 开发环境启动的端口
+      hmr: true,
+      watch: {
+        usePolling: true, // WSL必须,否则热更新无效
+      },
       proxy: createProxy(),
     },
     build: {
