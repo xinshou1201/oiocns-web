@@ -3,29 +3,32 @@ import { Layout } from 'antd';
 import React from 'react';
 import { renderRoutes } from 'react-router-config';
 
-// import MyHeader from '@/components/Header/Header';
-import MyMenu from '@/components/Menu';
+// import CustomHeader from '@/components/Header/Header';
+import CustomMenu from '@/components/Menu';
 import { IRouteConfig } from '@/routes/config';
 
 import ContentBreadcrumb from './ContentBreadcrumb';
-import Header from './Header';
-
+import CustomHeader from './Header';
+type BasicLayoutProps = {
+  route: IRouteConfig;
+};
 const { Content } = Layout;
 
-const BasicLayout: React.FC<{ route: IRouteConfig }> = ({ route }) => {
+const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
+  const { route } = props;
   // const history = createBrowserHistory();
 
   // if (!localStorage.getItem('Token')) {
   //   history.push('/user/login');
   // }
-
+  console.log(props);
   return (
     <Layout>
       {/* 公共头部 */}
-      <Header />
+      <CustomHeader />
       {/* 内容区域 */}
       <Layout>
-        <MyMenu />
+        <CustomMenu />
         <Layout style={{ marginLeft: 16, marginTop: 16 }}>
           <ContentBreadcrumb />
           <Content
