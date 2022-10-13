@@ -38,7 +38,7 @@ let dataSource = [
 
 // 创建 store
 const useStore = create<StateProps>((set, get) => ({
-  user: null,
+  user: { name: 'hahah' },
   list: [],
   loading: false,
   editItem: undefined,
@@ -54,10 +54,10 @@ const useStore = create<StateProps>((set, get) => ({
       window.location.href = '/home';
     }
   },
-  setUser: async () => {
+  setUser: async (data: any) => {
     await sleep(1000);
     window.location.href = '/';
-    // set({ user:  });
+    set({ user: data });
   },
   setLoading: (val) => set({ loading: val }),
   setEditItem: (params: any) => set({ editItem: params }),
