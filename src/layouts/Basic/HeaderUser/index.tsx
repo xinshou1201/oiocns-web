@@ -1,12 +1,8 @@
-import { Avatar, Dropdown, Layout, Menu, Space } from 'antd';
+import { Avatar, Dropdown, Menu, Space } from 'antd';
 import React from 'react';
 
 import logo from '@/assets/logo.jpg';
 import useStore from '@/store';
-
-import cls from './index.module.less';
-
-const { Header } = Layout;
 
 const HeaderUser: React.FC = () => {
   const user = useStore((state) => state.user);
@@ -25,14 +21,12 @@ const HeaderUser: React.FC = () => {
     </Menu>
   );
   return (
-    <Header className={cls.layout_header}>
-      <Dropdown overlay={menu}>
-        <Space>
-          <Avatar src={logo} />
-          {user?.username}
-        </Space>
-      </Dropdown>
-    </Header>
+    <Dropdown overlay={menu}>
+      <Space>
+        <Avatar src={logo} />
+        {user?.username}
+      </Space>
+    </Dropdown>
   );
 };
 

@@ -1,16 +1,50 @@
-import './index.less';
-
+import { Button, Form, Input, message } from 'antd';
 import React from 'react';
 
-import clas from './index.module.less';
+import useStore from '../../store';
+import cls from './index.module.less';
 
 const Register: React.FC = () => {
-  // 测试 环境变量 import.meta.env
-  console.log('import.meta', import.meta);
+  const { login, loading } = useStore((state) => ({ ...state }));
   return (
-    <div>
-      <h2>Register</h2>
-      <div className={clas.red}>注册页面</div>
+    <div className={cls.loginBox}>
+      <Form
+        onFinish={({ account, password }) => {
+          if (account && password) {
+            return login({ account, password });
+          }
+          message.error('账号或密码错误，请重试！');
+        }}>
+        <Form.Item>
+          <a>填写个人信息</a>
+        </Form.Item>
+        <Form.Item name="account" rules={[{ required: true, message: '请输入账户' }]}>
+          <Input size="large" placeholder="请输入账户" />
+        </Form.Item>
+        <Form.Item name="password" rules={[{ required: true, message: '请输入密码' }]}>
+          <Input
+            size="large"
+            placeholder="请输入密码(包含大小写字母和数字符号组合的6-15位密码)"
+          />
+        </Form.Item>
+        <Form.Item name="password" rules={[{ required: true, message: '请输入密码' }]}>
+          <Input size="large" placeholder="请再次输入密码" />
+        </Form.Item>
+        <Form.Item>
+          <Button
+            block
+            size="large"
+            loading={loading}
+            type="primary"
+            htmlType="submit"
+            className={cls.button}>
+            提交
+          </Button>
+        </Form.Item>
+        <Form.Item>
+          <a>返回登录</a>
+        </Form.Item>
+      </Form>
     </div>
   );
 };

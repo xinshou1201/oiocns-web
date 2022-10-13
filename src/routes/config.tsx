@@ -40,7 +40,7 @@ const layouts: IRouteConfig[] = [
       },
       {
         path: '/passport/info',
-        component: React.lazy(() => import('@/pages/Passport/Register')),
+        component: React.lazy(() => import('@/pages/Passport/Info')),
         title: '填写信息',
       },
       {
@@ -50,8 +50,13 @@ const layouts: IRouteConfig[] = [
       },
       {
         path: '/passport/lock',
-        component: React.lazy(() => import('@/pages/Passport/Register')),
+        component: React.lazy(() => import('@/pages/Passport/Lock')),
         title: '锁屏',
+      },
+      {
+        path: '/passport/forget',
+        component: React.lazy(() => import('@/pages/Passport/Forget')),
+        title: '忘记密码',
       },
     ],
   },

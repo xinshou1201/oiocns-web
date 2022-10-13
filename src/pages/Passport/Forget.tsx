@@ -1,7 +1,5 @@
-import { LockOutlined, UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Form, Input, message, Tabs } from 'antd';
+import { Button, Form, Input, message } from 'antd';
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import useStore from '../../store';
 import cls from './index.module.less';
@@ -10,7 +8,6 @@ const Login: React.FC = () => {
   const { login, loading } = useStore((state) => ({ ...state }));
   return (
     <div className={cls.loginBox}>
-      <Tabs items={[{ label: '账号密码登录', key: 'account' }]} />
       <Form
         onFinish={({ account, password }) => {
           if (account && password) {
@@ -18,34 +15,35 @@ const Login: React.FC = () => {
           }
           message.error('账号或密码错误，请重试！');
         }}>
-        <Form.Item name="account" rules={[{ required: true, message: '请输入用户名' }]}>
-          <Input size="large" prefix={<UserOutlined />} placeholder="请输入用户名" />
+        <Form.Item>
+          <a>忘记密码</a>
+        </Form.Item>
+        <Form.Item name="account" rules={[{ required: true, message: '请输入账户' }]}>
+          <Input size="large" placeholder="请输入账户" />
         </Form.Item>
         <Form.Item name="password" rules={[{ required: true, message: '请输入密码' }]}>
-          <Input size="large" prefix={<LockOutlined />} placeholder="请输入密码" />
+          <Input
+            size="large"
+            placeholder="请输入密码(包含大小写字母和数字符号组合的6-15位密码)"
+          />
         </Form.Item>
-        <Form.Item>
-          <div className={cls.line}>
-            <Checkbox>记住密码</Checkbox>
-            <a>
-              <Link to="/passport/forget">忘记密码</Link>
-            </a>
-          </div>
+        <Form.Item name="password" rules={[{ required: true, message: '请输入密码' }]}>
+          <Input size="large" placeholder="请再次输入密码" />
         </Form.Item>
         <Form.Item>
           <Button
             block
+            size="large"
             loading={loading}
             type="primary"
-            size="large"
             htmlType="submit"
             className={cls.button}>
-            登陆
+            提交
           </Button>
         </Form.Item>
-        <a>
-          <Link to="/passport/register">注册用户</Link>
-        </a>
+        <Form.Item>
+          <a>返回登录</a>
+        </Form.Item>
       </Form>
     </div>
   );
