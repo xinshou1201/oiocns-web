@@ -2,7 +2,7 @@
 
 @header-height: 56px;
 @pro-header-hover-bg: rgba(0, 0, 0, 0.025);
-
+@bar-icon-color: #a6aec7;
 .layout-header {
   height: @header-height;
   line-height: @header-height;
@@ -11,6 +11,7 @@
   box-shadow: 0 2px 8px #f0f1f2;
   display: flex;
   justify-content: space-between;
+  padding: 0 24px;
 }
 
 .menu {
@@ -51,6 +52,15 @@
     }
     &:global(.opened) {
       background: @pro-header-hover-bg;
+    }
+    .action-icon {
+      color: @bar-icon-color;
+      font-size: 22px;
+    }
+    &.active {
+      .action-icon {
+        color: @primary-color !important;
+      }
     }
   }
   .search {

@@ -1,30 +1,40 @@
 import { Space } from 'antd';
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { IconFont } from '@/components/IconFont';
 import { IRouteConfig } from '@/routes/config';
 
+import { layoutRoutes } from '..';
 import Avatar from './AvatarDropdown';
 import styles from './index.module.less';
 
-const GlobalHeaderRight: React.FC<{ routes?: IRouteConfig[] }> = (props) => {
-  const { routes } = props;
+const GlobalHeaderRight: React.FC<RouteComponentProps> = (props) => {
+  const routes = useContext(layoutRoutes);
+  const { location } = props;
+  // routes?.forEach((n) => console.log(n.path.match(location.pathname)));
   return (
     <Space className={styles.right}>
-      {routes?.map((item: IRouteConfig) => {
-        return (
-          <Link to={item.path} className={styles.action} key={item.path}>
-            {item?.icon ? (
-              <IconFont type={item?.icon} style={{ color: '#A6AEC7', fontSize: 22 }} />
-            ) : (
-              item?.title
-            )}
-          </Link>
-        );
-      })}
+      {routes && routes.length > 0
+        ? routes?.map((item: IRouteConfig) => {
+            return (
+              <Link
+                to={item.path}
+                className={`${styles.action} ${
+                  item.path.match(location.pathname) ? `${styles.active}` : ''
+                }`}
+                key={item.path}>
+                {item?.icon ? (
+                  <IconFont type={item?.icon} className={`${styles[`action-icon`]}`} />
+                ) : (
+                  item?.title
+                )}
+              </Link>
+            );
+          })
+        : ''}
       <Avatar />
     </Space>
   );
 };
-export default GlobalHeaderRight;
+export default withRouter(GlobalHeaderRight);

@@ -1,10 +1,9 @@
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Menu, Spin } from 'antd';
-// import type { MenuInfo } from 'rc-menu/lib/interface';
 import type { ItemType } from 'antd/es/menu/hooks/useItems';
 import React from 'react';
 
-import logo from '@/assets/imgs/logo.png';
+import logo from '@/assets/img/logo.png';
 import useStore from '@/store';
 
 import HeaderDropdown from './HeaderDropdown';
