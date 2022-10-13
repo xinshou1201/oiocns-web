@@ -20,6 +20,7 @@ const Home: React.FC = () => {
       {/* 顶部图片 */}
       <BannerCom imgList={imgList} />
       {/* 快捷入口及应用 */}
+      <div className="flex"></div>
     </div>
   );
 };
