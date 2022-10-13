@@ -15,6 +15,7 @@ const BasicLayout: React.FC<{ route: IRouteConfig }> = ({ route }) => {
   // if (!localStorage.getItem('Token')) {
   //   history.push('/user/login');
   // }
+  console.log('router', route);
 
   return (
     <Layout style={{ height: '100vh' }}>
