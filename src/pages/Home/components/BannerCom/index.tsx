@@ -1,4 +1,4 @@
-import './styles/banner.less';
+import './index.less';
 
 import { Carousel } from 'antd';
 import React from 'react';

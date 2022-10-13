@@ -1,4 +1,4 @@
-import './styles/shortcuts.less';
+import './index.less';
 
 import { Button } from 'antd';
 import React from 'react';

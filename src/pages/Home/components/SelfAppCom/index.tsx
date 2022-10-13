@@ -1,4 +1,4 @@
-import './styles/selfApp.less';
+import './index.less';
 
 import { PoweroffOutlined } from '@ant-design/icons';
 import { Button } from 'antd';
