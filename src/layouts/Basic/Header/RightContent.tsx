@@ -2,30 +2,34 @@
 
 import { Space } from 'antd';
 import React from 'react';
+import { Link } from 'react-router-dom';
+
+import { IRouteConfig } from '@/routes/config';
 
 // import { useHistory } from 'react-router-dom';
 import Avatar from './AvatarDropdown';
 import styles from './index.module.less';
 
-// export type SiderTheme = 'light' | 'dark';
-
-const GlobalHeaderRight: React.FC = () => {
-  // const history = useHistory();
-
-  //   const { navTheme, layout } = initialState.settings;
-
-  //   if ((navTheme === 'realDark' && layout === 'top') || layout === 'mix') {
-  //     className = `${styles.right}  ${styles.dark}`;
-  //   }
-  // const handleAction = (path: string) => {
-  //   history.replace(path);
-  // };
+const GlobalHeaderRight: React.FC<{ routes?: IRouteConfig[] }> = (props) => {
+  const { routes } = props;
   return (
     <Space className={styles.right}>
-      <span className={styles.action}>消息</span>
+      {routes?.map((item: IRouteConfig) => {
+        return (
+          <Link to={item.path} className={styles.action} key={item.path}>
+            {item.title}
+            {/* {route?.icon &&
+                React.createElement(Icon[route.icon], {
+                  style: { fontSize: 16 },
+                })} */}
+          </Link>
+        );
+      })}
+
+      {/* <span className={styles.action}>消息</span>
       <span className={styles.action}>待办</span>
       <span className={styles.action}>设置</span>
-      <span className={styles.action}>仓库</span>
+      <span className={styles.action}>仓库</span> */}
       <Avatar />
     </Space>
   );
