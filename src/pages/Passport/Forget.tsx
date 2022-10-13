@@ -1,13 +1,15 @@
-import { Button, Form, Input, message } from 'antd';
+import { Button, Form, Input, message, Tabs } from 'antd';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import useStore from '../../store';
 import cls from './index.module.less';
 
-const Login: React.FC = () => {
+const PassportForget: React.FC = () => {
   const { login, loading } = useStore((state) => ({ ...state }));
   return (
-    <div className={cls.loginBox}>
+    <div>
+      <Tabs size="large" items={[{ label: '忘记密码', key: 'title' }]} />
       <Form
         onFinish={({ account, password }) => {
           if (account && password) {
@@ -15,20 +17,24 @@ const Login: React.FC = () => {
           }
           message.error('账号或密码错误，请重试！');
         }}>
-        <Form.Item>
-          <a>忘记密码</a>
-        </Form.Item>
         <Form.Item name="account" rules={[{ required: true, message: '请输入账户' }]}>
           <Input size="large" placeholder="请输入账户" />
         </Form.Item>
         <Form.Item name="password" rules={[{ required: true, message: '请输入密码' }]}>
           <Input
             size="large"
-            placeholder="请输入密码(包含大小写字母和数字符号组合的6-15位密码)"
+            placeholder="请输入密码(6-15位：包含大小写字母数字和符号)"
           />
         </Form.Item>
-        <Form.Item name="password" rules={[{ required: true, message: '请输入密码' }]}>
+        <Form.Item
+          name="password"
+          rules={[{ required: true, message: '请再次输入密码' }]}>
           <Input size="large" placeholder="请再次输入密码" />
+        </Form.Item>
+        <Form.Item
+          name="privateKey"
+          rules={[{ required: true, message: '请输入注册时保存的私钥' }]}>
+          <Input size="large" placeholder="请输入注册时保存的私钥" />
         </Form.Item>
         <Form.Item>
           <Button
@@ -42,10 +48,12 @@ const Login: React.FC = () => {
           </Button>
         </Form.Item>
         <Form.Item>
-          <a>返回登录</a>
+          <Link className={cls.text} to="/passport/login">
+            返回登录
+          </Link>
         </Form.Item>
       </Form>
     </div>
   );
 };
-export default Login;
+export default PassportForget;

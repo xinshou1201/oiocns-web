@@ -6,11 +6,11 @@ import { Link } from 'react-router-dom';
 import useStore from '../../store';
 import cls from './index.module.less';
 
-const Login: React.FC = () => {
+const PassportLogin: React.FC = () => {
   const { login, loading } = useStore((state) => ({ ...state }));
   return (
-    <div className={cls.loginBox}>
-      <Tabs items={[{ label: '账号密码登录', key: 'account' }]} />
+    <div>
+      <Tabs size="large" items={[{ label: '账号密码登录', key: 'account' }]} />
       <Form
         onFinish={({ account, password }) => {
           if (account && password) {
@@ -22,32 +22,28 @@ const Login: React.FC = () => {
           <Input size="large" prefix={<UserOutlined />} placeholder="请输入用户名" />
         </Form.Item>
         <Form.Item name="password" rules={[{ required: true, message: '请输入密码' }]}>
-          <Input size="large" prefix={<LockOutlined />} placeholder="请输入密码" />
+          <Input.Password
+            size="large"
+            prefix={<LockOutlined />}
+            placeholder="请输入密码"
+          />
         </Form.Item>
         <Form.Item>
           <div className={cls.line}>
             <Checkbox>记住密码</Checkbox>
-            <a>
-              <Link to="/passport/forget">忘记密码</Link>
-            </a>
+            <Link to="/passport/forget">忘记密码</Link>
           </div>
         </Form.Item>
         <Form.Item>
-          <Button
-            block
-            loading={loading}
-            type="primary"
-            size="large"
-            htmlType="submit"
-            className={cls.button}>
+          <Button block loading={loading} type="primary" size="large" htmlType="submit">
             登陆
           </Button>
         </Form.Item>
-        <a>
-          <Link to="/passport/register">注册用户</Link>
-        </a>
+        <Link className={cls.text} to="/passport/register">
+          注册用户
+        </Link>
       </Form>
     </div>
   );
 };
-export default Login;
+export default PassportLogin;

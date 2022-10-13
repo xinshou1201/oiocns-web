@@ -2,7 +2,6 @@ import React from 'react';
 import { renderRoutes } from 'react-router-config';
 
 import passport from '@/assets/img/passport.png';
-import GlobalFooter from '@/components/GlobalFooter';
 import type { IRouteConfig } from '@/routes/config';
 
 import cls from './index.module.less';
@@ -13,7 +12,6 @@ const PassportLayout: React.FC<{ route: IRouteConfig }> = ({ route }) => {
       <img className={cls.bg} src={passport} alt="" />
       <div className={cls.box}>
         <div>{renderRoutes(route.routes)}</div>
-        <GlobalFooter></GlobalFooter>
       </div>
     </div>
   );
