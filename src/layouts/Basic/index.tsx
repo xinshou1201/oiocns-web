@@ -3,9 +3,12 @@ import { Layout } from 'antd';
 import React from 'react';
 import { renderRoutes } from 'react-router-config';
 
-import MyHeader from '@/components/Header/Header';
-// import MyMenu from '@/components/Menu';
+// import MyHeader from '@/components/Header/Header';
+import MyMenu from '@/components/Menu';
 import { IRouteConfig } from '@/routes/config';
+
+import ContentBreadcrumb from './ContentBreadcrumb';
+import Header from './Header';
 
 const { Content } = Layout;
 
@@ -17,13 +20,22 @@ const BasicLayout: React.FC<{ route: IRouteConfig }> = ({ route }) => {
   // }
 
   return (
-    <Layout style={{ height: '100vh' }}>
+    <Layout>
       {/* 公共头部 */}
-      <MyHeader />
+      <Header />
       {/* 内容区域 */}
-      <Layout style={{ height: '100%' }}>
-        {/* <MyMenu /> */}
-        <Content>{renderRoutes(route.routes)}</Content>
+      <Layout>
+        <MyMenu />
+        <Layout style={{ marginLeft: 16, marginTop: 16 }}>
+          <ContentBreadcrumb />
+          <Content
+            style={{
+              marginTop: 12,
+              backgroundColor: '#fff',
+            }}>
+            {renderRoutes(route.routes)}
+          </Content>
+        </Layout>
       </Layout>
     </Layout>
   );

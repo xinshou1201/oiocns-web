@@ -1,3 +1,5 @@
+import './index.less';
+
 import { Layout, Menu, Typography } from 'antd';
 import { createBrowserHistory } from 'history';
 import React, { useEffect, useState } from 'react';
@@ -5,8 +7,6 @@ import { matchRoutes } from 'react-router-config';
 import { Link } from 'react-router-dom';
 
 import routes, { IRouteConfig } from '@/routes/config';
-
-import cls from './index.module.less';
 const { Sider } = Layout;
 
 const FilterRoutes = (arr: IRouteConfig[]): IRouteConfig[] =>
@@ -36,13 +36,13 @@ const Header: React.FC = () => {
   }, [history.location.pathname]);
 
   return (
-    <Sider>
-      <div className={cls.menu_logo}>
-        <Typography.Title className={cls.logo_title} level={5}>
-          奥集能
+    <Sider className="site-layout-background">
+      <div className="menu-logo">
+        <Typography.Title className="logo-title" level={5}>
+          {openKeys}
         </Typography.Title>
       </div>
-      <Menu theme="dark" mode="inline" openKeys={openKeys} selectedKeys={selectedKeys}>
+      <Menu mode="inline" openKeys={openKeys} selectedKeys={selectedKeys}>
         {sysRoutes.map((item) => (
           <Menu.Item key={item.path}>
             <Link to={item.path}>{item.title}</Link>
