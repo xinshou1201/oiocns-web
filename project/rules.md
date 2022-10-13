@@ -8,16 +8,16 @@
 案例如下:
 └── src                   //源码目录
 ├── Home                  //模块名称（首页）
-| ├── components          //子组件文件夹
-| | ├── BannerCom         //banner 组件
-| | | ├── index.tsx       //banner 内容
-| | | ├── index.less      //banner 样式
-| | ├── SelfAppCom        //我的应用 组件
-| | | ├── index.tsx       //我的应用 内容
-| | | ├── index.less      //我的应用 样式
-| | | ......
-| ├── index.tsx           //模块容器
-| ├── index.less          //模块样式
+  ├── components          //子组件文件夹
+    ├── BannerCom         //banner 组件
+      ├── index.tsx       //banner 内容
+      ├── index.less      //banner 样式
+    ├── SelfAppCom        //我的应用 组件
+      ├── index.tsx       //我的应用 内容
+      ├── index.less      //我的应用 样式
+    |── ......
+  ├── index.tsx           //模块容器
+  ├── index.less          //模块样式
 ├── Chat                  //模块名称（消息）
 ......
 
