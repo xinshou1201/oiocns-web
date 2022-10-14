@@ -78,7 +78,8 @@ const axiosResponse = {
 
       switch (status) {
         case 401:
-          console.error('跳登录');
+          console.error('登录失效');
+          window.location.href = '/passport/login';
           break;
         default:
           break;
