@@ -48,7 +48,7 @@ const useStore = create<StateProps>((set, get) => ({
     });
     if (res.success) {
       set({ user: res.data });
-      localStorage.setItem('Token', res.data.accessToken);
+      sessionStorage.setItem('Token', res.data.accessToken);
       window.location.href = '/org/home';
     }
   },
