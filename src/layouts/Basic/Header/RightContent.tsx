@@ -12,7 +12,6 @@ import styles from './index.module.less';
 const GlobalHeaderRight: React.FC<RouteComponentProps> = (props) => {
   const routes = useContext(layoutRoutes);
   const { location } = props;
-  // routes?.forEach((n) => console.log(n.path.match(location.pathname)));
   return (
     <Space className={styles.right}>
       {routes && routes.length > 0

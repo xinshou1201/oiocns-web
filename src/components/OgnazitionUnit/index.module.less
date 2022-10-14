@@ -1,0 +1,35 @@
+@import (reference) '~antd/es/style/themes/index';
+
+.menu {
+  position: relative;
+  .current-item {
+    line-height: @header-height;
+    font-size: large;
+  }
+  cursor: pointer;
+
+  .avatar {
+    background-color: @primary-color;
+  }
+  .down-icon {
+    font-size: small;
+    color: @text-color-secondary;
+    transition: all 0.3s;
+    &.active {
+      transform: rotate(180deg);
+    }
+  }
+  .list {
+    position: absolute;
+    z-index: 1;
+    height: 0;
+    overflow: hidden;
+    transition: all 0.3s @ease-in-out;
+    background-color: @component-background;
+    box-shadow: @box-shadow-base;
+    border-radius: @border-radius-base;
+    &.active {
+      height: 100px;
+    }
+  }
+}

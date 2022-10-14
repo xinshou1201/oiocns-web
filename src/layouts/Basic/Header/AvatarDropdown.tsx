@@ -1,11 +1,8 @@
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import React from 'react';
 import { Avatar, Menu, Spin } from 'antd';
 import type { ItemType } from 'antd/es/menu/hooks/useItems';
-import React from 'react';
-
-import logo from '@/assets/img/logo.png';
 import useStore from '@/store';
-
 import HeaderDropdown from './HeaderDropdown';
 import styles from './index.module.less';
 
@@ -14,7 +11,8 @@ export type GlobalHeaderRightProps = {
 };
 
 const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
-  const { user: currentUser } = useStore((state) => ({ ...state }));
+  const currentUser = useStore((state) => state.user);
+  console.log('user', currentUser);
   /**
    * 退出登录，并且将当前的 url 保存
    */
@@ -54,8 +52,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
   if (!currentUser) {
     return loading;
   }
-
-  if (!currentUser || !currentUser.name) {
+  if (!currentUser || !currentUser.userName) {
     return loading;
   }
 
@@ -91,7 +88,9 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
   return (
     <HeaderDropdown overlay={menuHeaderDropdown} placement="bottomLeft">
       <span className={`${styles.action} ${styles.account}`}>
-        <Avatar className="avatar" src={currentUser.avatar || logo} alt="avatar" />
+        <Avatar className="avatar" alt="avatar">
+          {currentUser.userName.substring(0, 1)}
+        </Avatar>
         {/* <span className={`${styles.name} anticon`}>{currentUser.name}</span> */}
       </span>
     </HeaderDropdown>

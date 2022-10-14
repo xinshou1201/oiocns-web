@@ -3,7 +3,7 @@ import React from 'react';
 
 // import useStore from '@/store';
 import styles from './index.module.less';
-import LeftContent from './LeftContent';
+import OrganizationalUnits from '@/components/OgnazitionUnit';
 import RightContent from './RightContent';
 
 const { Header } = Layout;
@@ -23,7 +23,7 @@ const customHeader: React.FC = () => {
   //   );
   return (
     <Header className={styles[`layout-header`]}>
-      <LeftContent />
+      <OrganizationalUnits />
       <RightContent />
     </Header>
   );
