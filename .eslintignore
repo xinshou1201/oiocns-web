@@ -3,4 +3,5 @@
 **/server.js
 **/vite.config.js
 **/postcss.config.js
+*.d.ts
 
