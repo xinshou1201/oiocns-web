@@ -13,16 +13,18 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "isolatedModules": true,
+    "noUnusedLocals": true,                /* 用于检查是否有定义了但是没有使用的变量*/
+    "noUnusedParameters": true,            /* 用于检查是否有在函数体中没有使用的参数 */
     "noEmit": true,
     "jsx": "react",
-    "baseUrl": ".",
+    "baseUrl": "./",
     "paths": {
       "@/*": ["src/*"],
       "@cfg/*": ["config/*"]
     }
   },
   "include": [
-    "src/",
+    "src/*",
     "src/**/*.d.ts",
     "typings/*",
     "config/**/*",
