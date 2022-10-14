@@ -1,10 +1,11 @@
+import './index.less';
+
 import { Breadcrumb } from 'antd';
 import React from 'react';
-
 const ContentBreadcrumb: React.FC = () => {
   return (
-    <div style={{ backgroundColor: '#fff' }}>
-      <Breadcrumb style={{ margin: '16px 0' }}>
+    <div className="content-breadcrumb">
+      <Breadcrumb>
         <Breadcrumb.Item>Home</Breadcrumb.Item>
         <Breadcrumb.Item>List</Breadcrumb.Item>
         <Breadcrumb.Item>App</Breadcrumb.Item>
