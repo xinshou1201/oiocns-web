@@ -23,7 +23,7 @@ export type StateProps = {
   /**@name 当前修改项 */
   editItem: any;
 
-  login: (val: any) => void;
+  login: (val: any) => any;
   setUser: (val: string) => void;
   setLoading: (val: boolean) => void;
   // 列表 增删改查
