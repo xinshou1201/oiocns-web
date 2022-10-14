@@ -1,8 +1,30 @@
-import { Card } from 'antd';
+import { Layout } from 'antd';
 import React from 'react';
 
-const Store = () => {
-  return <Card>仓库22222</Card>;
+import StoreApp from './App';
+import StoreClassify from './Classify';
+import StoreHeader from './Header';
+import StoreRecent from './Recent';
+
+const { Header, Sider, Content } = Layout;
+
+const Store: React.FC = () => {
+  return (
+    <Layout>
+      <Sider>
+        <StoreClassify></StoreClassify>
+      </Sider>
+      <Layout>
+        <Header>
+          <StoreHeader></StoreHeader>
+        </Header>
+        <Content>
+          <StoreRecent></StoreRecent>
+          <StoreApp></StoreApp>
+        </Content>
+      </Layout>
+    </Layout>
+  );
 };
 
 export default Store;
