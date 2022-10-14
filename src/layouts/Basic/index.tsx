@@ -1,9 +1,11 @@
-import { ConfigProvider, Layout } from 'antd';
-// import { createBrowserHistory } from 'history';
-import React from 'react';
+import './index.less';
+
+import { Layout } from 'antd';
+import React, { createContext } from 'react';
 import { renderRoutes } from 'react-router-config';
 
 // import CustomHeader from '@/components/Header/Header';
+// import CustomMenu from '@/components/Menu';
 import { IRouteConfig } from '@/routes/config';
 
 import CustomHeader from './Header';
@@ -11,32 +13,26 @@ type BasicLayoutProps = {
   route: IRouteConfig;
 };
 const { Content } = Layout;
+export const layoutRoutes = createContext<IRouteConfig[] | undefined>(undefined);
 
 const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   const { route } = props;
 
-  // const history = createBrowserHistory();
-
-  // if (!localStorage.getItem('Token')) {
-  //   history.push('/user/login');
-  // }
-  console.log('router', route);
-
   return (
-    <ConfigProvider>
-      <Layout style={{ height: '100%' }}>
-        {/* 公共头部 */}
-        <CustomHeader routes={route?.routes} />
-        {/* 内容区域 */}
-        <Content
-          style={{
-            marginTop: 12,
-            backgroundColor: '#fff',
-          }}>
-          {renderRoutes(route.routes)}
-        </Content>
+    <Layout className="page-layout">
+      {/* 公共头部 */}
+      <layoutRoutes.Provider value={route?.routes}>
+        <CustomHeader />
+      </layoutRoutes.Provider>
+      {/* 内容区域 */}
+      <Layout>
+        {/* <CustomMenu /> */}
+        <Layout className="page-container">
+          {/* <ContentBreadcrumb /> */}
+          <Content className="page-content">{renderRoutes(route.routes)}</Content>
+        </Layout>
       </Layout>
-    </ConfigProvider>
+    </Layout>
   );
 };
 

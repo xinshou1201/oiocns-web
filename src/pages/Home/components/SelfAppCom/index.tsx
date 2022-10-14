@@ -11,7 +11,7 @@ const BannerCom: React.FC<SelfAppComType> = ({ props }) => {
 
   return (
     <>
-      <div>
+      <div className="self-app">
         <Button type="primary" icon={<PoweroffOutlined />}>
           Click me!
         </Button>

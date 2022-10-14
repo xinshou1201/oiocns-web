@@ -1,9 +1,6 @@
 import { Layout } from 'antd';
 import React from 'react';
 
-import { IRouteConfig } from '@/routes/config';
-
-// import logo from '@/assets/img/logo.png';
 // import useStore from '@/store';
 import styles from './index.module.less';
 import LeftContent from './LeftContent';
@@ -11,9 +8,7 @@ import RightContent from './RightContent';
 
 const { Header } = Layout;
 
-const customHeader: React.FC<{ routes?: IRouteConfig[] }> = (props) => {
-  const { routes } = props;
-
+const customHeader: React.FC = () => {
   //   const handleChange = (e: { key: string }) => {
   //     if (e.key === '0') {
   //       localStorage.removeItem('Token');
@@ -29,13 +24,7 @@ const customHeader: React.FC<{ routes?: IRouteConfig[] }> = (props) => {
   return (
     <Header className={styles[`layout-header`]}>
       <LeftContent />
-      <RightContent routes={routes} />
-      {/* <Dropdown overlay={menu}>
-        <Space>
-          <Avatar src={logo} />
-          {user?.username}
-        </Space>
-      </Dropdown> */}
+      <RightContent />
     </Header>
   );
 };

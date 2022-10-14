@@ -1,8 +1,5 @@
-import './index.module.less';
-
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Menu, Spin } from 'antd';
-// import type { MenuInfo } from 'rc-menu/lib/interface';
 import type { ItemType } from 'antd/es/menu/hooks/useItems';
 import React from 'react';
 
@@ -10,6 +7,7 @@ import logo from '@/assets/img/logo.png';
 import useStore from '@/store';
 
 import HeaderDropdown from './HeaderDropdown';
+import styles from './index.module.less';
 
 export type GlobalHeaderRightProps = {
   menu?: boolean;
@@ -48,14 +46,8 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
   // };
 
   const loading = (
-    <span className={`action account`}>
-      <Spin
-        size="small"
-        style={{
-          marginLeft: 8,
-          marginRight: 8,
-        }}
-      />
+    <span className={`${styles.action} ${styles.account}`}>
+      <Spin size="small" className={styles.loading} />
     </span>
   );
 
@@ -97,14 +89,9 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
   );
 
   return (
-    <HeaderDropdown overlay={menuHeaderDropdown}>
-      <span className={`action account`}>
-        <Avatar
-          size="small"
-          className="avatar"
-          src={currentUser.avatar || logo}
-          alt="avatar"
-        />
+    <HeaderDropdown overlay={menuHeaderDropdown} placement="bottomLeft">
+      <span className={`${styles.action} ${styles.account}`}>
+        <Avatar className="avatar" src={currentUser.avatar || logo} alt="avatar" />
         {/* <span className={`${styles.name} anticon`}>{currentUser.name}</span> */}
       </span>
     </HeaderDropdown>

@@ -33,7 +33,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     },
     resolve: {
       alias: [
-        { find: /^~/, replacement: path.resolve(__dirname, './') },
+        { find: /^~/, replacement: '' },
         { find: '@', replacement: path.resolve(__dirname, 'src') },
         { find: '@cfg', replacement: path.resolve(__dirname, 'config') },
       ],
