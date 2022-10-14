@@ -7,6 +7,8 @@ import BannerImg from '@/assets/img/banner1.png';
 import useStore from '@/store';
 
 import BannerCom from './components/BannerCom';
+import SelfAppCom from './components/SelfAppCom';
+import Shortcuts from './components/ShortcutsCom';
 
 const imgList = [{ url: BannerImg }, { url: BannerImg }];
 
@@ -20,7 +22,9 @@ const Home: React.FC = () => {
       {/* 顶部图片 */}
       <BannerCom imgList={imgList} />
       {/* 快捷入口及应用 */}
-      <div className="flex"></div>
+      <div className="flex">
+        <Shortcuts props={[]} /> <SelfAppCom props={[]} />
+      </div>
     </div>
   );
 };
