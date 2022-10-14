@@ -32,6 +32,8 @@ module.exports = {
     'jsx-a11y/no-static-element-interactions': [0],
     'jsx-a11y/click-events-have-key-events': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
+    'jsx-a11y/no-static-element-interactions': [0],
+    'jsx-a11y/click-events-have-key-events': 'off',
     'simple-import-sort/imports': 'error',
     'simple-import-sort/exports': 'error',
   },
