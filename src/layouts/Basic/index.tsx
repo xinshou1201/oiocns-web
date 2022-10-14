@@ -1,6 +1,6 @@
 import './index.less';
 
-import { ConfigProvider, Layout } from 'antd';
+import { Layout } from 'antd';
 import React, { createContext } from 'react';
 import { renderRoutes } from 'react-router-config';
 
@@ -20,22 +20,20 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   const { route } = props;
 
   return (
-    <ConfigProvider prefixCls="ogo">
-      <Layout className="page-layout">
-        {/* 公共头部 */}
-        <layoutRoutes.Provider value={route?.routes}>
-          <CustomHeader />
-        </layoutRoutes.Provider>
-        {/* 内容区域 */}
-        <Layout>
-          {/* <CustomMenu /> */}
-          <Layout className="page-container">
-            <ContentBreadcrumb />
-            <Content className="page-content">{renderRoutes(route.routes)}</Content>
-          </Layout>
+    <Layout className="page-layout">
+      {/* 公共头部 */}
+      <layoutRoutes.Provider value={route?.routes}>
+        <CustomHeader />
+      </layoutRoutes.Provider>
+      {/* 内容区域 */}
+      <Layout>
+        {/* <CustomMenu /> */}
+        <Layout className="page-container">
+          <ContentBreadcrumb />
+          <Content className="page-content">{renderRoutes(route.routes)}</Content>
         </Layout>
       </Layout>
-    </ConfigProvider>
+    </Layout>
   );
 };
 
