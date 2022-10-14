@@ -12,7 +12,7 @@ export const VITE_BASE_PATH = '/';
 // 请求接口地址
 // export const VITE_PROXY_HTTP = 'http://localhost:8088';
 // 应用名称
-export const VITE_APP_TITLE = 'Vite React App';
+export const VITE_APP_TITLE = '奥集能';
 // 开启 mock
 export const VITE_APP_MOCK: boolean = false;
 // 开启包依赖分析 可视化
