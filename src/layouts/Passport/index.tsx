@@ -1,24 +1,19 @@
-import { Layout } from 'antd';
 import React from 'react';
 import { renderRoutes } from 'react-router-config';
 
-import GlobalFooter from '@/components/GlobalFooter';
+import passport from '@/assets/img/passport.png';
 import type { IRouteConfig } from '@/routes/config';
 
-const { Content, Header, Sider } = Layout;
+import cls from './index.module.less';
 
 const PassportLayout: React.FC<{ route: IRouteConfig }> = ({ route }) => {
   return (
-    <Layout>
-      <Header>Header</Header>
-      <Layout>
-        <Sider>Sider</Sider>
-        <Content>
-          {renderRoutes(route.routes)}
-          <GlobalFooter></GlobalFooter>
-        </Content>
-      </Layout>
-    </Layout>
+    <div className={cls.contaner}>
+      <img className={cls.bg} src={passport} alt="" />
+      <div className={cls.box}>
+        <div>{renderRoutes(route.routes)}</div>
+      </div>
+    </div>
   );
 };
 export default PassportLayout;

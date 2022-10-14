@@ -38,7 +38,7 @@ let dataSource = [
 
 // 创建 store
 const useStore = create<StateProps>((set, get) => ({
-  user: null,
+  user: {},
   list: [],
   loading: false,
   editItem: undefined,
@@ -46,18 +46,17 @@ const useStore = create<StateProps>((set, get) => ({
     const res = await $API.person.login({
       data: val,
     });
-    console.log('登陆成功', res);
     if (res.success) {
       set({ user: res.data });
-      localStorage.setItem('Token', res.data.accessToken);
-      console.log('res', res);
-      window.location.href = '/home';
+      sessionStorage.setItem('Token', res.data.accessToken);
+      return true;
     }
+    return false;
   },
-  setUser: async () => {
+  setUser: async (data: any) => {
     await sleep(1000);
     window.location.href = '/';
-    // set({ user:  });
+    set({ user: data });
   },
   setLoading: (val) => set({ loading: val }),
   setEditItem: (params: any) => set({ editItem: params }),

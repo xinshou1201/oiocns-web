@@ -1,18 +1,30 @@
-import { Card } from 'antd';
+import './index.less';
+
+// import { Card } from 'antd';
 import React, { useEffect } from 'react';
 
-import useStore from '../../store';
+import BannerImg from '@/assets/img/banner1.png';
+import useStore from '@/store';
+
+import BannerCom from './components/BannerCom';
+import SelfAppCom from './components/SelfAppCom';
+import Shortcuts from './components/ShortcutsCom';
+
+const imgList = [{ url: BannerImg }, { url: BannerImg }];
 
 const Home: React.FC = () => {
   useEffect(() => {}, []);
   const store = useStore();
-  console.log('store', store);
+  console.log('storestore', store);
 
   return (
-    <div>
-      <h2>Home</h2>
-      <Card>首页</Card>
-      {/* transitionName=""和maskTransitionName=""是去除弹框动画属性 */}
+    <div className="work-home">
+      {/* 顶部图片 */}
+      <BannerCom imgList={imgList} />
+      {/* 快捷入口及应用 */}
+      <div className="flex">
+        <Shortcuts props={[]} /> <SelfAppCom props={[]} />
+      </div>
     </div>
   );
 };

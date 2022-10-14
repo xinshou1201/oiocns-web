@@ -2,7 +2,12 @@ import React from 'react';
 
 import BasicLayout from '@/layouts/Basic';
 import PassportLayout from '@/layouts/Passport';
+import PassportForget from '@/pages/Passport/Forget';
+import PassportLock from '@/pages/Passport/Lock';
+import PassportLogin from '@/pages/Passport/Login';
+import PassportRegister from '@/pages/Passport/Register';
 import Redirect from '@/pages/Redirect';
+
 export interface IRouteConfig {
   // 路由路径
   path: string;
@@ -35,23 +40,23 @@ const layouts: IRouteConfig[] = [
     routes: [
       {
         path: '/passport/login',
-        component: React.lazy(() => import('@/pages/Passport/Login')),
+        component: PassportLogin,
         title: '登录',
       },
       {
-        path: '/passport/info',
-        component: React.lazy(() => import('@/pages/Passport/Register')),
-        title: '填写信息',
-      },
-      {
         path: '/passport/register',
-        component: React.lazy(() => import('@/pages/Passport/Register')),
+        component: PassportRegister,
         title: '注册',
       },
       {
         path: '/passport/lock',
-        component: React.lazy(() => import('@/pages/Passport/Register')),
+        component: PassportLock,
         title: '锁屏',
+      },
+      {
+        path: '/passport/forget',
+        component: PassportForget,
+        title: '忘记密码',
       },
     ],
   },
@@ -64,32 +69,33 @@ const layouts: IRouteConfig[] = [
       {
         path: '/org/home',
         title: '首页',
-        icon: 'home',
+        icon: 'HomeFilled',
         component: React.lazy(() => import('@/pages/Home')),
       },
-      {
-        path: '/org/app',
-        title: 'APP',
-        icon: 'home',
-        component: React.lazy(() => import('@/pages/App')),
-      },
+
       {
         path: '/org/chat',
         title: '聊天',
-        icon: 'home',
+        icon: 'icon-message',
         component: React.lazy(() => import('@/pages/Chat')),
       },
       {
         path: '/org/market',
-        title: 'market',
-        icon: 'home',
+        title: '待办',
+        icon: 'icon-todo',
         component: React.lazy(() => import('@/pages/Market')),
       },
       {
         path: '/org/store',
-        title: 'cangku',
-        icon: 'home',
+        title: '仓库',
+        icon: 'icon-store',
         component: React.lazy(() => import('@/pages/Store')),
+      },
+      {
+        path: '/org/setting',
+        title: '设置',
+        icon: 'icon-setting',
+        component: React.lazy(() => import('@/pages/Setting')),
       },
     ],
   },
