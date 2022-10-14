@@ -15,7 +15,7 @@ const imgList = [{ url: BannerImg }, { url: BannerImg }];
 const Home: React.FC = () => {
   useEffect(() => {}, []);
   const store = useStore();
-  console.log('store', store);
+  console.log('storestore', store);
 
   return (
     <div className="work-home">

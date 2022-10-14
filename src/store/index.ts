@@ -48,9 +48,10 @@ const useStore = create<StateProps>((set, get) => ({
     });
     if (res.success) {
       set({ user: res.data });
-      localStorage.setItem('Token', res.data.accessToken);
-      window.location.href = '/org/home';
+      sessionStorage.setItem('Token', res.data.accessToken);
+      return true;
     }
+    return false;
   },
   setUser: async (data: any) => {
     await sleep(1000);

@@ -21,18 +21,29 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:react/recommended',
-    'plugin:jsx-a11y/recommended',
+    // 'plugin:jsx-a11y/recommended',
     'plugin:prettier/recommended', // Make sure this is always the last element in the array.
   ],
   plugins: ['simple-import-sort', 'prettier'],
   rules: {
     'prettier/prettier': ['error', {}, { usePrettierrc: true }],
     'react/react-in-jsx-scope': 'off',
-    'jsx-a11y/accessible-emoji': 'off',
-    'jsx-a11y/no-static-element-interactions': [0],
-    'jsx-a11y/click-events-have-key-events': 'off',
+    // 'jsx-a11y/accessible-emoji': 'off',
+    // 'jsx-a11y/no-static-element-interactions': ['off'],
+    // 'jsx-a11y/click-events-have-key-events': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
-    'simple-import-sort/imports': 'error',
+    '@typescript-eslint/no-use-before-define': 'off',
+    'simple-import-sort/imports': 'warn',
     'simple-import-sort/exports': 'error',
+
+    //解决ts中，本身是可以有空的构造函数的误判问题 START
+    'no-useless-constructor': 'off',
+    // '@typescript-eslint/no-useless-constructor': 'error',
+    'no-unused-vars': 'error',
+    // '@typescript-eslint/no-unused-vars': 'error',
+    'no-empty-function': 'off',
+    //解决导出类型时，no-undef报错问题
+    'no-undef': 'off',
+    'import/prefer-default-export': 'off',
   },
 };

@@ -1,12 +1,12 @@
 import { LockOutlined, UserOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Form, Input, message, Tabs } from 'antd';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import useStore from '../../store';
 import cls from './index.module.less';
 
-const PassportLogin: React.FC = () => {
+const PassportLogin: React.FC<any> = ({ history }) => {
   const { login, loading } = useStore((state) => ({ ...state }));
   return (
     <div>
@@ -14,7 +14,9 @@ const PassportLogin: React.FC = () => {
       <Form
         onFinish={({ account, password }) => {
           if (account && password) {
-            return login({ account, password });
+            return login({ account, password }).then((res: boolean) => {
+              res && history.push('/org/home');
+            });
           }
           message.error('账号或密码错误，请重试！');
         }}>
@@ -46,4 +48,4 @@ const PassportLogin: React.FC = () => {
     </div>
   );
 };
-export default PassportLogin;
+export default withRouter(PassportLogin);
