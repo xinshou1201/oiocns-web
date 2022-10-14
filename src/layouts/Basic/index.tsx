@@ -5,6 +5,7 @@ import React, { createContext } from 'react';
 import { renderRoutes } from 'react-router-config';
 
 import { IRouteConfig } from '@/routes/config';
+import useStore from '@/store';
 
 import ContentBreadcrumb from './ContentBreadcrumb';
 import CustomHeader from './Header';
@@ -17,11 +18,12 @@ export const layoutRoutes = createContext<IRouteConfig[] | undefined>(undefined)
 
 const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   // eslint-disable-next-line react/prop-types
+  const user = useStore((state: any) => state.user);
   const { route, history } = props;
-  console.log('props', props);
+  console.log('props', props, user);
 
   // const history = createBrowserHistory();
-  if (!localStorage.getItem('Token')) {
+  if (!sessionStorage.getItem('Token')) {
     history.push('/passport/login');
   }
   return (
