@@ -27,29 +27,30 @@ export interface IRouteConfig {
 
 // 主要业务路由
 const SystemRouter: IRouteConfig[] = [
-  // {
-  //   path: '/home',
-  //   title: '首页',
-  //   icon: 'HomeFilled',
-  //   component: React.lazy(() => import('@/pages/Home')),
-  // },
+  {
+    path: '/home',
+    title: '首页',
+    icon: 'HomeFilled',
+    component: React.lazy(() => import('@/pages/Home')),
+  },
   {
     path: '/market',
-    component: BasicLayout,
+    component: React.lazy(() => import('@/pages/Market')),
     title: '市场',
     // exact: true,
+    redirect: '/market/app',
     routes: [
       {
-        path: '/market',
-        title: '市场首页',
-        icon: 'HomeFilled',
-        component: React.lazy(() => import('@/pages/Market')),
+        path: '/market/app',
+        title: '应用市场',
+        icon: 'icon-message',
+        component: React.lazy(() => import('@/pages/Market/App')),
       },
       {
-        path: '/market/test',
-        title: '聊天',
+        path: '/market/docx',
+        title: '文档市场',
         icon: 'icon-message',
-        component: React.lazy(() => import('@/pages/Chat')),
+        component: React.lazy(() => import('@/pages/Market/Docx')),
       },
     ],
   },
@@ -91,20 +92,13 @@ const Routers: IRouteConfig[] = [
       },
     ],
   },
-  ...SystemRouter,
   {
     path: '/',
     component: BasicLayout,
     title: '系统路由',
     // exact: true,
     routes: [
-      {
-        path: '/home',
-        title: '首页',
-        icon: 'HomeFilled',
-        component: React.lazy(() => import('@/pages/Home')),
-      },
-
+      ...SystemRouter,
       {
         path: '/org/chat',
         title: '聊天',

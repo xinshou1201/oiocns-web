@@ -1,7 +1,8 @@
 import { createFromIconfontCN } from '@ant-design/icons';
 
+/* 待完成： 将线上地址调整为本地 */
 export const IconFont = createFromIconfontCN({
   scriptUrl: [
-    '//at.alicdn.com/t/c/font_3701577_wvx8sc2cj4.js', // icon-javascript, icon-java, icon-shoppingcart (overrided)
+    '//at.alicdn.com/t/c/font_3701577_a7ws3injart.js', // icon-javascript, icon-java, icon-shoppingcart (overrided)
   ],
 });

@@ -1,7 +1,11 @@
 import React from 'react';
+import { renderRoutes } from 'react-router-config';
+const BlankLaout: React.FC<any> = (props) => {
+  const { route } = props;
 
-const BlankLaout: React.FC<any> = () => {
-  return <div>空白布局页</div>;
+  console.log('搜索', route);
+
+  return <>{renderRoutes(route.routes)}</>;
 };
 
 export default BlankLaout;

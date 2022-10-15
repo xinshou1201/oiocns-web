@@ -32,7 +32,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       <Layout>
         {/* <CustomMenu /> */}
         <Layout className="page-container">
-          {/* <ContentBreadcrumb /> */}
+          {/* <ContentBreadcrumb></ContentBreadcrumb> */}
           <Content className="page-content">{renderRoutes(route.routes)}</Content>
         </Layout>
       </Layout>

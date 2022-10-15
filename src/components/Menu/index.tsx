@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { matchRoutes } from 'react-router-config';
 import { Link } from 'react-router-dom';
 
-import routes, { IRouteConfig } from '@/routes/config';
+import routes, { IRouteConfig } from '../../routes/config';
 const { Sider } = Layout;
 
 const FilterRoutes = (arr: IRouteConfig[]): IRouteConfig[] =>
