@@ -23,9 +23,10 @@ const Home: React.FC = () => {
       {/* 顶部图片 */}
       <BannerCom imgList={imgList} />
       {/* 快捷入口及应用 */}
-      <div className="flex">
+      <div className=" flex">
         <Shortcuts props={[]} /> <SelfAppCom props={[]} />
       </div>
+      {/* 底部区域 */}
       <Charts />
     </div>
   );

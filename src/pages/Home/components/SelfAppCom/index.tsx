@@ -20,9 +20,7 @@ import CardWidthTitle from '@/components/CardWidthTitle';
 interface SelfAppComType {
   props: []; //入口列表
 }
-const BannerCom: React.FC<SelfAppComType> = ({ props }) => {
-  console.log('打印SelfAppCom', props);
-
+const BannerCom: React.FC<SelfAppComType> = () => {
   return (
     <CardWidthTitle className="self-app" title={'我的应用'}>
       <div className="app-content">

@@ -15,7 +15,7 @@ const PassportLogin: React.FC<any> = ({ history }) => {
         onFinish={({ account, password }) => {
           if (account && password) {
             return login({ account, password }).then((res: boolean) => {
-              res && history.push('/org/home');
+              res && history.push('/home');
             });
           }
           message.error('账号或密码错误，请重试！');

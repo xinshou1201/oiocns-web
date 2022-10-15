@@ -25,7 +25,38 @@ export interface IRouteConfig {
   routes?: IRouteConfig[];
 }
 
-const layouts: IRouteConfig[] = [
+// 主要业务路由
+const SystemRouter: IRouteConfig[] = [
+  // {
+  //   path: '/home',
+  //   title: '首页',
+  //   icon: 'HomeFilled',
+  //   component: React.lazy(() => import('@/pages/Home')),
+  // },
+  {
+    path: '/market',
+    component: BasicLayout,
+    title: '市场',
+    // exact: true,
+    routes: [
+      {
+        path: '/market',
+        title: '市场首页',
+        icon: 'HomeFilled',
+        component: React.lazy(() => import('@/pages/Market')),
+      },
+      {
+        path: '/market/test',
+        title: '聊天',
+        icon: 'icon-message',
+        component: React.lazy(() => import('@/pages/Chat')),
+      },
+    ],
+  },
+];
+
+// 路由汇总
+const Routers: IRouteConfig[] = [
   {
     path: '/',
     title: '/',
@@ -60,14 +91,15 @@ const layouts: IRouteConfig[] = [
       },
     ],
   },
+  ...SystemRouter,
   {
-    path: '/org',
+    path: '/',
     component: BasicLayout,
     title: '系统路由',
     // exact: true,
     routes: [
       {
-        path: '/org/home',
+        path: '/home',
         title: '首页',
         icon: 'HomeFilled',
         component: React.lazy(() => import('@/pages/Home')),
@@ -106,4 +138,4 @@ const layouts: IRouteConfig[] = [
   },
 ];
 
-export default layouts;
+export default Routers;

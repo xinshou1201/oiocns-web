@@ -22,12 +22,6 @@ const Header: React.FC = () => {
   useEffect(() => {
     const pathname = history.location.pathname;
     const match = matchRoutes(sysRoutes, pathname);
-    console.log(
-      '路由',
-      pathname,
-      match,
-      match.map((n) => n.route.path),
-    );
 
     if (match?.length) {
       setOpenKeys(match.map((n) => n.route.path));

@@ -17,9 +17,7 @@ const btns = [
   { label: '逛商场', icon: <SendOutlined /> },
   { label: '添数据', icon: <SendOutlined /> },
 ];
-const BannerCom: React.FC<ShortcutsComType> = ({ props }) => {
-  console.log('打印ShortcutsCom', props);
-
+const BannerCom: React.FC<ShortcutsComType> = () => {
   return (
     <CardWidthTitle className="shortcuts-wrap" title={'快捷入口'}>
       {btns.map((item) => {

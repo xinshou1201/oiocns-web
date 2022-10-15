@@ -5,8 +5,8 @@ import React, { createContext } from 'react';
 import { renderRoutes } from 'react-router-config';
 
 import { IRouteConfig } from '@/routes/config';
-import useStore from '@/store';
 
+// import useStore from '@/store';
 import CustomHeader from './Header';
 type BasicLayoutProps = {
   route: IRouteConfig;
@@ -16,9 +16,8 @@ const { Content } = Layout;
 export const layoutRoutes = createContext<IRouteConfig[] | undefined>(undefined);
 
 const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
-  const user = useStore((state: any) => state.user);
+  // const user = useStore((state: any) => state.user);
   const { route, history } = props;
-  console.log('props', props, user);
 
   if (!sessionStorage.getItem('Token')) {
     history.push('/passport/login');
