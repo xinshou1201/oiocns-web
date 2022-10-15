@@ -19,7 +19,6 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   // eslint-disable-next-line react/prop-types
   // const user = useStore((state: any) => state.user);
   const { route, history } = props;
-  // console.log('props', props, user);
 
   if (!sessionStorage.getItem('Token')) {
     history.push('/passport/login');
@@ -34,7 +33,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       <Layout>
         {/* <CustomMenu /> */}
         <Layout className="page-container">
-          {/* <ContentBreadcrumb /> */}
+          {/* <ContentBreadcrumb></ContentBreadcrumb> */}
           <Content className="page-content">{renderRoutes(route.routes)}</Content>
         </Layout>
       </Layout>
