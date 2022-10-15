@@ -1,5 +1,5 @@
-import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Menu, Spin } from 'antd';
+import { LockOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
+import { Avatar, Menu, MenuProps, Spin } from 'antd';
 import type { ItemType } from 'antd/es/menu/hooks/useItems';
 import React from 'react';
 
@@ -9,41 +9,56 @@ import useStore from '@/store';
 import HeaderDropdown from './HeaderDropdown';
 import styles from './index.module.less';
 
-export type GlobalHeaderRightProps = {
-  menu?: boolean;
-};
+import { useHistory } from 'react-router-dom';
 
-const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
+
+const AvatarDropdown: React.FC = () => {
   const { user: currentUser } = useStore((state) => ({ ...state }));
+  const history = useHistory();
+
+  console.log(currentUser);
+
+
+
   /**
-   * 退出登录，并且将当前的 url 保存
+   * 退出登录
    */
-  // const loginOut = async () => {
-  //   // await outLogin();
-  //   const { search, pathname } = window.location;
-  //   const urlParams = new URL(window.location.href).searchParams;
-  //   /** 此方法会跳转到 redirect 参数所在的位置 */
-  //   const redirect = urlParams.get('redirect');
-  //   // Note: There may be security issues, please note
-  //   if (window.location.pathname !== '/user/login' && !redirect) {
-  //     // history.replace({
-  //     //   pathname: '/user/login',
-  //     //   search: stringify({
-  //     //     redirect: pathname + search,
-  //     //   }),
-  //     // });
-  //   }
-  // };
-  // const onMenuClick = (event: MenuInfo) => {
-  //   console.log(event);
-  //   // const { key } = event;
-  //   // if (key === 'logout') {
-  //   //   setUser(null);
-  //   //   loginOut();
-  //   //   return;
-  //   // }
-  //   // history.push(`${key}`);
-  // };
+  const logout = () => {
+    // 1. 清空Token
+    // 2. 清空用户信息
+    localStorage.removeItem('Token');
+    window.location.href = '/passport/login';
+  };
+
+  /**
+   * 锁屏
+   */
+  const lock  = () =>{
+    history.push('/passport/lock');
+  }
+
+  /**
+   * 前往个人中心
+   */
+  const personInfo  = () =>{
+    history.push('/person/info');
+  }
+
+  const onClick: MenuProps['onClick'] = e => {
+    switch (e.key) {
+      case 'logout':
+        logout();
+        break;
+      case 'person/info':
+        personInfo();
+        break;
+      case 'lock':
+        lock();
+        break;
+      default:
+        break;
+    }
+  };
 
   const loading = (
     <span className={`${styles.action} ${styles.account}`}>
@@ -55,44 +70,39 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
     return loading;
   }
 
-  if (!currentUser || !currentUser.name) {
+  if (!currentUser || !currentUser.userName) {
     return loading;
   }
 
-  const menuItems: ItemType[] = [
-    ...(menu
-      ? [
-          {
-            key: 'center',
-            icon: <UserOutlined />,
-            label: '个人中心',
-          },
-          {
-            key: 'settings',
-            icon: <SettingOutlined />,
-            label: '个人设置',
-          },
-          {
-            type: 'divider' as const,
-          },
-        ]
-      : []),
+  const menuItems: ItemType[]= [
+    {
+      key: 'person/info',
+      icon: <UserOutlined />,
+      label: '个人中心',
+    },
+    {
+      type: 'divider' as const,
+    },
+    {
+      key: 'lock',
+      icon: <LockOutlined />,
+      label: '离开锁屏',
+    },
     {
       key: 'logout',
       icon: <LogoutOutlined />,
       label: '退出登录',
-    },
+    }
   ];
 
   const menuHeaderDropdown = (
-    <Menu className="menu" selectedKeys={[]} items={menuItems} />
+    <Menu className="menu" selectedKeys={[]} items={menuItems} onClick={onClick}/>
   );
 
   return (
     <HeaderDropdown overlay={menuHeaderDropdown} placement="bottomLeft">
       <span className={`${styles.action} ${styles.account}`}>
         <Avatar className="avatar" src={currentUser.avatar || logo} alt="avatar" />
-        {/* <span className={`${styles.name} anticon`}>{currentUser.name}</span> */}
       </span>
     </HeaderDropdown>
   );

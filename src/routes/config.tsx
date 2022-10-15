@@ -7,6 +7,7 @@ import PassportLock from '@/pages/Passport/Lock';
 import PassportLogin from '@/pages/Passport/Login';
 import PassportRegister from '@/pages/Passport/Register';
 import Redirect from '@/pages/Redirect';
+import Person from '@/pages/Person';
 
 export interface IRouteConfig {
   // 路由路径
@@ -96,6 +97,44 @@ const layouts: IRouteConfig[] = [
         title: '设置',
         icon: 'icon-setting',
         component: React.lazy(() => import('@/pages/Setting')),
+      },
+    ],
+  },
+  {
+    path: '/',
+    component: BasicLayout,
+    title: 'ROOT',
+    routes: [
+      {
+        title: '个人',
+        component: Person,
+        path: '/person',
+        routes: [{
+          path: '/person/info',
+          title: '个人信息',
+          icon: 'icon-setting',
+          component: React.lazy(() => import('@/pages/Person/Info')),
+        },{
+          path: '/person/passport',
+          title: '通行设置',
+          icon: 'icon-setting',
+          component: React.lazy(() => import('@/pages/Person/Passport')),
+        },{
+          path: '/person/info',
+          title: '卡包设置',
+          icon: 'icon-setting',
+          component: React.lazy(() => import('@/pages/Person/Info')),
+        },{
+          path: '/person/info',
+          title: '首页设置',
+          icon: 'icon-setting',
+          component: React.lazy(() => import('@/pages/Person/Info')),
+        },{
+          path: '/person/info',
+          title: '帮助中心',
+          icon: 'icon-setting',
+          component: React.lazy(() => import('@/pages/Person/Info')),
+        }]
       },
     ],
   },
