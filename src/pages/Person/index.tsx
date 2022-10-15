@@ -11,7 +11,7 @@ const { Header, Sider, Content } = Layout;
 
 /**
  * 个人
- * @returns 
+ * @returns
  */
 const Person: React.FC<{ route: IRouteConfig }> = ({ route }) => {
   return (

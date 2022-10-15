@@ -3,12 +3,10 @@ import React from 'react';
 
 /**
  * 个人信息
- * @returns 
+ * @returns
  */
 const PersonInfo = () => {
-  return (
-    <Card>用户信息</Card>
-  );
+  return <Card>用户信息</Card>;
 };
 
 export default PersonInfo;

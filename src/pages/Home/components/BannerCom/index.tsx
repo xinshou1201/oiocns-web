@@ -11,7 +11,6 @@ interface BannerType {
 }
 // banner
 const BannerCom: React.FC<BannerType> = ({ imgList }) => {
-  console.log('bannerprops', imgList);
   // 根据传入数据 渲染图片
   const renderImg = (urlList: imgItem[]) => {
     return urlList.map((item: imgItem) => {

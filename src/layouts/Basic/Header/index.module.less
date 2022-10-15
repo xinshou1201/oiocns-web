@@ -1,8 +1,8 @@
 @import '~antd/es/style/themes/index';
 
-@header-height: 56px;
 @pro-header-hover-bg: rgba(0, 0, 0, 0.025);
 @bar-icon-color: #a6aec7;
+
 .layout-header {
   height: @header-height;
   line-height: @header-height;
@@ -11,7 +11,7 @@
   box-shadow: 0 2px 8px #f0f1f2;
   display: flex;
   justify-content: space-between;
-  padding: 0 24px;
+  padding: 0 24px !important ;
 }
 
 .menu {
@@ -69,17 +69,17 @@
       background: transparent;
     }
   }
-  .account {
-    .avatar {
-      margin-right: 8px;
-      color: @primary-color;
-      vertical-align: top;
-      background: rgba(255, 255, 255, 0.85);
-    }
-  }
+
   .loading {
     margin-left: 8;
     margin-right: 8;
+  }
+  .account {
+    .avatar {
+      vertical-align: top;
+      font-size: large;
+      background-color: @primary-color;
+    }
   }
 }
 

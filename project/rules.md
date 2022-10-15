@@ -3,22 +3,22 @@
 1、模块及组件的文件夹 首字母必须大写
 2、模块名称下创建 components 存放子组件 子组件需用文件夹包裹
 3、src/module 文件夹存放各组件业务 名称规定为 模块.services.ts
-4、公共组件 放入src/components 下,文件夹 首字母必须大写
+4、公共组件 放入 src/components 下,文件夹 首字母必须大写
 5、
 案例如下:
-└── src                   //源码目录
-├── Home                  //模块名称（首页）
-  ├── components          //子组件文件夹
-    ├── BannerCom         //banner 组件
-      ├── index.tsx       //banner 内容
-      ├── index.less      //banner 样式
-    ├── SelfAppCom        //我的应用 组件
-      ├── index.tsx       //我的应用 内容
-      ├── index.less      //我的应用 样式
-    |── ......
-  ├── index.tsx           //模块容器
-  ├── index.less          //模块样式
-├── Chat                  //模块名称（消息）
+└── src //源码目录
+├── Home //模块名称（首页）
+├── components //子组件文件夹
+├── BannerCom //banner 组件
+├── index.tsx //banner 内容
+├── index.less //banner 样式
+├── SelfAppCom //我的应用 组件
+├── index.tsx //我的应用 内容
+├── index.less //我的应用 样式
+|── ......
+├── index.tsx //模块容器
+├── index.less //模块样式
+├── Chat //模块名称（消息）
 ......
 
 ## git commit 规范
@@ -50,8 +50,11 @@ other: 其他修改
 ## git 分支规范
 
 main 为主分支
-release 验证后的功能提交到此 由main分支 合并提交
-dev 开发分支 只允许的开发分支合并到dev 由个人分支 合并提交 验证后提交至main
+release 验证后的功能提交到此 由 main 分支 合并提交
+dev 开发分支 只允许的开发分支合并到 dev 由个人分支 合并提交 验证后提交至 main
 
 个人分支规则
- personal/个人分支名称
+personal/个人分支名称
+
+## CSS 使用规范
+

@@ -3,12 +3,10 @@ import React from 'react';
 
 /**
  * 通行设置
- * @returns 
+ * @returns
  */
 const PersonPassport = () => {
-  return (
-    <Card>通行设置</Card>
-  );
+  return <Card>通行设置</Card>;
 };
 
 export default PersonPassport;

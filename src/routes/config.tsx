@@ -26,7 +26,39 @@ export interface IRouteConfig {
   routes?: IRouteConfig[];
 }
 
-const layouts: IRouteConfig[] = [
+// 主要业务路由
+const SystemRouter: IRouteConfig[] = [
+  {
+    path: '/home',
+    title: '首页',
+    icon: 'HomeFilled',
+    component: React.lazy(() => import('@/pages/Home')),
+  },
+  {
+    path: '/market',
+    component: React.lazy(() => import('@/pages/Market')),
+    title: '市场',
+    // exact: true,
+    redirect: '/market/app',
+    routes: [
+      {
+        path: '/market/app',
+        title: '应用市场',
+        icon: 'icon-message',
+        component: React.lazy(() => import('@/pages/Market/App')),
+      },
+      {
+        path: '/market/docx',
+        title: '文档市场',
+        icon: 'icon-message',
+        component: React.lazy(() => import('@/pages/Market/Docx')),
+      },
+    ],
+  },
+];
+
+// 路由汇总
+const Routers: IRouteConfig[] = [
   {
     path: '/',
     title: '/',
@@ -62,18 +94,12 @@ const layouts: IRouteConfig[] = [
     ],
   },
   {
-    path: '/org',
+    path: '/',
     component: BasicLayout,
     title: '系统路由',
     // exact: true,
     routes: [
-      {
-        path: '/org/home',
-        title: '首页',
-        icon: 'HomeFilled',
-        component: React.lazy(() => import('@/pages/Home')),
-      },
-
+      ...SystemRouter,
       {
         path: '/org/chat',
         title: '聊天',
@@ -109,32 +135,38 @@ const layouts: IRouteConfig[] = [
         title: '个人',
         component: Person,
         path: '/person',
-        routes: [{
-          path: '/person/info',
-          title: '个人信息',
-          icon: 'icon-setting',
-          component: React.lazy(() => import('@/pages/Person/Info')),
-        },{
-          path: '/person/passport',
-          title: '通行设置',
-          icon: 'icon-setting',
-          component: React.lazy(() => import('@/pages/Person/Passport')),
-        },{
-          path: '/person/info',
-          title: '卡包设置',
-          icon: 'icon-setting',
-          component: React.lazy(() => import('@/pages/Person/Info')),
-        },{
-          path: '/person/info',
-          title: '首页设置',
-          icon: 'icon-setting',
-          component: React.lazy(() => import('@/pages/Person/Info')),
-        },{
-          path: '/person/info',
-          title: '帮助中心',
-          icon: 'icon-setting',
-          component: React.lazy(() => import('@/pages/Person/Info')),
-        }]
+        routes: [
+          {
+            path: '/person/info',
+            title: '个人信息',
+            icon: 'icon-setting',
+            component: React.lazy(() => import('@/pages/Person/Info')),
+          },
+          {
+            path: '/person/passport',
+            title: '通行设置',
+            icon: 'icon-setting',
+            component: React.lazy(() => import('@/pages/Person/Passport')),
+          },
+          {
+            path: '/person/info',
+            title: '卡包设置',
+            icon: 'icon-setting',
+            component: React.lazy(() => import('@/pages/Person/Info')),
+          },
+          {
+            path: '/person/info',
+            title: '首页设置',
+            icon: 'icon-setting',
+            component: React.lazy(() => import('@/pages/Person/Info')),
+          },
+          {
+            path: '/person/info',
+            title: '帮助中心',
+            icon: 'icon-setting',
+            component: React.lazy(() => import('@/pages/Person/Info')),
+          },
+        ],
       },
     ],
   },
@@ -145,4 +177,4 @@ const layouts: IRouteConfig[] = [
   },
 ];
 
-export default layouts;
+export default Routers;

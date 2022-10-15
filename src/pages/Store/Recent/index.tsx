@@ -1,4 +1,8 @@
-import { EllipsisOutlined, SettingOutlined, UnorderedListOutlined } from '@ant-design/icons';
+import {
+  EllipsisOutlined,
+  SettingOutlined,
+  UnorderedListOutlined,
+} from '@ant-design/icons';
 import { CheckCard } from '@ant-design/pro-components';
 import { Dropdown, Menu, message } from 'antd';
 import React from 'react';
@@ -80,13 +84,13 @@ const StoreRecent = () => {
                     items={[
                       {
                         label: '详情',
-                        key: '1', 
-                        icon: <UnorderedListOutlined /> 
+                        key: '1',
+                        icon: <UnorderedListOutlined />,
                       },
                       {
                         label: '管理',
                         key: '2',
-                        icon: <SettingOutlined /> 
+                        icon: <SettingOutlined />,
                       },
                     ]}
                   />

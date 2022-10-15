@@ -1,18 +1,42 @@
+import React from 'react';
 import { Space } from 'antd';
-import React, { useContext } from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { IconFont } from '@/components/IconFont';
 import { IRouteConfig } from '@/routes/config';
 
-import { layoutRoutes } from '..';
 import Avatar from './AvatarDropdown';
 import styles from './index.module.less';
 
 const GlobalHeaderRight: React.FC<RouteComponentProps> = (props) => {
-  const routes = useContext(layoutRoutes);
-  const { location } = props;
-  // routes?.forEach((n) => console.log(n.path.match(location.pathname)));
+  const routes = [
+    {
+      path: '/org/home',
+      title: '首页',
+      icon: 'HomeFilled',
+    },
+    {
+      path: '/org/chat',
+      title: '聊天',
+      icon: 'icon-message',
+    },
+    {
+      path: '/org/market',
+      title: '待办',
+      icon: 'icon-todo',
+    },
+    {
+      path: '/org/store',
+      title: '仓库',
+      icon: 'icon-store',
+    },
+    {
+      path: '/org/setting',
+      title: '设置',
+      icon: 'icon-setting',
+    },
+  ];
+  const { location, history } = props;
   return (
     <Space className={styles.right}>
       {routes && routes.length > 0
@@ -33,7 +57,7 @@ const GlobalHeaderRight: React.FC<RouteComponentProps> = (props) => {
             );
           })
         : ''}
-      <Avatar />
+      <Avatar history={history} />
     </Space>
   );
 };

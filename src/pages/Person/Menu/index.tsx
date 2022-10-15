@@ -1,4 +1,9 @@
-import { DatabaseOutlined, FileTextOutlined, FundOutlined, HomeOutlined } from '@ant-design/icons';
+import {
+  DatabaseOutlined,
+  FileTextOutlined,
+  FundOutlined,
+  HomeOutlined,
+} from '@ant-design/icons';
 import { Menu } from 'antd';
 import React from 'react';
 
@@ -8,7 +13,7 @@ import cls from './index.module.less';
 
 /**
  * 个人页面菜单
- * @returns 
+ * @returns
  */
 const PersonMenu = () => {
   const history = useHistory();
@@ -35,7 +40,7 @@ const PersonMenu = () => {
   // 个人菜单跳转
   const to = (e: any) => {
     history.push(`/person/${e.key}`);
-  }
+  };
 
   return (
     <div className={cls.container}>
@@ -47,11 +52,11 @@ const PersonMenu = () => {
       </div>
       <div>
         <div className={cls.subTitle}>信息中心</div>
-        <Menu items={infoMenuItems} onClick={to}/>
+        <Menu items={infoMenuItems} onClick={to} />
       </div>
       <div>
         <div className={cls.subTitle}>自定义设置</div>
-        <Menu items={customMenuItems} onClick={to}/>
+        <Menu items={customMenuItems} onClick={to} />
       </div>
     </div>
   );

@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { matchRoutes } from 'react-router-config';
 import { Link } from 'react-router-dom';
 
-import routes, { IRouteConfig } from '@/routes/config';
+import routes, { IRouteConfig } from '../../routes/config';
 const { Sider } = Layout;
 
 const FilterRoutes = (arr: IRouteConfig[]): IRouteConfig[] =>
@@ -22,12 +22,6 @@ const Header: React.FC = () => {
   useEffect(() => {
     const pathname = history.location.pathname;
     const match = matchRoutes(sysRoutes, pathname);
-    console.log(
-      '路由',
-      pathname,
-      match,
-      match.map((n) => n.route.path),
-    );
 
     if (match?.length) {
       setOpenKeys(match.map((n) => n.route.path));
