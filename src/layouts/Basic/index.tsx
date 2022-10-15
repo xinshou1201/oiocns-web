@@ -7,7 +7,6 @@ import { renderRoutes } from 'react-router-config';
 import { IRouteConfig } from '@/routes/config';
 import useStore from '@/store';
 
-import ContentBreadcrumb from './ContentBreadcrumb';
 import CustomHeader from './Header';
 type BasicLayoutProps = {
   route: IRouteConfig;
@@ -34,7 +33,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       <Layout>
         {/* <CustomMenu /> */}
         <Layout className="page-container">
-          <ContentBreadcrumb />
+          {/* <ContentBreadcrumb /> */}
           <Content className="page-content">{renderRoutes(route.routes)}</Content>
         </Layout>
       </Layout>
