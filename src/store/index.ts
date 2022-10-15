@@ -3,18 +3,17 @@
 import create from 'zustand';
 // 数据持久化，会缓存到 storage
 import { persist } from 'zustand/middleware';
-
+import Person from '@/module/person';
 // import { login } from '@/api/user';
 import $API from '@/services';
 
 // 模拟请求延迟
-import { sleep } from './sleep';
-import { StateProps } from './type';
+// import { sleep } from './sleep';
+import { StateProps, UserType } from './type';
 
 // 创建 store
 const useStore = create(
   persist<StateProps>(
-    // eslint-disable-next-line no-unused-vars
     (set, get) => ({
       user: {},
       list: [],
@@ -27,17 +26,24 @@ const useStore = create(
         if (res.success) {
           set({ user: res.data });
           sessionStorage.setItem('Token', res.data.accessToken);
+          get().getUserInfo();
           return true;
         }
         return false;
       },
-      setUser: async (data: any) => {
-        await sleep(1000);
-        window.location.href = '/';
+      setUser: async (data: UserType) => {
         set({ user: data });
       },
       setLoading: (val: boolean) => set({ loading: val }),
       setEditItem: (params: any) => set({ editItem: params }),
+      getUserInfo: async () => {
+        const { data, success } = await Person.getUserInfo();
+        if (success) {
+          set((state) => ({
+            user: { ...state.user, identitys: data.identitys, team: data.team },
+          }));
+        }
+      },
       // // 获取列表
       // getList: async () => {
       //   await sleep(1000);

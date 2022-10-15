@@ -5,12 +5,15 @@ import type { ItemType } from 'antd/es/menu/hooks/useItems';
 import useStore from '@/store';
 import HeaderDropdown from './HeaderDropdown';
 import styles from './index.module.less';
+import { RouteComponentProps } from 'react-router-dom';
 
 export type GlobalHeaderRightProps = {
   menu?: boolean;
 };
 
-const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
+const AvatarDropdown: React.FC<GlobalHeaderRightProps & RouteComponentProps> = ({
+  history,
+}) => {
   const currentUser = useStore((state) => state.user);
   console.log('user', currentUser);
   /**
@@ -32,16 +35,16 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
   //     // });
   //   }
   // };
-  // const onMenuClick = (event: MenuInfo) => {
-  //   console.log(event);
-  //   // const { key } = event;
-  //   // if (key === 'logout') {
-  //   //   setUser(null);
-  //   //   loginOut();
-  //   //   return;
-  //   // }
-  //   // history.push(`${key}`);
-  // };
+  const onMenuClick = (event: any) => {
+    console.log(event);
+    const { key } = event;
+    if (key === 'logout') {
+      sessionStorage.clear();
+      history.push(`/passport/login`);
+      return;
+    }
+    history.push(`${key}`);
+  };
 
   const loading = (
     <span className={`${styles.action} ${styles.account}`}>
@@ -57,32 +60,28 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu }) => {
   }
 
   const menuItems: ItemType[] = [
-    ...(menu
-      ? [
-          {
-            key: 'center',
-            icon: <UserOutlined />,
-            label: '个人中心',
-          },
-          {
-            key: 'settings',
-            icon: <SettingOutlined />,
-            label: '个人设置',
-          },
-          {
-            type: 'divider' as const,
-          },
-        ]
-      : []),
     {
-      key: 'logout',
+      key: 'center',
+      icon: <UserOutlined />,
+      label: '个人中心',
+    },
+    {
+      key: 'settings',
+      icon: <SettingOutlined />,
+      label: '个人设置',
+    },
+    {
+      type: 'divider' as const,
+    },
+    {
+      key: '/passport/login',
       icon: <LogoutOutlined />,
       label: '退出登录',
     },
   ];
 
   const menuHeaderDropdown = (
-    <Menu className="menu" selectedKeys={[]} items={menuItems} />
+    <Menu className="menu" selectedKeys={[]} items={menuItems} onClick={onMenuClick} />
   );
 
   return (
