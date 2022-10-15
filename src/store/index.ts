@@ -17,6 +17,7 @@ const useStore = create(
     (set, get) => ({
       user: {},
       list: [],
+      userSpace: {},
       loading: false,
       editItem: undefined,
       login: async (val) => {
@@ -24,7 +25,10 @@ const useStore = create(
           data: val,
         });
         if (res.success) {
-          set({ user: res.data });
+          set({
+            user: res.data,
+            userSpace: { name: res.data.workspaceName, id: res.data.workspaceId },
+          });
           sessionStorage.setItem('Token', res.data.accessToken);
           get().getUserInfo();
           return true;

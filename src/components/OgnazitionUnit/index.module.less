@@ -34,6 +34,11 @@
     border-radius: @border-radius-base;
     left: -16px;
     width: 220px;
+    line-height: @header-height;
+    .menu-list {
+      height: 112px;
+      overflow-y: auto;
+    }
     .item {
       padding: 0 16px;
       &:hover {
@@ -41,7 +46,10 @@
       }
     }
     &.active {
-      height: 100px;
+      height: 168px;
+    }
+    .divider {
+      margin: 0;
     }
   }
 }

@@ -5,6 +5,8 @@ interface InfoProps {
   phone: string;
   desc: string;
 }
+
+// 用户
 interface UserType {
   accessToken: string;
   account: string;
@@ -18,6 +20,12 @@ interface UserType {
   workspaceName: string;
   [key: string]: any;
 }
+
+// 个人空间
+type SpaceType = {
+  name?: string;
+  id?: string;
+};
 interface MenuProps {
   id: string;
   path: string;
@@ -28,10 +36,16 @@ interface MenuProps {
 export type StateProps = {
   /**@name 用户信息 */
   user: Partial<UserType>;
+
   /**@name 数据列表 */
   list: any[];
+
   /**@name loading */
   loading: boolean;
+
+  /**@name 个人空间 */
+  userSpace: SpaceType;
+
   /**@name 当前修改项 */
   editItem: any;
 
