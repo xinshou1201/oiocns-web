@@ -17,12 +17,10 @@ const { Content } = Layout;
 export const layoutRoutes = createContext<IRouteConfig[] | undefined>(undefined);
 
 const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
-  // eslint-disable-next-line react/prop-types
   const user = useStore((state: any) => state.user);
   const { route, history } = props;
   console.log('props', props, user);
 
-  // const history = createBrowserHistory();
   if (!sessionStorage.getItem('Token')) {
     history.push('/passport/login');
   }

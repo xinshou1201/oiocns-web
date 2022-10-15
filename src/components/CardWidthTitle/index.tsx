@@ -6,13 +6,14 @@ import React, { ReactNode } from 'react';
 interface CardWidthTitleType {
   title: string; //props
   children?: ReactNode;
+  className?: string;
   btns?: any;
 }
 // 带头部 卡片模板
-const CardWidthTitle: React.FC<CardWidthTitleType> = ({ title, children }) => {
+const CardWidthTitle: React.FC<CardWidthTitleType> = ({ title, children, className }) => {
   return (
     <>
-      <div className="CardWidthTitle-wrap">
+      <div className={`CardWidthTitle-wrap ${className}`}>
         <ul className="head flex">
           <li className="head-title">
             <Divider plain className="head-title-con">
