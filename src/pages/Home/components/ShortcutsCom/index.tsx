@@ -21,7 +21,7 @@ const BannerCom: React.FC<ShortcutsComType> = ({ props }) => {
   console.log('打印ShortcutsCom', props);
 
   return (
-    <CardWidthTitle className="shortcuts-wrap" title={'测试名称'}>
+    <CardWidthTitle className="shortcuts-wrap" title={'快捷入口'}>
       {btns.map((item) => {
         return (
           <Button className="Btn" key={item.label} size="large" icon={item.icon}>
