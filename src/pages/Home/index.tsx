@@ -7,6 +7,7 @@ import BannerImg from '@/assets/img/banner1.png';
 import useStore from '@/store';
 
 import BannerCom from './components/BannerCom';
+import Charts from './components/Charts';
 import SelfAppCom from './components/SelfAppCom';
 import Shortcuts from './components/ShortcutsCom';
 
@@ -25,6 +26,7 @@ const Home: React.FC = () => {
       <div className="flex">
         <Shortcuts props={[]} /> <SelfAppCom props={[]} />
       </div>
+      <Charts />
     </div>
   );
 };

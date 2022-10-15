@@ -38,7 +38,7 @@ const PassportLogin: React.FC<RouteComponentProps> = (props) => {
         </Form.Item>
         <Form.Item>
           <Button block loading={loading} type="primary" size="large" htmlType="submit">
-            登陆
+            登录
           </Button>
         </Form.Item>
         <Link className={cls.text} to="/passport/register">
