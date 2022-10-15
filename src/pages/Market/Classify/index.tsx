@@ -9,9 +9,9 @@ import { Menu } from 'antd';
 import React from 'react';
 
 import cls from './index.module.less';
-import StoreClassifyTree from './Tree';
+import MarketClassifyTree from './Tree';
 
-const StoreClassify = () => {
+const MarketClassify = () => {
   const items = [
     { label: '应用', key: 'app', icon: <AppstoreFilled /> }, // 菜单项务必填写 key
     { label: '文档', key: 'doc', icon: <FileTextFilled /> },
@@ -29,10 +29,10 @@ const StoreClassify = () => {
       <div>
         <div className={cls.subTitle}>常用分类</div>
         <Menu items={items} />
-        <StoreClassifyTree></StoreClassifyTree>
+        <MarketClassifyTree></MarketClassifyTree>
       </div>
     </div>
   );
 };
 
-export default StoreClassify;
+export default MarketClassify;

@@ -1,3 +1,5 @@
+import './index.less';
+
 import { Layout } from 'antd';
 import React from 'react';
 
@@ -8,7 +10,7 @@ const { Header, Sider, Content } = Layout;
 
 const Market: React.FC = () => {
   return (
-    <Layout>
+    <Layout className="market-wrap">
       <Sider width={250}>
         <MarketClassify></MarketClassify>
       </Sider>

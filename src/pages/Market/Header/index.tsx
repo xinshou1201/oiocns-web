@@ -1,7 +1,7 @@
 import React from 'react';
 
-const StoreHeader = () => {
-  return <div>仓库/应用</div>;
+const MarketHeader = () => {
+  return <div>市场/应用</div>;
 };
 
-export default StoreHeader;
+export default MarketHeader;
