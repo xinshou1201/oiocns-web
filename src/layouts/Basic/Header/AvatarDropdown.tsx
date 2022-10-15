@@ -5,17 +5,14 @@ import type { ItemType } from 'antd/es/menu/hooks/useItems';
 import useStore from '@/store';
 import HeaderDropdown from './HeaderDropdown';
 import styles from './index.module.less';
-import { RouteComponentProps } from 'react-router-dom';
 
 export type GlobalHeaderRightProps = {
-  menu?: boolean;
+  history?: any;
 };
 
-const AvatarDropdown: React.FC<GlobalHeaderRightProps & RouteComponentProps> = ({
-  history,
-}) => {
+const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ history }) => {
   const currentUser = useStore((state) => state.user);
-  console.log('user', currentUser);
+  // console.log('user', currentUser);
   /**
    * 退出登录，并且将当前的 url 保存
    */
@@ -87,7 +84,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps & RouteComponentProps> = (
   return (
     <HeaderDropdown overlay={menuHeaderDropdown} placement="bottomLeft">
       <span className={`${styles.action} ${styles.account}`}>
-        <Avatar className="avatar" alt="avatar">
+        <Avatar className={styles.avatar} alt="avatar">
           {currentUser.userName.substring(0, 1)}
         </Avatar>
         {/* <span className={`${styles.name} anticon`}>{currentUser.name}</span> */}
