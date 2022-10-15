@@ -4,11 +4,11 @@ import {
   FileTextFilled,
   FundFilled,
   HomeOutlined,
-  SearchOutlined,
 } from '@ant-design/icons';
-import { Card, Input, Menu } from 'antd';
+import { Menu } from 'antd';
 import React from 'react';
 
+import cls from './index.module.less';
 import StoreClassifyTree from './Tree';
 
 const StoreClassify = () => {
@@ -19,16 +19,18 @@ const StoreClassify = () => {
     { label: '资源', key: 'src', icon: <DatabaseFilled /> },
   ];
   return (
-    <div>
-      <Card>
-        <HomeOutlined />
-        <strong>仓库</strong>
-      </Card>
-      <h3>常用分类</h3>
-      <Menu items={items} />
-      <h3>全部分类</h3>
-      <Input prefix={<SearchOutlined />} placeholder="搜索分类" />
-      <StoreClassifyTree></StoreClassifyTree>
+    <div className={cls.container}>
+      <div className={cls.top}>
+        <div className={cls.title}>
+          <HomeOutlined />
+          <strong>仓库</strong>
+        </div>
+      </div>
+      <div>
+        <div className={cls.subTitle}>常用分类</div>
+        <Menu items={items} />
+        <StoreClassifyTree></StoreClassifyTree>
+      </div>
     </div>
   );
 };

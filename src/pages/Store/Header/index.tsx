@@ -1,8 +1,7 @@
-import { Card } from 'antd';
 import React from 'react';
 
 const StoreHeader = () => {
-  return <Card>仓库/应用</Card>;
+  return <div>仓库/应用</div>;
 };
 
 export default StoreHeader;

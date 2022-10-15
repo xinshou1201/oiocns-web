@@ -1,6 +1,9 @@
-import { Tree } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
+import { Input, Tree } from 'antd';
 import type { DataNode, TreeProps } from 'antd/es/tree';
 import React, { useState } from 'react';
+
+import cls from './index.module.less';
 
 const x = 3;
 const y = 2;
@@ -107,15 +110,21 @@ const StoreClassifyTree: React.FC = () => {
   };
 
   return (
-    <Tree
-      className="draggable-tree"
-      defaultExpandedKeys={expandedKeys}
-      draggable
-      blockNode
-      onDragEnter={onDragEnter}
-      onDrop={onDrop}
-      treeData={gData}
-    />
+    <div>
+      <div className={cls.title}>全部分类</div>
+      <div className={cls.title}>
+        <Input size="small" prefix={<SearchOutlined />} placeholder="搜索分类" />
+      </div>
+      <Tree
+        className="draggable-tree"
+        defaultExpandedKeys={expandedKeys}
+        draggable
+        blockNode
+        onDragEnter={onDragEnter}
+        onDrop={onDrop}
+        treeData={gData}
+      />
+    </div>
   );
 };
 

@@ -11,7 +11,7 @@ const { Header, Sider, Content } = Layout;
 const Store: React.FC = () => {
   return (
     <Layout>
-      <Sider>
+      <Sider width={250}>
         <StoreClassify></StoreClassify>
       </Sider>
       <Layout>
