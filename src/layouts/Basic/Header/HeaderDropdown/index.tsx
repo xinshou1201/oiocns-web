@@ -12,7 +12,7 @@ export type HeaderDropdownProps = {
     | 'bottomLeft'
     | 'bottomRight'
     | 'topLeft'
-    | 'topCenter'
+    | 'top'
     | 'topRight'
     | 'bottomCenter';
 } & Omit<DropDownProps, 'overlay'>;
