@@ -1,7 +1,12 @@
 import React from 'react';
+import BreadCrumb from '@/components/BreadCrumb';
 
 const PersonHeader = () => {
-  return <div>个人/信息</div>;
+  return (
+    <div>
+      <BreadCrumb></BreadCrumb>
+    </div>
+  );
 };
 
 export default PersonHeader;

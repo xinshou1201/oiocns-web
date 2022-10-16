@@ -1,20 +1,25 @@
-import { Layout } from 'antd';
+import { Layout, Space } from 'antd';
 import React from 'react';
 
-// import useStore from '@/store';
-import styles from './index.module.less';
+import cls from './index.module.less';
 import OrganizationalUnits from '@/components/OgnazitionUnit';
-import RightContent from './RightContent';
+import HeaderNav from './Nav';
+import UserAvatar from './UserAvatar';
+import HeaderHome from './Home';
 
 const { Header } = Layout;
 
-const customHeader: React.FC = () => {
+const BasicHeader: React.FC = () => {
   return (
-    <Header className={styles[`layout-header`]}>
+    <Header className={cls[`basic-header`]}>
       <OrganizationalUnits />
-      <RightContent />
+      <Space size={36}>
+        <HeaderHome />
+        <HeaderNav />
+        <UserAvatar></UserAvatar>
+      </Space>
     </Header>
   );
 };
 
-export default customHeader;
+export default BasicHeader;
