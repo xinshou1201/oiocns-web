@@ -52,11 +52,4 @@ export type StateProps = {
   login: (val: any) => Promise<boolean>;
   setUser: (val: UserType) => void;
   getUserInfo: () => void;
-  // setLoading: (val: boolean) => void;
-  // // 列表 增删改查
-  // getList: () => void;
-  // removeList: (id: string) => void;
-  // editList: (params: any) => void;
-  // addList: (params: any) => void;
-  // setEditItem: (params: any) => void;
 };

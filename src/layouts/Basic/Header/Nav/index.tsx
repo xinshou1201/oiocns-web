@@ -1,6 +1,7 @@
-import React from 'react';
 import { Space } from 'antd';
+import React from 'react';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
+
 import { IconFont } from '@/components/IconFont';
 
 import cls from './index.module.less';
@@ -21,11 +22,6 @@ const HeaderNav: React.FC<RouteComponentProps> = () => {
       path: '/todo',
       title: '待办',
       icon: 'icon-todo',
-    },
-    {
-      path: '/market',
-      title: '市场',
-      icon: 'icon-store',
     },
     {
       path: '/store',

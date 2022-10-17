@@ -6,7 +6,6 @@ import {
 } from '@ant-design/icons';
 import { Menu } from 'antd';
 import React from 'react';
-
 import { useHistory } from 'react-router-dom';
 
 import cls from './index.module.less';

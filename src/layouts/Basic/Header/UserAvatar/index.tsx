@@ -1,10 +1,10 @@
 import { LockOutlined, LogoutOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Dropdown, Menu, MenuProps } from 'antd';
 import type { ItemType } from 'antd/es/menu/hooks/useItems';
-import useStore from '@/store';
-
-import { useHistory } from 'react-router-dom';
 import React from 'react';
+import { useHistory } from 'react-router-dom';
+
+import useStore from '@/store';
 
 import cls from './index.module.less';
 
@@ -23,6 +23,7 @@ const UserAvatar: React.FC = () => {
    */
   const logout = () => {
     localStorage.removeItem('Token');
+    sessionStorage.clear();
     history.push('/passport/login');
   };
 

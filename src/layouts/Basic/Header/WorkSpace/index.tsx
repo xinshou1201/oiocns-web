@@ -4,15 +4,15 @@ import React, { useEffect, useState } from 'react';
 
 import CompanyServices from '@/module/company';
 import PersonServices from '@/module/person';
-import useStore from '@/store';
 import { SpaceType } from '@/store/type';
 
+import useStore from './../../../../store';
 import styles from './index.module.less';
 
 type OrganizationalUnitsProps = {};
 
 // 菜单列表项
-const OrganizationalItem = (item: SpaceType) => {
+const MenuItem = (item: SpaceType) => {
   return item && item.name ? (
     <Space>
       <Avatar className={styles.avatar} size={32}>
@@ -26,11 +26,12 @@ const OrganizationalItem = (item: SpaceType) => {
 };
 
 /* 组织单位头部左侧组件 */
-const OrganizationalUnits: React.FC<OrganizationalUnitsProps> = () => {
+const WorkSpace: React.FC<OrganizationalUnitsProps> = () => {
   const { user, getUserInfo, setUser, userSpace } = useStore((state) => ({ ...state }));
   const [current, setCurrent] = useState<SpaceType>();
   const [menuList, setMenuList] = useState<SpaceType[]>([]);
   const [showMenu, setShowMenu] = useState<boolean>(false);
+
   // 获取工作单位列表
   const getList = async () => {
     const { data } = await CompanyServices.getJoinedCompany({
@@ -39,6 +40,7 @@ const OrganizationalUnits: React.FC<OrganizationalUnitsProps> = () => {
     });
     setMenuList([...data, userSpace]);
   };
+
   // 选中组织单位后进行空间切换
   const handleClickMenu = async (item: SpaceType) => {
     if (!item?.id) return;
@@ -56,6 +58,7 @@ const OrganizationalUnits: React.FC<OrganizationalUnitsProps> = () => {
       setShowMenu(false);
     }
   };
+
   useEffect(() => {
     // 获取用户加入的单位组织
     if (user) {
@@ -70,21 +73,18 @@ const OrganizationalUnits: React.FC<OrganizationalUnitsProps> = () => {
   return user ? (
     <div className={styles.menu} onMouseLeave={() => setShowMenu(false)}>
       <Space onClick={() => setShowMenu(!showMenu)} className={styles['current-item']}>
-        {current ? OrganizationalItem(current) : <Skeleton active />}
+        {current ? MenuItem(current) : <Skeleton active />}
         <CaretDownOutlined
           className={`${styles[`down-icon`]} ${showMenu ? styles.active : ''}`}
         />
       </Space>
 
-      <div
-        className={`${styles.list} ${showMenu ? styles.active : ''}`}
-        // style={{ height: showMenu ? menuList.length * 56 : 0 }}
-      >
+      <div className={`${styles.list} ${showMenu ? styles.active : ''}`}>
         <div className={styles[`menu-list`]}>
           {menuList.map((n) =>
             current && n.id !== current.id ? (
               <div className={styles.item} onClick={() => handleClickMenu(n)} key={n.id}>
-                {OrganizationalItem(n)}
+                {MenuItem(n)}
               </div>
             ) : (
               ''
@@ -111,4 +111,4 @@ const OrganizationalUnits: React.FC<OrganizationalUnitsProps> = () => {
   );
 };
 
-export default OrganizationalUnits;
+export default WorkSpace;

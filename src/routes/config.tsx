@@ -1,3 +1,9 @@
+import {
+  HomeFilled,
+  MessageOutlined,
+  SafetyOutlined,
+  SettingOutlined,
+} from '@ant-design/icons';
 import React from 'react';
 
 import BasicLayout from '@/layouts/Basic';
@@ -7,8 +13,6 @@ import PassportLock from '@/pages/Passport/Lock';
 import PassportLogin from '@/pages/Passport/Login';
 import PassportRegister from '@/pages/Passport/Register';
 import Redirect from '@/pages/Redirect';
-import { AntdIconProps } from '@ant-design/icons/lib/components/AntdIcon';
-import { HomeFilled } from '@ant-design/icons';
 
 export interface IRouteConfig {
   // 路由路径
@@ -21,7 +25,7 @@ export interface IRouteConfig {
   // 路由信息
   title: string;
   meta?: any;
-  icon?: string | AntdIconProps;
+  icon?: string | React.ReactNode;
   // 是否校验权限, false 为不校验, 不存在该属性或者为true 为校验, 子路由会继承父路由的 auth 属性
   auth?: boolean;
   routes?: IRouteConfig[];
@@ -162,6 +166,48 @@ const PersonRouter: IRouteConfig[] = [
         title: '帮助中心',
         icon: 'icon-setting',
         component: React.lazy(() => import('@/pages/Person/Info')),
+      },
+      {
+        path: '/person/address',
+        title: '地址管理',
+        icon: 'icon-setting',
+        component: React.lazy(() => import('@/pages/Person/Address')),
+      },
+      {
+        path: '/person/certificate',
+        title: '证书管理',
+        icon: 'icon-setting',
+        component: React.lazy(() => import('@/pages/Person/Certificate')),
+      },
+      {
+        path: '/person/safe',
+        title: '安全管理',
+        icon: <SafetyOutlined />,
+        component: React.lazy(() => import('@/pages/Person/Safe')),
+      },
+      {
+        path: '/person/message',
+        title: '消息设置',
+        icon: <MessageOutlined />,
+        component: React.lazy(() => import('@/pages/Person/Message')),
+      },
+      {
+        path: '/person/theme',
+        title: '主题设置',
+        icon: <SettingOutlined />,
+        component: React.lazy(() => import('@/pages/Person/Theme')),
+      },
+      {
+        path: '/person/lang',
+        title: '语言设置',
+        icon: 'icon-setting',
+        component: React.lazy(() => import('@/pages/Person/Lang')),
+      },
+      {
+        path: '/person/standard',
+        title: '标准设置',
+        icon: 'icon-setting',
+        component: React.lazy(() => import('@/pages/Person/Standard')),
       },
     ],
   },

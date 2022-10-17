@@ -28,17 +28,12 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   }, []);
 
   return (
-    <Layout className="page-layout">
+    <Layout>
       {/* 公共头部 */}
       <BasicHeader />
       {/* 内容区域 */}
       <Layout>
-        <Content className="page-content">{renderRoutes(route.routes)}</Content>
-        {/* <CustomMenu />
-        <Layout className="page-container">
-          <ContentBreadcrumb></ContentBreadcrumb>
-          <Content className="page-content">{renderRoutes(route.routes)}</Content>
-        </Layout> */}
+        <Content>{renderRoutes(route.routes)}</Content>
       </Layout>
     </Layout>
   );

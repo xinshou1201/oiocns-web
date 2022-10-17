@@ -32,16 +32,14 @@ const ContentTemplate: React.FC<ContentTemplateType> = ({
   // TODO 布局样式、侧边展开和收缩
   return (
     <Layout>
-      {sider && <Sider width={200}>{sider}</Sider>}
+      {sider && <Sider className={cls.sider}>{sider}</Sider>}
       <Layout>
-        <Content>
-          <div>{contentTop}</div>
-          <div className={cls.contenttop}>
-            <div>{contentTopLeft}</div>
-            <div>{contentTopRight}</div>
-          </div>
-          {content}
-        </Content>
+        <div className={cls.contenttop}>{contentTop}</div>
+        <div className={cls.contenttop}>
+          <div>{contentTopLeft}</div>
+          <div>{contentTopRight}</div>
+        </div>
+        <Content className={cls.content}>{content}</Content>
       </Layout>
     </Layout>
   );

@@ -3,6 +3,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import routes, { IRouteConfig } from '../../routes/config';
+import cls from './index.module.less';
 
 const breadcrumbNameMap: Record<string, IRouteConfig> = {};
 
@@ -28,16 +29,26 @@ const BreadCrumb: React.FC = () => {
   const location = useLocation();
   const pathSnippets = location.pathname.split('/').filter((i) => i);
 
-  // TODO 增加面包屑图标、修改样式
+  // TODO 修改样式
   const items = pathSnippets.map((_, index) => {
     const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
     return (
-      <Breadcrumb.Item key={url}>
+      <Breadcrumb.Item key={url} className={cls['comp-breadcrumb']}>
         <Link to={url}>{breadcrumbNameMap[url].title}</Link>
+        {breadcrumbNameMap[url].icon &&
+          typeof breadcrumbNameMap[url].icon !== 'string' && (
+            <span className={cls['comp-breadcrumb-icon']}>
+              {breadcrumbNameMap[url].icon}
+            </span>
+          )}
       </Breadcrumb.Item>
     );
   });
-  return <Breadcrumb>{items}</Breadcrumb>;
+  return (
+    <div className={cls['comp-breadcrumb-comtainer']}>
+      <Breadcrumb>{items}</Breadcrumb>
+    </div>
+  );
 };
 
 export default BreadCrumb;
