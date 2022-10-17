@@ -21,6 +21,8 @@ const PersonMenu = () => {
   const infoMenuItems = [
     { label: '个人信息', key: 'info', icon: <HomeOutlined /> },
     { label: '通行设置', key: 'passport', icon: <FileTextOutlined /> },
+    { label: '好友设置', key: 'friend', icon: <FundOutlined /> },
+    { label: '群组设置', key: 'cohort', icon: <DatabaseOutlined /> },
     { label: '卡包设置', key: 'wallet', icon: <FundOutlined /> },
     { label: '首页设置', key: 'homeset', icon: <DatabaseOutlined /> },
     { label: '帮助中心', key: 'help', icon: <DatabaseOutlined /> },

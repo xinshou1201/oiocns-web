@@ -1,35 +1,18 @@
 import React from 'react';
+import { renderRoutes } from 'react-router-config';
 
-import ContentTemplate from '@/components/ContentTemplate';
 import BreadCrumb from '@/components/BreadCrumb';
+import ContentTemplate from '@/components/ContentTemplate';
+import { IRouteConfig } from '@/routes/config';
 
-const Setting = () => {
-  const content = (
-    <>
-      <h2>内容</h2>
-    </>
-  );
-  const top = (
-    <>
-      <h3>顶部</h3>
-    </>
-  );
-  const topLeft = (
-    <>
-      <BreadCrumb></BreadCrumb>
-    </>
-  );
-  const topRight = (
-    <>
-      <h3>顶部右</h3>
-    </>
-  );
+import SettingMenu from './Menu';
+
+const Setting: React.FC<{ route: IRouteConfig }> = ({ route }) => {
+  const sider = <SettingMenu></SettingMenu>;
+  const contentTopLeft = <BreadCrumb></BreadCrumb>;
+  const content = <div>{renderRoutes(route.routes)}</div>;
   return (
-    <ContentTemplate
-      content={content}
-      contentTop={top}
-      contentTopLeft={topLeft}
-      contentTopRight={topRight}></ContentTemplate>
+    <ContentTemplate sider={sider} contentTopLeft={contentTopLeft} content={content} />
   );
 };
 
