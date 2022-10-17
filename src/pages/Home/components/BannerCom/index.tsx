@@ -9,6 +9,7 @@ interface imgItem {
 interface BannerType {
   imgList: imgItem[];
 }
+
 // banner
 const BannerCom: React.FC<BannerType> = ({ imgList }) => {
   // 根据传入数据 渲染图片
@@ -18,6 +19,10 @@ const BannerCom: React.FC<BannerType> = ({ imgList }) => {
     });
   };
   // 最终渲染内容
-  return <Carousel autoplay>{renderImg(imgList)}</Carousel>;
+  return (
+    <Carousel className="banner-wrap" autoplay>
+      {renderImg(imgList)}
+    </Carousel>
+  );
 };
 export default BannerCom;
