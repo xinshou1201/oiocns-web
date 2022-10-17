@@ -13,14 +13,25 @@ import MarketClassifyTree from './Tree';
 
 const MarketClassify = ({ history }: any) => {
   const items = [
-    { label: '应用', key: '/market/app', icon: <AppstoreFilled /> }, // 菜单项务必填写 key
     {
-      label: '文档',
-      key: '/market/docx',
-      icon: <FileTextFilled />,
+      label: '开放市场',
+      key: 'openMarket',
+      icon: <AppstoreFilled />,
+      children: [
+        {
+          label: '应用市场',
+          key: '/market/app',
+          icon: <AppstoreFilled />,
+        }, // 菜单项务必填写 key
+        {
+          label: '文档共享库',
+          key: '/market/docx',
+          icon: <FileTextFilled />,
+        },
+        { label: '数据市场', key: '/data', icon: <FundFilled /> },
+        { label: '公益仓', key: '/src', icon: <DatabaseFilled /> },
+      ],
     },
-    { label: '数据', key: '/data', icon: <FundFilled /> },
-    { label: '资源', key: '/src', icon: <DatabaseFilled /> },
   ];
 
   const handleChange = (path: string) => {
@@ -36,7 +47,12 @@ const MarketClassify = ({ history }: any) => {
       </div>
       <div>
         <div className={cls.subTitle}>常用分类</div>
-        <Menu items={items} onClick={({ key }) => handleChange(key)} />
+        <Menu
+          mode="inline"
+          items={items}
+          defaultOpenKeys={['openMarket']}
+          onClick={({ key }) => handleChange(key)}
+        />
         <MarketClassifyTree></MarketClassifyTree>
       </div>
     </div>

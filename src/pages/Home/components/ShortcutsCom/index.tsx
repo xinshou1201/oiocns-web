@@ -22,7 +22,11 @@ const BannerCom: React.FC<ShortcutsComType> = () => {
     <CardWidthTitle className="shortcuts-wrap" title={'快捷入口'}>
       {btns.map((item) => {
         return (
-          <Button className="Btn" key={item.label} size="large" icon={item.icon}>
+          <Button
+            className="shortcuts-btn"
+            key={item.label}
+            size="large"
+            icon={item.icon}>
             {item.label}
           </Button>
         );

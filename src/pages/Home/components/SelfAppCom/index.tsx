@@ -4,15 +4,15 @@ import React from 'react';
 
 const dataSource = [
   {
-    title: 'OCR',
+    title: '资产监管平台',
     url: 'https://gw.alipayobjects.com/zos/bmw-prod/ae0adacf-9456-4ed3-b1ab-51e4417d8d0c.svg',
     desc: '这是一段',
     key: 1,
   },
   {
-    title: 'OGO',
+    title: '资产管理应用',
     url: 'https://gw.alipayobjects.com/zos/antfincdn/aPkFc8Sj7n/method-draw-image.svg',
-    desc: '算法的说明',
+    desc: '应用的说明',
     key: 4,
   },
 ];
@@ -36,8 +36,8 @@ const AppCard: any = ({ className, info }: { className: string; info: any }) => 
     <div className={`${className} app-box`}>
       <img className="app-box-img" src={info.url} alt="" />
       <div className="app-info">
-        <span className="app-info-name">{info.title || '资产监管平台'}</span>
-        <span className="app-info-desc">{info.desc || '描述文字'}</span>
+        <span className="app-info-name">{info.title}</span>
+        <span className="app-info-desc">{info.desc}</span>
       </div>
     </div>
   );
