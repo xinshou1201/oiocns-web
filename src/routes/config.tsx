@@ -133,7 +133,7 @@ const SettingRouter: IRouteConfig[] = [
 const PersonRouter: IRouteConfig[] = [
   {
     path: '/person',
-    title: '个人',
+    title: '我的',
     icon: 'HomeFilled',
     component: React.lazy(() => import('@/pages/Person')),
     routes: [
