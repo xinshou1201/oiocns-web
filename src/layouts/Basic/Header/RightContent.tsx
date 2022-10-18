@@ -1,5 +1,6 @@
 import React from 'react';
 import { Space } from 'antd';
+import * as Icon from '@ant-design/icons';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
 import { IconFont } from '@/components/IconFont';
 import { IRouteConfig } from '@/routes/config';
@@ -10,17 +11,16 @@ import styles from './index.module.less';
 // 创建icon图标元素
 const iconToElement = (name: string) =>
   React.createElement(Icon && (Icon as any)[name], {
-    style: { fontSize: '16px' },
+    className: styles[`action-icon`],
   });
-/*
-  渲染图标
-*/
-const iconRender = ({ icon, name }: { icon: string; name: string }) => {
-  if (!name) {
-    return name;
+
+/*渲染图标*/
+const iconRender = ({ icon, title }: { icon?: string; title: string }) => {
+  if (!icon) {
+    return title;
   }
-  return name.indexOf('icon-') > -1 ? (
-    <IconFont type={icon} className={`${styles[`action-icon`]}`} />
+  return icon.indexOf('icon-') > -1 ? (
+    <IconFont type={icon} className={styles[`action-icon`]} />
   ) : (
     iconToElement(icon)
   );
@@ -56,20 +56,19 @@ const GlobalHeaderRight: React.FC<RouteComponentProps> = (props) => {
   const { location, history } = props;
   return (
     <Space className={styles.right}>
-      {routes && routes.length > 0
-        ? routes?.map((item: IRouteConfig) => {
-            return (
-              <Link
-                to={item.path}
-                className={`${styles.action} ${
-                  item.path.match(location.pathname) ? `${styles.active}` : ''
-                }`}
-                key={item.path}>
-                {iconRender(item)}
-              </Link>
-            );
-          })
-        : ''}
+      {routes &&
+        routes?.map((item: IRouteConfig) => {
+          return (
+            <Link
+              to={item.path}
+              key={item.path}
+              className={`${styles.action} ${
+                item.path.match(location.pathname) ? `${styles.active}` : ''
+              }`}>
+              {iconRender(item)}
+            </Link>
+          );
+        })}
       <Avatar history={history} />
     </Space>
   );

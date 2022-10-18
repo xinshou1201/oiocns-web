@@ -49,9 +49,6 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ history }) => {
     </span>
   );
 
-  if (!currentUser) {
-    return loading;
-  }
   if (!currentUser || !currentUser.userName) {
     return loading;
   }
