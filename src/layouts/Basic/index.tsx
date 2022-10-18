@@ -1,4 +1,4 @@
-import './index.less';
+import styles from './index.module.less';
 
 import { Layout } from 'antd';
 import React, { useEffect } from 'react';
@@ -13,8 +13,6 @@ type BasicLayoutProps = {
   route: IRouteConfig;
   history: any;
 };
-const { Content } = Layout;
-// export const layoutRoutes = createContext<IRouteConfig[] | undefined>(undefined);
 
 const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   const { route, history } = props;
@@ -28,13 +26,11 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   }, []);
 
   return (
-    <Layout>
+    <Layout className={styles['page-layout']}>
       {/* 公共头部 */}
       <BasicHeader />
       {/* 内容区域 */}
-      <Layout>
-        <Content>{renderRoutes(route.routes)}</Content>
-      </Layout>
+      <Layout>{renderRoutes(route.routes)}</Layout>
     </Layout>
   );
 };

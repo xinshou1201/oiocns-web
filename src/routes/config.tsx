@@ -80,8 +80,34 @@ const TodoRouter: IRouteConfig[] = [
   {
     path: '/todo',
     title: '办事',
-    icon: 'HomeFilled',
+    icon: 'icon-todo',
     component: React.lazy(() => import('@/pages/Todo')),
+    routes: [
+      {
+        path: '/todo/friend',
+        title: '好友审核',
+        icon: 'icon-todo',
+        component: React.lazy(() => import('@/pages/Todo/friend')),
+      },
+      {
+        path: '/todo/company',
+        title: '单位审核',
+        icon: 'icon-todo',
+        component: React.lazy(() => import('@/pages/Todo/Company')),
+      },
+      {
+        path: '/todo/shop',
+        title: '商店审核',
+        icon: 'icon-todo',
+        component: React.lazy(() => import('@/pages/Todo/Shop')),
+      },
+      {
+        path: '/todo/order',
+        title: '订单审核',
+        icon: 'icon-todo',
+        component: React.lazy(() => import('@/pages/Todo/Order')),
+      },
+    ],
   },
 ];
 
