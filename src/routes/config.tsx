@@ -24,10 +24,13 @@ export interface IRouteConfig {
   exact?: boolean;
   // 路由信息
   title: string;
+  // 元数据
   meta?: any;
+  // 图标
   icon?: string | React.ReactNode;
   // 是否校验权限, false 为不校验, 不存在该属性或者为true 为校验, 子路由会继承父路由的 auth 属性
   auth?: boolean;
+  // 子路由
   routes?: IRouteConfig[];
 }
 
@@ -82,6 +85,32 @@ const TodoRouter: IRouteConfig[] = [
     title: '办事',
     icon: 'HomeFilled',
     component: React.lazy(() => import('@/pages/Todo')),
+    routes: [
+      {
+        path: '/todo/friend',
+        title: '好友申请',
+        icon: 'icon-message',
+        component: React.lazy(() => import('@/pages/Todo/Friend')),
+      },
+      {
+        path: '/todo/org',
+        title: '单位审核',
+        icon: 'icon-message',
+        component: React.lazy(() => import('@/pages/Todo/Org')),
+      },
+      {
+        path: '/todo/store',
+        title: '商店审核',
+        icon: 'icon-message',
+        component: React.lazy(() => import('@/pages/Todo/Store')),
+      },
+      {
+        path: '/todo/order',
+        title: '订单审核',
+        icon: 'icon-message',
+        component: React.lazy(() => import('@/pages/Todo/Order')),
+      },
+    ],
   },
 ];
 
@@ -92,6 +121,32 @@ const StoreRouter: IRouteConfig[] = [
     title: '仓库',
     icon: 'HomeFilled',
     component: React.lazy(() => import('@/pages/Store')),
+    routes: [
+      {
+        path: '/store/app',
+        title: '应用',
+        icon: 'icon-message',
+        component: React.lazy(() => import('@/pages/Store/App')),
+      },
+      {
+        path: '/store/doc',
+        title: '文档',
+        icon: 'icon-message',
+        component: React.lazy(() => import('@/pages/Store/Doc')),
+      },
+      {
+        path: '/store/data',
+        title: '数据',
+        icon: 'icon-message',
+        component: React.lazy(() => import('@/pages/Store/Data')),
+      },
+      {
+        path: '/store/src',
+        title: '资源',
+        icon: 'icon-message',
+        component: React.lazy(() => import('@/pages/Store/Src')),
+      },
+    ],
   },
 ];
 
@@ -171,10 +226,10 @@ const SettingRouter: IRouteConfig[] = [
         component: React.lazy(() => import('@/pages/Setting/Src')),
       },
       {
-        path: '/setting/application',
+        path: '/setting/app',
         title: '应用设置',
         icon: <SafetyOutlined />,
-        component: React.lazy(() => import('@/pages/Setting/Application')),
+        component: React.lazy(() => import('@/pages/Setting/App')),
       },
       {
         path: '/setting/flow',

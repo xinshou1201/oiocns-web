@@ -30,7 +30,7 @@ const SettingMenu = () => {
     { label: '单位首页', key: 'homeset', icon: <HomeOutlined /> },
     { label: '数据设置', key: 'data', icon: <SettingOutlined /> },
     { label: '资源设置', key: 'src', icon: <SettingOutlined /> },
-    { label: '应用设置', key: 'application', icon: <SettingOutlined /> },
+    { label: '应用设置', key: 'app', icon: <SettingOutlined /> },
     { label: '流程设置', key: 'flow', icon: <SettingOutlined /> },
     { label: '标准设置', key: 'standard', icon: <SettingOutlined /> },
     { label: '权限设置', key: 'auth', icon: <SettingOutlined /> },
