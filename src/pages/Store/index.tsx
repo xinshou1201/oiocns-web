@@ -1,29 +1,18 @@
-import { Layout } from 'antd';
 import React from 'react';
+import { renderRoutes } from 'react-router-config';
 
-import StoreApp from './App';
+import BreadCrumb from '@/components/BreadCrumb';
+import ContentTemplate from '@/components/ContentTemplate';
+import { IRouteConfig } from '@/routes/config';
+
 import StoreClassify from './Classify';
-import StoreHeader from './Header';
-import StoreRecent from './Recent';
 
-const { Header, Sider, Content } = Layout;
-
-const Store: React.FC = () => {
+const Store: React.FC<{ route: IRouteConfig }> = ({ route }) => {
+  const sider = <StoreClassify></StoreClassify>;
+  const contentTopLeft = <BreadCrumb></BreadCrumb>;
+  const content = <div>{renderRoutes(route.routes)}</div>;
   return (
-    <Layout>
-      <Sider width={250}>
-        <StoreClassify></StoreClassify>
-      </Sider>
-      <Layout>
-        <Header>
-          <StoreHeader></StoreHeader>
-        </Header>
-        <Content>
-          <StoreRecent></StoreRecent>
-          <StoreApp></StoreApp>
-        </Content>
-      </Layout>
-    </Layout>
+    <ContentTemplate sider={sider} contentTopLeft={contentTopLeft} content={content} />
   );
 };
 

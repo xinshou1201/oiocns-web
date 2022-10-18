@@ -5,8 +5,8 @@ import React from 'react';
  * 应用设置
  * @returns
  */
-const SettingApplication = () => {
+const SettingApp = () => {
   return <Card>应用设置</Card>;
 };
 
-export default SettingApplication;
+export default SettingApp;

@@ -29,12 +29,12 @@ const HeaderNav: React.FC<RouteComponentProps> = () => {
       icon: 'icon-guangshangcheng',
     },
     {
-      path: '/store',
+      path: '/store/app',
       title: '仓库',
       icon: 'icon-store',
     },
     {
-      path: '/setting',
+      path: '/setting/info',
       title: '设置',
       icon: 'icon-setting',
     },

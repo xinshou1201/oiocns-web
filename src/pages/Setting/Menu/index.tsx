@@ -1,9 +1,12 @@
 import {
-  DatabaseOutlined,
-  FileTextOutlined,
+  ApartmentOutlined,
+  AppstoreOutlined,
+  ForkOutlined,
   FundOutlined,
   HomeOutlined,
+  InfoCircleOutlined,
   SettingOutlined,
+  SmileOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
 import React from 'react';
@@ -20,18 +23,18 @@ const SettingMenu = () => {
 
   /* 信息中心菜单 */
   const infoMenuItems = [
-    { label: '单位信息', key: 'info', icon: <HomeOutlined /> },
-    { label: '部门设置', key: 'dept', icon: <FileTextOutlined /> },
+    { label: '单位信息', key: 'info', icon: <InfoCircleOutlined /> },
+    { label: '部门设置', key: 'dept', icon: <ApartmentOutlined /> },
     { label: '集团设置', key: 'group', icon: <FundOutlined /> },
-    { label: '帮助中心', key: 'help', icon: <DatabaseOutlined /> },
+    { label: '帮助中心', key: 'help', icon: <SmileOutlined /> },
   ];
   /* 自定义设置菜单 */
   const configMenuItems = [
     { label: '单位首页', key: 'homeset', icon: <HomeOutlined /> },
     { label: '数据设置', key: 'data', icon: <SettingOutlined /> },
     { label: '资源设置', key: 'src', icon: <SettingOutlined /> },
-    { label: '应用设置', key: 'application', icon: <SettingOutlined /> },
-    { label: '流程设置', key: 'flow', icon: <SettingOutlined /> },
+    { label: '应用设置', key: 'app', icon: <AppstoreOutlined /> },
+    { label: '流程设置', key: 'flow', icon: <ForkOutlined /> },
     { label: '标准设置', key: 'standard', icon: <SettingOutlined /> },
     { label: '权限设置', key: 'auth', icon: <SettingOutlined /> },
   ];
