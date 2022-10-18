@@ -9,7 +9,6 @@ type PageMemuProps = {
 const menuTestDate = [
   {
     name: '办事',
-
     children: [
       { name: '好友申请', path: '1' },
       { name: '单位审核', path: '2' },
