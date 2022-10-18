@@ -28,7 +28,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   }, []);
 
   return (
-    <Layout>
+    <Layout style={{ height: '100%' }}>
       {/* 公共头部 */}
       <BasicHeader />
       {/* 内容区域 */}

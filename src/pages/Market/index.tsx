@@ -1,29 +1,30 @@
 import './index.less';
 
-import { Layout } from 'antd';
 import React from 'react';
 import { renderRoutes } from 'react-router-config';
 
+import BreadCrumb from '@/components/BreadCrumb';
+import ContentTemplate from '@/components/ContentTemplate';
+import { IRouteConfig } from '@/routes/config';
+
 import MarketClassify from './Classify';
-import MarketHeader from './Header';
 
-const { Header, Sider, Content } = Layout;
+interface PageType {
+  route: IRouteConfig;
+  history: any;
+}
 
-const Market: React.FC<any> = (props) => {
-  const { route, history } = props;
-
+/**
+ * @desc: 市场 容器页面
+ * @return {*}
+ */
+const Market: React.FC<PageType> = ({ route, history }) => {
   return (
-    <Layout className="market-wrap">
-      <Sider width={250}>
-        <MarketClassify history={history}></MarketClassify>
-      </Sider>
-      <Layout>
-        <Header>
-          <MarketHeader></MarketHeader>
-        </Header>
-        <Content>{renderRoutes(route.routes)}</Content>
-      </Layout>
-    </Layout>
+    <ContentTemplate
+      sider={<MarketClassify history={history} />}
+      contentTopLeft={<BreadCrumb />}
+      content={<>{renderRoutes(route.routes)}</>}
+    />
   );
 };
 

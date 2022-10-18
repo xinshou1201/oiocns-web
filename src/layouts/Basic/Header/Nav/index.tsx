@@ -23,11 +23,11 @@ const HeaderNav: React.FC<RouteComponentProps> = () => {
       title: '待办',
       icon: 'icon-todo',
     },
-    // {
-    //   path: '/market/app',
-    //   title: '市场',
-    //   icon: 'icon-store',
-    // },
+    {
+      path: '/market/app',
+      title: '市场',
+      icon: 'icon-guangshangcheng',
+    },
     {
       path: '/store',
       title: '仓库',
@@ -49,17 +49,11 @@ const HeaderNav: React.FC<RouteComponentProps> = () => {
               to={item.path}
               title={item.title}
               className={`${
-                location.pathname.includes(item.path) ? `${cls['active-icon']}` : `${cls['un-active-icon']}`
-              }`}
-              >
-              {typeof item.icon !== 'string' ? (
-                item.icon
-              ) : (
-                <IconFont
-                  type={item.icon}
-
-                />
-              )}
+                location.pathname.includes(item.path)
+                  ? `${cls['active-icon']}`
+                  : `${cls['un-active-icon']}`
+              }`}>
+              {typeof item.icon !== 'string' ? item.icon : <IconFont type={item.icon} />}
             </Link>
           );
         })}
