@@ -1,6 +1,6 @@
 import {
+  ApartmentOutlined,
   DatabaseOutlined,
-  FileTextOutlined,
   FundOutlined,
   HomeOutlined,
   SettingOutlined,
@@ -21,7 +21,7 @@ const SettingMenu = () => {
   /* 信息中心菜单 */
   const infoMenuItems = [
     { label: '单位信息', key: 'info', icon: <HomeOutlined /> },
-    { label: '部门设置', key: 'dept', icon: <FileTextOutlined /> },
+    { label: '部门设置', key: 'dept', icon: <ApartmentOutlined /> },
     { label: '集团设置', key: 'group', icon: <FundOutlined /> },
     { label: '帮助中心', key: 'help', icon: <DatabaseOutlined /> },
   ];

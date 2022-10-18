@@ -1,8 +1,17 @@
 import {
   DatabaseOutlined,
-  FileTextOutlined,
-  FundOutlined,
+  GiftOutlined,
+  GlobalOutlined,
   HomeOutlined,
+  IdcardOutlined,
+  InfoCircleOutlined,
+  MessageOutlined,
+  SafetyOutlined,
+  SmileOutlined,
+  TeamOutlined,
+  UserOutlined,
+  VerifiedOutlined,
+  WalletOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
 import React from 'react';
@@ -19,22 +28,22 @@ const PersonMenu = () => {
 
   /* 信息中心菜单 */
   const infoMenuItems = [
-    { label: '个人信息', key: 'info', icon: <HomeOutlined /> },
-    { label: '通行设置', key: 'passport', icon: <FileTextOutlined /> },
-    { label: '好友设置', key: 'friend', icon: <FundOutlined /> },
-    { label: '群组设置', key: 'cohort', icon: <DatabaseOutlined /> },
-    { label: '卡包设置', key: 'wallet', icon: <FundOutlined /> },
-    { label: '首页设置', key: 'homeset', icon: <DatabaseOutlined /> },
-    { label: '帮助中心', key: 'help', icon: <DatabaseOutlined /> },
+    { label: '个人信息', key: 'info', icon: <InfoCircleOutlined /> },
+    { label: '通行设置', key: 'passport', icon: <IdcardOutlined /> },
+    { label: '好友设置', key: 'friend', icon: <UserOutlined /> },
+    { label: '群组设置', key: 'cohort', icon: <TeamOutlined /> },
+    { label: '卡包设置', key: 'wallet', icon: <WalletOutlined /> },
+    { label: '首页设置', key: 'homeset', icon: <HomeOutlined /> },
+    { label: '帮助中心', key: 'help', icon: <SmileOutlined /> },
   ];
   /* 自定义设置菜单 */
   const customMenuItems = [
     { label: '地址管理', key: 'address', icon: <HomeOutlined /> },
-    { label: '证书管理', key: 'certificate', icon: <FileTextOutlined /> },
-    { label: '安全管理', key: 'safe', icon: <FundOutlined /> },
-    { label: '消息设置', key: 'message', icon: <DatabaseOutlined /> },
-    { label: '主题设置', key: 'theme', icon: <DatabaseOutlined /> },
-    { label: '语言设置', key: 'lang', icon: <DatabaseOutlined /> },
+    { label: '证书管理', key: 'certificate', icon: <VerifiedOutlined /> },
+    { label: '安全管理', key: 'safe', icon: <SafetyOutlined /> },
+    { label: '消息设置', key: 'message', icon: <MessageOutlined /> },
+    { label: '主题设置', key: 'theme', icon: <GiftOutlined /> },
+    { label: '语言设置', key: 'lang', icon: <GlobalOutlined /> },
     { label: '标准设置', key: 'standard', icon: <DatabaseOutlined /> },
   ];
 

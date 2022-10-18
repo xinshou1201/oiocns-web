@@ -3,6 +3,7 @@ import {
   FileTextOutlined,
   FundOutlined,
   HomeOutlined,
+  UserOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
 import React from 'react';
@@ -19,7 +20,7 @@ const TodoMenu = () => {
 
   /* 待办页面菜单 */
   const items = [
-    { label: '好友申请', key: 'friend', icon: <HomeOutlined /> },
+    { label: '好友申请', key: 'friend', icon: <UserOutlined /> },
     { label: '单位审核', key: 'org', icon: <FileTextOutlined /> },
     { label: '商店审核', key: 'store', icon: <FundOutlined /> },
     { label: '订单审核', key: 'order', icon: <DatabaseOutlined /> },
