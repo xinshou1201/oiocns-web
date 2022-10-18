@@ -4,7 +4,7 @@ import React from 'react';
 // import useStore from '@/store';
 import styles from './index.module.less';
 import OrganizationalUnits from '@/components/OgnazitionUnit';
-import RightContent from './RightContent';
+import RightContent from './NavContent';
 
 const { Header } = Layout;
 

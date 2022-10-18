@@ -71,7 +71,7 @@ const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ history }) => {
       type: 'divider' as const,
     },
     {
-      key: '/passport/login',
+      key: 'logout',
       icon: <LogoutOutlined />,
       label: '退出登录',
     },

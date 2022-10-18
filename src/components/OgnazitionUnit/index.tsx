@@ -46,11 +46,12 @@ const OrganizationalUnits: React.FC<OrganizationalUnitsProps> = () => {
       setUser(data);
       sessionStorage.setItem('TOKEN', data.accessToken);
       await getUserInfo(); // 获取新的用户信息
-      setCurrent({
-        name: item?.name,
-        id: item?.id,
-      });
-      setShowMenu(false);
+      location.href = '/';
+      // setCurrent({
+      //   name: item?.name,
+      //   id: item?.id,
+      // });
+      // setShowMenu(false);
     }
   };
   useEffect(() => {

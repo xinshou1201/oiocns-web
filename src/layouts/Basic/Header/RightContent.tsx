@@ -1,13 +1,30 @@
 import React from 'react';
 import { Space } from 'antd';
 import { Link, RouteComponentProps, withRouter } from 'react-router-dom';
-
 import { IconFont } from '@/components/IconFont';
 import { IRouteConfig } from '@/routes/config';
 
 import Avatar from './AvatarDropdown';
 import styles from './index.module.less';
 
+// 创建icon图标元素
+const iconToElement = (name: string) =>
+  React.createElement(Icon && (Icon as any)[name], {
+    style: { fontSize: '16px' },
+  });
+/*
+  渲染图标
+*/
+const iconRender = ({ icon, name }: { icon: string; name: string }) => {
+  if (!name) {
+    return name;
+  }
+  return name.indexOf('icon-') > -1 ? (
+    <IconFont type={icon} className={`${styles[`action-icon`]}`} />
+  ) : (
+    iconToElement(icon)
+  );
+};
 const GlobalHeaderRight: React.FC<RouteComponentProps> = (props) => {
   const routes = [
     {
@@ -48,11 +65,7 @@ const GlobalHeaderRight: React.FC<RouteComponentProps> = (props) => {
                   item.path.match(location.pathname) ? `${styles.active}` : ''
                 }`}
                 key={item.path}>
-                {item?.icon ? (
-                  <IconFont type={item?.icon} className={`${styles[`action-icon`]}`} />
-                ) : (
-                  item?.title
-                )}
+                {iconRender(item)}
               </Link>
             );
           })
