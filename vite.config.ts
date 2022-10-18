@@ -40,7 +40,7 @@ export default ({ command, mode }: ConfigEnv): UserConfig => {
     },
     server: {
       // 是否主动唤醒浏览器
-      open: true,
+      open: false,
       // 占用端口 开发环境启动的端口
       port: PORT,
       // 是否使用https请求

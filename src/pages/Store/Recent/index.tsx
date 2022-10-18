@@ -1,4 +1,8 @@
-import { EllipsisOutlined } from '@ant-design/icons';
+import {
+  EllipsisOutlined,
+  SettingOutlined,
+  UnorderedListOutlined,
+} from '@ant-design/icons';
 import { CheckCard } from '@ant-design/pro-components';
 import { Dropdown, Menu, message } from 'antd';
 import React from 'react';
@@ -67,9 +71,10 @@ const StoreRecent = () => {
             avatar={item.avatar}
             title={item.title}
             description={item.description}
+            style={{ width: 260, height: 140 }}
             extra={
               <Dropdown
-                placement="topCenter"
+                placement="bottomRight"
                 overlay={
                   <Menu
                     onClick={({ domEvent }) => {
@@ -78,16 +83,14 @@ const StoreRecent = () => {
                     }}
                     items={[
                       {
-                        label: '菜单',
+                        label: '详情',
                         key: '1',
+                        icon: <UnorderedListOutlined />,
                       },
                       {
-                        label: '列表',
+                        label: '管理',
                         key: '2',
-                      },
-                      {
-                        label: '表单',
-                        key: '3',
+                        icon: <SettingOutlined />,
                       },
                     ]}
                   />

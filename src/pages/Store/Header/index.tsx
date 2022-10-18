@@ -1,7 +1,12 @@
 import React from 'react';
+import BreadCrumb from '@/components/BreadCrumb';
 
 const StoreHeader = () => {
-  return <div>仓库/应用</div>;
+  return (
+    <div>
+      <BreadCrumb></BreadCrumb>
+    </div>
+  );
 };
 
 export default StoreHeader;

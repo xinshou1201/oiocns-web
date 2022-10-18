@@ -1,8 +1,8 @@
 import {
-  AppstoreFilled,
-  DatabaseFilled,
-  FileTextFilled,
-  FundFilled,
+  AppstoreOutlined,
+  DatabaseOutlined,
+  FileTextOutlined,
+  FundOutlined,
   HomeOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
@@ -13,10 +13,10 @@ import StoreClassifyTree from './Tree';
 
 const StoreClassify = () => {
   const items = [
-    { label: '应用', key: 'app', icon: <AppstoreFilled /> }, // 菜单项务必填写 key
-    { label: '文档', key: 'doc', icon: <FileTextFilled /> },
-    { label: '数据', key: 'data', icon: <FundFilled /> },
-    { label: '资源', key: 'src', icon: <DatabaseFilled /> },
+    { label: '应用', key: 'app', icon: <AppstoreOutlined /> }, // 菜单项务必填写 key
+    { label: '文档', key: 'doc', icon: <FileTextOutlined /> },
+    { label: '数据', key: 'data', icon: <FundOutlined /> },
+    { label: '资源', key: 'src', icon: <DatabaseOutlined /> },
   ];
   return (
     <div className={cls.container}>

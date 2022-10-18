@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { Avatar, Button, Col, Divider, Row, Skeleton, Space, Typography } from 'antd';
-import styles from './index.module.less';
 import { CaretDownOutlined } from '@ant-design/icons';
-import useStore from '@/store';
+import { Avatar, Button, Col, Divider, Row, Skeleton, Space, Typography } from 'antd';
+import React, { useEffect, useState } from 'react';
+
 import CompanyServices from '@/module/company';
 import PersonServices from '@/module/person';
+import useStore from '@/store';
 import { SpaceType } from '@/store/type';
+
+import styles from './index.module.less';
 type OrganizationalUnitsProps = {};
 
 // 菜单列表项

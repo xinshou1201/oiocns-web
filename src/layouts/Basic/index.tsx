@@ -1,10 +1,13 @@
+import './index.less';
+
 import { Layout } from 'antd';
 import React, { useEffect } from 'react';
 import { renderRoutes } from 'react-router-config';
+
 import { IRouteConfig } from '@/routes/config';
 import useStore from '@/store';
-import CustomHeader from './Header';
-import './index.less';
+
+import BasicHeader from './Header';
 
 type BasicLayoutProps = {
   route: IRouteConfig;
@@ -25,19 +28,12 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   }, []);
 
   return (
-    <Layout className="page-layout">
+    <Layout>
       {/* 公共头部 */}
-      {/* <layoutRoutes.Provider value={route?.routes}> */}
-      <CustomHeader />
-      {/* </layoutRoutes.Provider> */}
+      <BasicHeader />
       {/* 内容区域 */}
       <Layout>
-        <Content className="page-content">{renderRoutes(route.routes)}</Content>
-        {/* <CustomMenu />
-        <Layout className="page-container">
-          <ContentBreadcrumb></ContentBreadcrumb>
-          <Content className="page-content">{renderRoutes(route.routes)}</Content>
-        </Layout> */}
+        <Content>{renderRoutes(route.routes)}</Content>
       </Layout>
     </Layout>
   );
