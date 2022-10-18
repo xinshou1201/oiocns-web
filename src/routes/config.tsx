@@ -1,8 +1,10 @@
 import {
   ApartmentOutlined,
   AppstoreOutlined,
+  AuditOutlined,
   DatabaseOutlined,
   FileTextOutlined,
+  ForkOutlined,
   FundOutlined,
   GiftOutlined,
   GlobalOutlined,
@@ -13,8 +15,10 @@ import {
   MessageOutlined,
   SafetyOutlined,
   SettingOutlined,
+  ShopOutlined,
   SmileOutlined,
   TeamOutlined,
+  UnorderedListOutlined,
   UserOutlined,
   VerifiedOutlined,
   WalletOutlined,
@@ -104,25 +108,25 @@ const TodoRouter: IRouteConfig[] = [
       {
         path: '/todo/friend',
         title: '好友申请',
-        icon: <TeamOutlined />,
+        icon: <UserOutlined />,
         component: React.lazy(() => import('@/pages/Todo/Friend')),
       },
       {
         path: '/todo/org',
         title: '单位审核',
-        icon: 'icon-message',
+        icon: <AuditOutlined />,
         component: React.lazy(() => import('@/pages/Todo/Org')),
       },
       {
         path: '/todo/store',
         title: '商店审核',
-        icon: 'icon-message',
+        icon: <ShopOutlined />,
         component: React.lazy(() => import('@/pages/Todo/Store')),
       },
       {
         path: '/todo/order',
         title: '订单审核',
-        icon: 'icon-message',
+        icon: <UnorderedListOutlined />,
         component: React.lazy(() => import('@/pages/Todo/Order')),
       },
     ],
@@ -200,7 +204,7 @@ const SettingRouter: IRouteConfig[] = [
       {
         path: '/setting/info',
         title: '单位信息',
-        icon: 'icon-setting',
+        icon: <InfoCircleOutlined />,
         component: React.lazy(() => import('@/pages/Setting/Info')),
       },
       {
@@ -218,7 +222,7 @@ const SettingRouter: IRouteConfig[] = [
       {
         path: '/setting/help',
         title: '帮助中心',
-        icon: 'icon-setting',
+        icon: <SmileOutlined />,
         component: React.lazy(() => import('@/pages/Setting/Help')),
       },
       {
@@ -243,13 +247,13 @@ const SettingRouter: IRouteConfig[] = [
       {
         path: '/setting/app',
         title: '应用设置',
-        icon: <SafetyOutlined />,
+        icon: <AppstoreOutlined />,
         component: React.lazy(() => import('@/pages/Setting/App')),
       },
       {
         path: '/setting/flow',
         title: '流程设置',
-        icon: <MessageOutlined />,
+        icon: <ForkOutlined />,
         component: React.lazy(() => import('@/pages/Setting/Flow')),
       },
       {

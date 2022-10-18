@@ -11,7 +11,7 @@ import logo from '@/assets/img/logo.png';
 const HeaderHome: React.FC = () => {
   return (
     <Link to="/home">
-      <Avatar shape="square" src={logo} alt="首页" size={25} />
+      <Avatar shape="square" src={logo} alt="首页" size={22} />
     </Link>
   );
 };

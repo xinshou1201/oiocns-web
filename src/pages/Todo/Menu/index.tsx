@@ -1,8 +1,11 @@
 import {
+  AuditOutlined,
   DatabaseOutlined,
   FileTextOutlined,
   FundOutlined,
   HomeOutlined,
+  ShopOutlined,
+  UnorderedListOutlined,
   UserOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
@@ -21,9 +24,9 @@ const TodoMenu = () => {
   /* 待办页面菜单 */
   const items = [
     { label: '好友申请', key: 'friend', icon: <UserOutlined /> },
-    { label: '单位审核', key: 'org', icon: <FileTextOutlined /> },
-    { label: '商店审核', key: 'store', icon: <FundOutlined /> },
-    { label: '订单审核', key: 'order', icon: <DatabaseOutlined /> },
+    { label: '单位审核', key: 'org', icon: <AuditOutlined /> },
+    { label: '商店审核', key: 'store', icon: <ShopOutlined /> },
+    { label: '订单审核', key: 'order', icon: <UnorderedListOutlined /> },
   ];
 
   /* 应用待办 */
