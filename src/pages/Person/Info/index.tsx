@@ -10,7 +10,7 @@ import cls from './index.module.less';
  * 个人信息
  * @returns
  */
-const PersonInfo = () => {
+const PersonInfo: React.FC = () => {
   // 信息标题
   const title = (
     <div className={cls['person-info-title']}>
@@ -39,6 +39,7 @@ const PersonInfo = () => {
       </Card>
     </div>
   );
+  // TODO 1、个人空间显示加入的公司；2、单位空间显示所在的部门、工作组、岗位
   return (
     <div>
       {content}

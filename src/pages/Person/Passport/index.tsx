@@ -5,7 +5,7 @@ import React from 'react';
  * 通行设置
  * @returns
  */
-const PersonPassport = () => {
+const PersonPassport: React.FC = () => {
   return <Card>通行设置</Card>;
 };
 

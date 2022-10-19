@@ -4,7 +4,7 @@ import React from 'react';
  * 证书管理
  * @returns
  */
-const PersonCertificate = () => {
+const PersonCertificate: React.FC = () => {
   return <h2>证书管理</h2>;
 };
 

@@ -5,7 +5,7 @@ import React from 'react';
  * 流程设置
  * @returns
  */
-const SettingFlow = () => {
+const SettingFlow: React.FC = () => {
   return <Card>流程设置</Card>;
 };
 

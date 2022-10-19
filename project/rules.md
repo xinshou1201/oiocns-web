@@ -1,9 +1,20 @@
 # 文件创建规范
 
-1、模块及组件的文件夹 首字母必须大写
-2、模块名称下创建 components 存放子组件 子组件需用文件夹包裹
-3、src/module 文件夹存放各组件业务 名称规定为 模块.services.ts
-4、公共组件 放入 src/components 下,文件夹 首字母必须大写
+1、React模块及组件的文件夹 首字母必须大写
+2、React模块名称下创建 components 存放子组件 子组件需用文件夹包裹
+3、src/module 模块文件夹存放各业务代码，命名规则为：业务名.service.ts; service类处理好相关的业务，返回给UI层的数据是已处理好的数据
+示例如下:
+└── anydata  // 边缘数据
+├── appstore // 应用市场
+├── chat     // 即时通讯(沟通聊天)
+├── org      // 组织(关系)
+   ├──index.d.ts            // 组织业务类定义
+   ├──typings.d.ts          // 组织请求和响应定义
+   ├──cohort.service.ts     // 群组业务
+   ├──company.service.ts    // 单位(公司业务)
+   ├──person.service.ts     // 人员相关业务
+   ├──workflow.service.ts   // 工作流相关业务
+4、公共组件(不包含具体业务) 放入 src/components 下,文件夹 首字母必须大写
 5、
 案例如下:
 └── src //源码目录

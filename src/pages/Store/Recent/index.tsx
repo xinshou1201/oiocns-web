@@ -60,7 +60,7 @@ const items = [
   },
 ];
 
-const StoreRecent = () => {
+const StoreRecent: React.FC = () => {
   return (
     <div className={cls.cardContainer}>
       {items.map((item) => {

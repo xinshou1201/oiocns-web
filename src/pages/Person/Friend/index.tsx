@@ -5,7 +5,7 @@ import React from 'react';
  * 好友设置
  * @returns
  */
-const PersonFriend = () => {
+const PersonFriend: React.FC = () => {
   return <Card>好友设置</Card>;
 };
 
