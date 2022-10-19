@@ -5,7 +5,7 @@ import React from 'react';
  * 卡包设置
  * @returns
  */
-const PersonWallet = () => {
+const PersonWallet: React.FC = () => {
   return <Card>卡包设置</Card>;
 };
 

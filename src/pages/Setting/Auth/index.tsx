@@ -5,7 +5,7 @@ import React from 'react';
  * 权限设置
  * @returns
  */
-const SettingAuth = () => {
+const SettingAuth: React.FC = () => {
   return <Card>权限设置</Card>;
 };
 

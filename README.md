@@ -7,7 +7,7 @@
 ## git 提交跳过检查 --no-verify
 
 ### 项目目录
-
+```
 ├── .husky // husky git hooks 配置目录
 ├── \_ // husky 脚本生成的目录文件
 ├── commit-msg // commit-msg 钩子，用于验证 message 格式
@@ -50,3 +50,4 @@
 ├── README.md // README
 ├── tsconfig.json // typescript 配置文件
 └── vite.config.ts // vite
+```

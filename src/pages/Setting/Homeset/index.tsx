@@ -5,7 +5,7 @@ import React from 'react';
  * 单位首页
  * @returns
  */
-const SettingHomeset = () => {
+const SettingHomeset: React.FC = () => {
   return <Card>单位首页</Card>;
 };
 

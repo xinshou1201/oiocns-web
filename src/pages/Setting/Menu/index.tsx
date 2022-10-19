@@ -18,7 +18,7 @@ import cls from './index.module.less';
  * 单位设置页面菜单
  * @returns
  */
-const SettingMenu = () => {
+const SettingMenu: React.FC = () => {
   const history = useHistory();
 
   /* 信息中心菜单 */

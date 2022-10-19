@@ -18,7 +18,7 @@ import cls from './index.module.less';
  * 待办页面菜单
  * @returns
  */
-const TodoMenu = () => {
+const TodoMenu: React.FC = () => {
   const history = useHistory();
 
   /* 待办页面菜单 */

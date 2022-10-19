@@ -1,11 +1,26 @@
 # 文件创建规范
 
-1、模块及组件的文件夹 首字母必须大写
-2、模块名称下创建 components 存放子组件 子组件需用文件夹包裹
-3、src/module 文件夹存放各组件业务 名称规定为 模块.services.ts
-4、公共组件 放入 src/components 下,文件夹 首字母必须大写
-5、
+1. 模块及组件的文件夹 首字母必须大写
+2. 模块名称下创建 components 存放子组件 子组件需用文件夹包裹
+3、src/module 模块文件夹存放各业务代码，命名规则为：业务名.service.ts; service类处理好相关的业务，返回给UI层的数据是已处理好的数据
+示例如下:
+```
+└── anydata  // 边缘数据
+├── appstore // 应用市场
+├── chat     // 即时通讯(沟通聊天)
+├── org      // 组织(关系)
+   ├──index.d.ts            // 组织业务类型定义
+   ├──typings.d.ts          // 组织请求和响应类型定义
+   ├──cohort.service.ts     // 群组业务
+   ├──company.service.ts    // 单位(公司业务)
+   ├──person.service.ts     // 人员相关业务
+   ├──workflow.service.ts   // 工作流相关业务
+```
+4. 公共组件(非业务) 放入 src/components 下,文件夹 首字母必须大写
+5.
+
 案例如下:
+```
 └── src //源码目录
 ├── Home //模块名称（首页）
 ├── components //子组件文件夹
@@ -20,9 +35,10 @@
 ├── index.less //模块样式
 ├── Chat //模块名称（消息）
 ......
+```
 
 ## git commit 规范
-
+```
 <类型>[可选的作用域]: <描述>
 
 主要 type
@@ -46,15 +62,18 @@ perf: 提高性能的改动
 ci: 与 CI（持续集成服务）有关的改动
 chore: 不修改 src 或者 test 的其余修改，例如构建过程或辅助工具的变动
 other: 其他修改
+```
 
 ## git 分支规范
 
-main 为主分支
-release 验证后的功能提交到此 由 main 分支 合并提交
-dev 开发分支 只允许的开发分支合并到 dev 由个人分支 合并提交 验证后提交至 main
+- main 为主分支
+- release 验证后的功能提交到此 由 main 分支 合并提交
+- dev 开发分支 只允许的开发分支合并到 dev 由个人分支 合并提交 验证后提交至 main
 
+```
 个人分支规则
 personal/个人分支名称
+```
 
 ## CSS 使用规范
 

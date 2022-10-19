@@ -5,7 +5,7 @@ import React from 'react';
  * 集团设置
  * @returns
  */
-const SettingGroup = () => {
+const SettingGroup: React.FC = () => {
   return <Card>部门设置</Card>;
 };
 
