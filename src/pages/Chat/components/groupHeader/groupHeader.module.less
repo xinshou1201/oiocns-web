@@ -16,8 +16,31 @@
   }
 }
 
+.flex {
+  display: flex;
+}
+
 .user {
   align-items: center;
+  .user_info {
+  }
+  .user_info_top {
+    align-items: center;
+  }
+  .user_info_top_name {
+    font-size: 16px;
+    font-weight: 600;
+    margin-right: 10px;
+    :global {
+      .ogo-breadcrumb {
+        .ogo-breadcrumb-link {
+          color: #666;
+          font-size: 14px;
+          font-weight: normal;
+        }
+      }
+    }
+  }
 
   &-info {
     &-top {

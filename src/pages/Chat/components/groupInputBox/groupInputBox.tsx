@@ -4,9 +4,9 @@ import React, { useEffect, useState } from 'react';
 
 import { chat } from '@/module/chat/orgchat';
 
-import inputbox from './groupInputBox.module.less';
+import inputboxStyle from './groupinputbox.module.less';
 
-const GroupInputBox = () => {
+const Groupinputbox = () => {
   const [imgUrls, setImgUrls] = useState<Array<string>>([]);
   // 提交聊天内容
   const submit = async () => {
@@ -18,8 +18,8 @@ const GroupInputBox = () => {
     let massage = text.join('').trim();
     if (massage.length > 0) {
       await chat.sendMsg({
-        toId: chat.curChat.value.id,
-        spaceId: chat.curChat.value.spaceId,
+        toId: chat.curChat.id,
+        spaceId: chat.curChat.spaceId,
         msgType: 'text',
         msgBody: massage,
       });
@@ -50,7 +50,7 @@ const GroupInputBox = () => {
   const handleImgChoosed = (url: string) => {
     const img = document.createElement('img');
     img.src = url;
-    img.className = `${inputbox.emoji}`;
+    img.className = `${inputboxStyle.emoji}`;
     document.getElementById('insterHtml').append(img);
   };
   useEffect(() => {
@@ -95,45 +95,45 @@ const GroupInputBox = () => {
   };
   return (
     <div
-      className={inputbox.group_input_wrap}
+      className={inputboxStyle.group_input_wrap}
       onKeyUp={() => {
         submit();
       }}>
-      <div className={inputbox.icons_box}>
+      <div className={inputboxStyle.icons_box}>
         <div style={{ marginTop: '4px' }}>
           <Popover
             trigger="click"
             content={
-              <div className={inputbox.qqface_wrap}>
+              <div className={inputboxStyle.qqface_wrap}>
                 {imgUrls.map((index) => {
                   return (
                     <div
-                      className={inputbox.emoji_box}
+                      className={inputboxStyle.emoji_box}
                       key={index}
                       onClick={() => {
                         handleImgChoosed(index);
                       }}>
-                      <img className={inputbox.emoji} src={`${index}`} alt="" />
+                      <img className={inputboxStyle.emoji} src={`${index}`} alt="" />
                     </div>
                   );
                 })}
               </div>
             }>
-            <SmileOutlined className={inputbox.icons_oneself} />
+            <SmileOutlined className={inputboxStyle.icons_oneself} />
           </Popover>
         </div>
-        <AudioOutlined className={inputbox.icons_oneself} />
+        <AudioOutlined className={inputboxStyle.icons_oneself} />
       </div>
-      <div className={inputbox.input_content}>
+      <div className={inputboxStyle.input_content}>
         <div
           id="insterHtml"
-          className={inputbox.textarea}
+          className={inputboxStyle.textarea}
           contentEditable="true"
           spellCheck="false"
           //   ref="inputRef"
           placeholder="请输入内容"
           onKeyDown={keyDown}></div>
-        <div className={inputbox.send_box}>
+        <div className={inputboxStyle.send_box}>
           <Button
             type="primary"
             style={{ backgroundColor: '#21ba45', color: '#fff', border: 'none' }}
@@ -146,4 +146,4 @@ const GroupInputBox = () => {
   );
 };
 
-export default GroupInputBox;
+export default Groupinputbox;

@@ -4,6 +4,7 @@ import { Layout } from 'antd';
 import React, { createContext } from 'react';
 import { renderRoutes } from 'react-router-config';
 
+import { chat } from '@/module/chat/orgchat';
 import { IRouteConfig } from '@/routes/config';
 
 import ContentBreadcrumb from './ContentBreadcrumb';
@@ -18,12 +19,15 @@ export const layoutRoutes = createContext<IRouteConfig[] | undefined>(undefined)
 const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   // eslint-disable-next-line react/prop-types
   const { route, history } = props;
-  console.log('props', props);
 
   // const history = createBrowserHistory();
-  if (!localStorage.getItem('Token')) {
+  if (!sessionStorage.getItem('Token')) {
     history.push('/passport/login');
   }
+  const token = sessionStorage.getItem('Token') as string;
+
+  chat.start(token);
+
   return (
     <Layout className="page-layout">
       {/* 公共头部 */}

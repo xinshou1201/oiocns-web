@@ -1,19 +1,23 @@
+/* eslint-disable no-unused-vars */
 import { EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
-import { Tag } from 'antd';
+import { Breadcrumb } from 'antd';
 import React, { useState } from 'react';
 
+import HeadImg from '@/components/headImg/headImg';
 import { chat } from '@/module/chat/orgchat';
 
-import HeadImg from '../headImg/headImg';
-import header from './groupHeader.module.less';
+import headerStyle from './groupheader.module.less';
 
 interface Iprops {
   handleViewDetail: Function;
 }
 
-const GroupHeader = (props: Iprops) => {
+const Groupheader = (props: Iprops) => {
+  console.log('hahah', chat.chats);
+
   const { handleViewDetail } = props;
   const [label, setLabel] = useState<string>('');
+  const [group, setGroup] = useState<number>(1); // moke数据 1是个人 2是群组
   const handleAddFun = () => {
     // emit('addUserOrCohort')
     // console.log('测试', info.detail);
@@ -23,25 +27,33 @@ const GroupHeader = (props: Iprops) => {
     handleViewDetail();
   };
   return (
-    <div className={header.group_header_wrap}>
-      <ul className={`${header.user} flex`}>
-        <HeadImg name={chat.curChat?.value?.name} label={label} />
-        <div className="user-info">
-          <div className="user-info-top flex">
-            <p className="user-info-top-name">
-              {chat.curChat?.value?.name}
-              {chat.curChat?.value?.personNum > 0 ? (
-                <span> ({chat.curChat?.value?.personNum}人)</span>
+    <div className={headerStyle.group_header_wrap}>
+      <ul className={`${headerStyle.user} ${headerStyle.flex}`}>
+        <HeadImg name={chat.curChat?.name} label={label} />
+        <div className={headerStyle.user_info}>
+          <div className={`${headerStyle.flex} ${headerStyle.user_info_top}`}>
+            <div className={`${headerStyle.user_info_top_name}`}>
+              {chat.curChat?.name}
+              {/* {chat.curChat?.personNum > 0 ? (
+                <span> ({chat.curChat?.personNum})</span>
               ) : (
                 ''
+              )} */}
+              {group === 1 ? (
+                <Breadcrumb>
+                  <Breadcrumb.Item>杭州电子科技大学</Breadcrumb.Item>
+                  <Breadcrumb.Item>同事</Breadcrumb.Item>
+                </Breadcrumb>
+              ) : (
+                <span>(25)</span>
               )}
-            </p>
-            <Tag color="#3e5ed8">{chat.curChat?.value?.label}</Tag>
+            </div>
+            {/* <Tag color="#3e5ed8">{chat.curChat?.label}</Tag> */}
           </div>
         </div>
       </ul>
-      <span className={header.btn_box}>
-        {chat.curChat?.value?.typeName !== '人员' ? (
+      <span className={headerStyle.btn_box}>
+        {chat.curChat?.typeName !== '人员' ? (
           <PlusOutlined
             style={{ fontSize: '20px', marginRight: '8px' }}
             onClick={handleAddFun}
@@ -54,4 +66,4 @@ const GroupHeader = (props: Iprops) => {
     </div>
   );
 };
-export default GroupHeader;
+export default Groupheader;

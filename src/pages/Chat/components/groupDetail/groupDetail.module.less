@@ -2,10 +2,10 @@
   cursor: pointer;
   width: 50px;
   height: 50px;
-  background: var(--el-bg-color-overlay);
+  background: #fff;
   border-radius: 2px;
   color: rgba(0, 0, 0, 0.45);
-  border: 1px dashed var(--el-border-color);
+  border: 1px dashed #dcdfe6;
   font-size: 40px;
   display: flex;
   justify-content: center;
@@ -35,7 +35,7 @@
   height: 500px;
   overflow: auto;
 
-  &-flex {
+  &.flex {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -48,11 +48,11 @@
     }
   }
 
-  &-name {
+  &.name {
     margin-left: 20px;
   }
 
-  &-box {
+  &.box {
     height: 60px;
     display: flex;
     align-items: center;
@@ -61,7 +61,7 @@
     cursor: pointer;
   }
 
-  &-btn {
+  &.btn {
     width: 16px;
     height: 16px;
     background: #f3f4f9;
@@ -70,7 +70,7 @@
     justify-content: center;
     align-items: center;
 
-    &-in {
+    &.in {
       width: 6px;
       height: 6px;
       background: var(--el-bg-color-overlay);
@@ -91,10 +91,16 @@
   .title {
     font-size: 16px;
     font-weight: 600;
-    margin-bottom: 4px;
+    margin-bottom: 0px;
     margin-top: 0;
+    .number {
+      margin-left: 4px;
+    }
   }
-
+  .base_info_desc {
+    font-size: 12px;
+    color: #666;
+  }
   // 群基本信息
   .base {
     align-items: center;
@@ -131,7 +137,7 @@
   }
 
   .con {
-    padding: 10px 0 0 0;
+    padding: 6px 0 0 0;
   }
 
   // 群成员
@@ -164,21 +170,36 @@
     max-height: 50vh;
     overflow-y: auto;
 
-    &-con {
+    &.con {
       display: flex;
-      flex-direction: column;
+      // flex-direction: column;
       align-self: center;
       margin-right: 10px;
-      // margin-bottom: 10px;
       cursor: pointer;
       border-radius: 2px;
+      .show_persons {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .img_list_con_name {
+          display: inline-block;
+          width: 40px;
+        }
+      }
+      .img_list_con {
+        border: 1px solid rgba(0, 0, 0, 0.45);
+        width: 40px;
+        min-width: 40px;
+        height: 40px;
+        margin-right: 10px;
+      }
 
-      &-img {
+      &.img {
         width: 50px;
         height: 50px;
       }
 
-      &-name {
+      &.name {
         font-size: 10px;
         line-height: 20px;
         text-align: center;
@@ -189,17 +210,23 @@
       }
     }
 
-    &-more-btn {
+    &.more_btn {
       width: 100%;
-      text-align: center;
-      color: var(--el-color-primary);
+      color: #3e5ed8;
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      .more_btn_icon {
+        margin-left: 6px;
+      }
     }
   }
 
   .setting_con {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
 
     .con_label {
       font-weight: bold;
@@ -207,9 +234,15 @@
       min-width: 100px;
       // color: #333;
     }
+    .con_value {
+      font-size: 16px;
+      color: #999;
+    }
   }
 
   .check_con {
+    display: flex;
+    justify-content: space-between;
     .el_checkbox {
       height: 26px;
     }
@@ -222,11 +255,12 @@
     left: 0;
     right: 0;
     display: flex;
+    flex-direction: column;
     justify-content: center;
-  }
-
-  .border_b {
-    border-bottom: 1px solid var(--el-border-color); // #d6d6d6;
-    padding-bottom: 10px;
+    :global {
+      .ogo-btn-primary {
+        margin-bottom: 8px;
+      }
+    }
   }
 }

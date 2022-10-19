@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import * as signalR from '@microsoft/signalr';
 
 import AnyStore, { BadRequst } from '@/hubs/anystore';
@@ -6,17 +7,17 @@ import api from '@/services';
 import notify from '@/utils/notify';
 import { StringPako } from '@/utils/package';
 
-import { TargetType } from '../enums';
+// import { TargetType } from '../enums';
 
 /** 消息类型 */
-export enum MessageType {
-  Text = '文本',
-  Image = '图片',
-  Video = '视频',
-  Voice = '语音',
-  Recall = '撤回',
-  Readed = '已读',
-}
+// export enum MessageType {
+//   Text = '文本',
+//   Image = '图片',
+//   Video = '视频',
+//   Voice = '语音',
+//   Recall = '撤回',
+//   Readed = '已读',
+// }
 /** 存储消息数据集名称 */
 const hisMsgCollName = 'chat-message';
 /**
@@ -28,7 +29,7 @@ export default class OrgChat extends Object {
   private closed: boolean;
   private anyStore: AnyStore;
   public curMsgs: any[];
-  private accessToken: string;
+  private accessToken: string | undefined;
   public userId: string;
   public spaceId: string;
   public authed: boolean;
@@ -36,15 +37,15 @@ export default class OrgChat extends Object {
   public qunPersons: any[];
   public chats: ImMsgType[];
   private openChats: ImMsgChildType[];
-  public curChat: ImMsgChildType;
+  public curChat: ImMsgChildType | null;
   private messageCallback: (data: any) => void;
   private connection: signalR.HubConnection;
   private nameMap: Record<string, string>;
-  private static orgChat: OrgChat = null;
+  private static orgChat: OrgChat | null = null;
   /**
    * 私有构造方法，禁止外部实例化
    */
-  private constructor() {
+  constructor() {
     super();
     this.closed = false;
     this.stoped = false;
@@ -65,10 +66,11 @@ export default class OrgChat extends Object {
     this.connection.serverTimeoutInMilliseconds = 8000;
     this.connection.keepAliveIntervalInMilliseconds = 3000;
     this.connection.onclose(() => {
-      this.authed.value = false;
+      this.authed = false;
       this.reconnect('disconnected from orgchat, await 5s reconnect.');
     });
-    this.connection.on('RecvMsg', (data) => {
+    this.connection.on('RecvMsg', (data: any) => {
+      console.log('推送消息', data);
       this._recvMsg(data);
     });
     this.connection.on('ChatRefresh', async () => {
@@ -95,8 +97,8 @@ export default class OrgChat extends Object {
       await this.stop();
       let res = await api.person.tokenInfo({});
       if (res.success) {
-        this.userId.value = res.data.userId;
-        this.spaceId.value = res.data.spaceId;
+        this.userId = res.data.userId;
+        this.spaceId = res.data.spaceId;
       } else {
         // router.push('/login');
       }
@@ -114,9 +116,10 @@ export default class OrgChat extends Object {
         .then(() => {
           this.isconnecting = false;
           setTimeout(() => {
-            if (!this.authed.value) {
+            if (!this.authed) {
               this.anyStore.get('orgChat', 'user').then((res) => {
                 if (res.success) {
+                  console.log('info', res.data);
                   this._loadChats(res.data);
                 }
               });
@@ -124,7 +127,7 @@ export default class OrgChat extends Object {
           }, 500);
         })
         .catch(() => {
-          this.authed.value = false;
+          this.authed = false;
           this.isconnecting = false;
           this.reconnect('connecting to orgchat failed, await 5s reconnect.');
         });
@@ -137,7 +140,7 @@ export default class OrgChat extends Object {
     await this.setCurrent(null);
     this.stoped = true;
     this.accessToken = '';
-    this.authed.value = false;
+    this.authed = false;
     await this.connection.stop();
     await this.anyStore.stop();
   }
@@ -167,12 +170,12 @@ export default class OrgChat extends Object {
    * @returns {string} id对应的名称
    */
   public getName(id: string) {
-    let name = this.nameMap.value[id] || '';
-    if (name === '' && this.authed.value) {
-      this.connection.invoke('GetName', id).then((res) => {
+    let name = this.nameMap[id] || '';
+    if (name === '' && this.authed) {
+      this.connection.invoke('GetName', id).then((res: any) => {
         if (res.success) {
-          this.nameMap.value[id] = res.data;
-          if (this.chats.value.length > 0) {
+          this.nameMap[id] = res.data;
+          if (this.chats.length > 0) {
             this._cacheChats();
           }
         }
@@ -182,13 +185,13 @@ export default class OrgChat extends Object {
   }
   /** 获取未读消息数量 */
   public getNoReadCount() {
-    let sum: number = 0;
-    this.chats.value.forEach((item) => {
-      item.chats.forEach((chat) => {
-        sum += chat.noRead || 0;
-      });
-    });
-    return sum > 999 ? '999+' : sum > 0 ? sum.toString() : '';
+    // let sum: number = 0;
+    // this.chats.forEach((item) => {
+    //   item.chats.forEach((chat) => {
+    //     sum += chat.noRead || 0;
+    //   });
+    // });
+    // return sum > 999 ? '999+' : sum > 0 ? sum.toString() : '';
   }
   /**
    * 发送消息
@@ -196,7 +199,7 @@ export default class OrgChat extends Object {
    * @returns {ResultType} 发送结果
    */
   public async sendMsg(data: any) {
-    if (this.authed.value && data) {
+    if (this.authed && data) {
       data.msgBody = StringPako.deflate(data.msgBody);
       return await this.connection.invoke('SendMsg', data);
     }
@@ -208,7 +211,7 @@ export default class OrgChat extends Object {
    * @returns {ResultType} 撤回结果
    */
   public async recallMsg(msg: any) {
-    if (this.authed.value && msg) {
+    if (this.authed && msg) {
       return await this.connection.invoke('RecallMsg', msg);
     }
     return BadRequst;
@@ -230,8 +233,8 @@ export default class OrgChat extends Object {
         'user',
       )
       .then((res: ResultType) => {
-        if (res.data === 1 && this.curMsgs.value.length > 0) {
-          this.curMsgs.value = this.curMsgs.value.filter((item) => {
+        if (res.data === 1 && this.curMsgs.length > 0) {
+          this.curMsgs = this.curMsgs.filter((item) => {
             return item.chatId != msg.chatId;
           });
         }
@@ -241,18 +244,18 @@ export default class OrgChat extends Object {
    * 清空会话历史消息
    */
   public async clearMsg() {
-    if (this.curChat.value) {
+    if (this.curChat) {
       this.anyStore
         .remove(
           hisMsgCollName,
           {
-            sessionId: this.curChat.value.id,
+            sessionId: this.curChat.id,
           },
           'user',
         )
         .then((res: ResultType) => {
-          if (res.data > 0 && this.curMsgs.value.length > 0) {
-            this.curMsgs.value = [];
+          if (res.data > 0 && this.curMsgs.length > 0) {
+            this.curMsgs = [];
           }
         });
     }
@@ -261,26 +264,23 @@ export default class OrgChat extends Object {
    * 设置当前会话
    * @param {ImMsgChildType} chat 当前会话
    */
-  public async setCurrent(chat: ImMsgChildType) {
-    if (this.authed.value) {
-      if (this.curChat.value) {
+  public async setCurrent(chat: ImMsgChildType | null) {
+    if (this.authed) {
+      if (this.curChat) {
         this.openChats = this.openChats.filter((item) => {
-          return (
-            item.id !== this.curChat.value.id ||
-            item.spaceId !== this.curChat.value.spaceId
-          );
+          return item.id !== this.curChat.id || item.spaceId !== this.curChat.spaceId;
         });
       }
       if (chat && chat.id.length > 0) {
-        this.curMsgs.value = [];
-        this.qunPersons.value = [];
+        this.curMsgs = [];
+        this.qunPersons = [];
         chat.noRead = 0;
-        this.curChat.value = chat;
+        this.curChat = chat;
         await this.getHistoryMsg();
         if (chat.typeName !== TargetType.Person) {
           await this.getPersons(true);
         }
-        this.openChats.push(this.curChat.value);
+        this.openChats.push(this.curChat);
       }
       this._cacheChats();
     }
@@ -294,7 +294,7 @@ export default class OrgChat extends Object {
     this._handlerMsg({
       msgType: 'toping',
       msgBody: type,
-      fromId: this.userId.value,
+      fromId: this.userId,
       toId: needTopSession.id,
       spaceId: needTopSession.spaceId,
     });
@@ -305,27 +305,27 @@ export default class OrgChat extends Object {
    * @returns {ResponseType} 查询到的人员结果
    */
   public async getPersons(reset: boolean, filter?: string) {
-    if (this.authed.value && this.curChat.value) {
+    if (this.authed && this.curChat) {
       if (reset) {
-        this.qunPersons.value = [];
+        this.qunPersons = [];
       }
       let res = await this.connection.invoke('GetPersons', {
-        cohortId: this.curChat.value.id,
+        cohortId: this.curChat.id,
         limit: 20,
         filter: filter,
-        offset: this.qunPersons.value.length,
+        offset: this.qunPersons.length,
       });
       if (res.success) {
-        this.curChat.value.personNum = res.data.total;
+        this.curChat.personNum = res.data.total;
         if (res.data.result) {
           res.data.result.forEach((item: any) => {
             if (item.team) {
               item.name = item.team.name;
               let typeName =
                 item.typeName == TargetType.Person ? '' : `[${item.typeName}]`;
-              this.nameMap.value[item.id] = `${item.name}${typeName}`;
+              this.nameMap[item.id] = `${item.name}${typeName}`;
             }
-            this.qunPersons.value.push(item);
+            this.qunPersons.push(item);
           });
         }
       }
@@ -338,11 +338,11 @@ export default class OrgChat extends Object {
    * @returns 查询到的历史消息
    */
   public async getHistoryMsg() {
-    if (this.authed.value && this.curChat.value) {
-      if (this.curChat.value.spaceId === this.userId.value) {
-        let match: any = { sessionId: this.curChat.value.id };
-        if (this.curChat.value.typeName === TargetType.Person) {
-          match.spaceId = this.userId.value;
+    if (this.authed && this.curChat) {
+      if (this.curChat.spaceId === this.userId) {
+        let match: any = { sessionId: this.curChat.id };
+        if (this.curChat.typeName === TargetType.Person) {
+          match.spaceId = this.userId;
         }
         let res = await this.anyStore.aggregate(
           hisMsgCollName,
@@ -351,7 +351,7 @@ export default class OrgChat extends Object {
             sort: {
               createTime: -1,
             },
-            skip: this.curMsgs.value.length,
+            skip: this.curMsgs.length,
             limit: 30,
           },
           'user',
@@ -360,28 +360,28 @@ export default class OrgChat extends Object {
           res.data.forEach((item: any) => {
             item.id = item.chatId;
             item.msgBody = StringPako.inflate(item.msgBody);
-            this.curMsgs.value.unshift(item);
+            this.curMsgs.unshift(item);
           });
           return res.data.length;
         }
       } else {
         let funcName = 'QueryFriendMsg';
         let idName = 'friendId';
-        if (this.curChat.value.typeName != TargetType.Person) {
+        if (this.curChat.typeName != TargetType.Person) {
           funcName = 'QueryCohortMsg';
           idName = 'cohortId';
         }
         let res = await this.connection.invoke(funcName, {
           limit: 30,
-          [idName]: this.curChat.value.id,
-          offset: this.curMsgs.value.length,
-          spaceId: this.curChat.value.spaceId,
+          [idName]: this.curChat.id,
+          offset: this.curMsgs.length,
+          spaceId: this.curChat.spaceId,
         });
         if (res.success) {
           if (res.data.result) {
             res.data.result.forEach((item: any) => {
               item.msgBody = StringPako.inflate(item.msgBody);
-              this.curMsgs.value.unshift(item);
+              this.curMsgs.unshift(item);
             });
             return res.data.result.length;
           }
@@ -394,13 +394,13 @@ export default class OrgChat extends Object {
    * @returns {ResultType} 会话结果
    */
   public async getChats() {
-    if (this.authed.value) {
+    if (this.authed) {
       let res = await this.connection.invoke('GetChats');
       if (res.success && res.data.groups && res.data.groups.length > 0) {
         const { groups = [] } = res.data;
         groups.forEach((group: ImMsgType) => {
           group.chats = group.chats.map((chat: ImMsgChildType) => {
-            this.chats.value.forEach((g) => {
+            this.chats.forEach((g) => {
               g.chats.forEach((c) => {
                 let isMatch = c.id == chat.id;
                 if (chat.typeName == TargetType.Person && isMatch) {
@@ -413,7 +413,7 @@ export default class OrgChat extends Object {
               });
             });
             let typeName = chat.typeName == TargetType.Person ? '' : `[${chat.typeName}]`;
-            this.nameMap.value[chat.id] = `${chat.name}${typeName}`;
+            this.nameMap[chat.id] = `${chat.name}${typeName}`;
             chat.spaceId = group.id;
             return chat;
           });
@@ -422,7 +422,7 @@ export default class OrgChat extends Object {
             return new Date(b.msgTime).getTime() - new Date(a.msgTime).getTime();
           });
         });
-        this.chats.value = [...groups];
+        this.chats = [...groups];
         this._cacheChats();
       }
       return res;
@@ -438,7 +438,7 @@ export default class OrgChat extends Object {
     }
   }
   private _handlerMsg(data: any) {
-    if (this.chats.value.length < 1) {
+    if (this.chats.length < 1) {
       setTimeout(() => {
         this._handlerMsg(data);
       }, 1000);
@@ -446,11 +446,11 @@ export default class OrgChat extends Object {
     if (data.msgType === 'recall') {
       data = this._recallMsg(data);
     }
-    this.chats.value.forEach((item: ImMsgType) => {
+    this.chats.forEach((item: ImMsgType) => {
       let newChats: ImMsgChildType[] = [];
       item.chats.forEach((chat: ImMsgChildType) => {
         let sessionId = data.toId;
-        if (data.toId === this.userId.value) {
+        if (data.toId === this.userId) {
           sessionId = data.fromId;
         }
         let isMatch = sessionId == chat.id;
@@ -462,7 +462,7 @@ export default class OrgChat extends Object {
             chat.isTop = data.msgBody;
           } else {
             let msgBody = StringPako.inflate(data.msgBody);
-            if (chat.spaceId === this.userId.value) {
+            if (chat.spaceId === this.userId) {
               this._cacheMsg(sessionId, data);
             }
             chat.msgBody = data.msgBody;
@@ -474,16 +474,16 @@ export default class OrgChat extends Object {
               chat.showTxt = data.showTxt;
             }
             if (chat.typeName !== TargetType.Person) {
-              chat.showTxt = this.nameMap.value[data.fromId] + ': ' + chat.showTxt;
+              chat.showTxt = this.nameMap[data.fromId] + ': ' + chat.showTxt;
             }
             data.showTxt = chat.showTxt;
             if (
-              this.curChat.value &&
-              this.curChat.value.id === chat.id &&
-              this.curChat.value.spaceId === chat.spaceId
+              this.curChat &&
+              this.curChat.id === chat.id &&
+              this.curChat.spaceId === chat.spaceId
             ) {
               if (data.msgType !== 'recall') {
-                this.curMsgs.value.push({
+                this.curMsgs.push({
                   ...data,
                   msgBody: msgBody,
                 });
@@ -512,13 +512,13 @@ export default class OrgChat extends Object {
   }
   private async _recallMsg(data: any) {
     data.showTxt = '撤回了一条消息';
-    this.curMsgs.value.forEach((item: any) => {
+    this.curMsgs.forEach((item: any) => {
       if (item.id === data.id) {
         item.showTxt = data.showTxt;
         item.msgBody = data.msgBody;
         item.msgType = 'recall';
         item.createTime = data.createTime;
-        if (data.fromId === this.userId.value) {
+        if (data.fromId === this.userId) {
           item.allowEdit = true;
         } else {
           delete item.allowEdit;
@@ -530,41 +530,38 @@ export default class OrgChat extends Object {
   private async _loadChats(data: any) {
     if (!data) return;
     if (data.chats) {
-      this.chats.value = [];
+      this.chats = [];
       data.chats.forEach((item: ImMsgType) => {
-        if (item.id === this.spaceId.value) {
-          this.chats.value.unshift(item);
+        if (item.id === this.spaceId) {
+          this.chats.unshift(item);
         } else {
-          this.chats.value.push(item);
+          this.chats.push(item);
         }
       });
     }
-    this.nameMap.value = data.nameMap || this.nameMap.value;
+    this.nameMap = data.nameMap || this.nameMap;
     this.openChats = data.openChats || this.openChats;
     let lastMsg = data.lastMsg;
     if (
       lastMsg &&
       lastMsg.chat &&
       lastMsg.data &&
-      this.curChat.value &&
-      this.curChat.value.id === lastMsg.chat.id &&
-      this.curChat.value.spaceId === lastMsg.chat.spaceId
+      this.curChat &&
+      this.curChat.id === lastMsg.chat.id &&
+      this.curChat.spaceId === lastMsg.chat.spaceId
     ) {
       let exists =
-        this.curMsgs.value.filter((item: any) => {
+        this.curMsgs.filter((item: any) => {
           return item.id === lastMsg.data.id;
         }).length > 0;
       if (!exists) {
         lastMsg.data.msgBody = StringPako.inflate(lastMsg.data.msgBody);
-        this.curMsgs.value.push(lastMsg.data);
+        this.curMsgs.push(lastMsg.data);
       }
     }
-    if (
-      !this.authed.value &&
-      this.connection.state == signalR.HubConnectionState.Connected
-    ) {
+    if (!this.authed && this.connection.state == signalR.HubConnectionState.Connected) {
       this.connection.invoke('TokenAuth', this.accessToken).then(() => {
-        this.authed.value = true;
+        this.authed = true;
       });
     }
   }
@@ -575,8 +572,8 @@ export default class OrgChat extends Object {
         operation: 'replaceAll',
         data: {
           name: '我的消息',
-          chats: this.chats.value,
-          nameMap: this.nameMap.value,
+          chats: this.chats,
+          nameMap: this.nameMap,
           openChats: this.openChats,
           lastMsg: this.lastMsg,
         },

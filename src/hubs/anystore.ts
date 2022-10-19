@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import * as signalR from '@microsoft/signalr';
 
 // import router from '@/router';
@@ -10,13 +11,13 @@ export const BadRequst: ResultType = { success: false, data: {}, code: 400, msg:
 export default class AnyStore extends Object {
   private stoped: boolean;
   private closed: boolean;
-  private accessToken: string;
+  private accessToken: string | undefined;
   public userId: string;
   public spaceId: string;
   private authed: boolean;
   private isconnecting: boolean;
   private connection: signalR.HubConnection;
-  private static anyStore: AnyStore = null;
+  private static anyStore: AnyStore | null = null;
   private _connectedCallbacks: (() => void)[];
   private _subscribeCallbacks: Record<string, (data: any) => void>;
   /**
@@ -38,19 +39,19 @@ export default class AnyStore extends Object {
     this.connection.serverTimeoutInMilliseconds = 8000;
     this.connection.keepAliveIntervalInMilliseconds = 3000;
     this.connection.onclose(() => {
-      this.authed.value = false;
+      this.authed = false;
       this.reconnect('disconnected from anydata, await 5s reconnect.');
     });
-    this.connection.on('Insert', (collName, data) => {
+    this.connection.on('Insert', (collName: string, data: any) => {
       this._insert(collName, data);
     });
-    this.connection.on('Update', (collName, data) => {
+    this.connection.on('Update', (collName: string, data: any) => {
       this._update(collName, data);
     });
-    this.connection.on('Remove', (collName, data) => {
+    this.connection.on('Remove', (collName: string, data: any) => {
       this._remove(collName, data);
     });
-    this.connection.on('Updated', (key, data) => {
+    this.connection.on('Updated', (key: string, data: any) => {
       this._updated(key, data);
     });
   }
@@ -70,8 +71,8 @@ export default class AnyStore extends Object {
       await this.stop();
       let res = await api.person.tokenInfo({});
       if (res.success) {
-        this.userId.value = res.data.userId;
-        this.spaceId.value = res.data.spaceId;
+        this.userId = res.data.userId;
+        this.spaceId = res.data.spaceId;
       } else {
         // router.push('/login');
       }
@@ -88,12 +89,12 @@ export default class AnyStore extends Object {
         .then(() => {
           this.isconnecting = false;
           this.connection.invoke('TokenAuth', accessToken, 'user').then(() => {
-            this.authed.value = true;
+            this.authed = true;
             this._resubscribed();
           });
         })
         .catch(() => {
-          this.authed.value = false;
+          this.authed = false;
           this.isconnecting = false;
           this.reconnect('connecting to anydata failed, await 5s reconnect.');
         });
@@ -105,7 +106,7 @@ export default class AnyStore extends Object {
   public async stop() {
     this.stoped = true;
     this.accessToken = '';
-    this.authed.value = false;
+    this.authed = false;
     await this.connection.stop();
   }
   /** 短线重连 */
@@ -116,7 +117,7 @@ export default class AnyStore extends Object {
         console.error(err);
         setTimeout(() => {
           this.closed = false;
-          this.start(this.accessToken);
+          this.start(this.accessToken as string);
         }, 5000);
       }
     }
@@ -140,12 +141,14 @@ export default class AnyStore extends Object {
     if (callback) {
       let fullKey = key + '|' + domain;
       this._subscribeCallbacks[fullKey] = callback;
-      if (this.authed.value) {
-        this.connection.invoke<ResultType>('Subscribed', key, domain).then((res) => {
-          if (res.success) {
-            callback.call(callback, res.data);
-          }
-        });
+      if (this.authed) {
+        this.connection
+          .invoke<ResultType>('Subscribed', key, domain)
+          .then((res: { success: any; data: any }) => {
+            if (res.success) {
+              callback.call(callback, res.data);
+            }
+          });
       }
     }
   }
@@ -156,7 +159,7 @@ export default class AnyStore extends Object {
    */
   public unSubscribed(key: string, domain: string) {
     let fullKey = key + '|' + domain;
-    if (this._subscribeCallbacks[fullKey] && this.authed.value) {
+    if (this._subscribeCallbacks[fullKey] && this.authed) {
       this.connection.invoke('UnSubscribed', key, domain);
     }
     delete this._subscribeCallbacks[fullKey];
@@ -168,7 +171,7 @@ export default class AnyStore extends Object {
    * @returns {ResultType} 对象结果
    */
   public async get(key: string, domain: string) {
-    if (this.authed.value) {
+    if (this.authed) {
       return await this.connection.invoke<ResultType>('Get', key, domain);
     }
     return BadRequst;
@@ -181,7 +184,7 @@ export default class AnyStore extends Object {
    * @returns {ResultType} 变更结果
    */
   public async set(key: string, setData: any, domain: string) {
-    if (this.authed.value) {
+    if (this.authed) {
       return await this.connection.invoke<ResultType>('Set', key, setData, domain);
     }
     return BadRequst;
@@ -193,7 +196,7 @@ export default class AnyStore extends Object {
    * @returns {ResultType} 删除结果
    */
   public async delete(key: string, domain: string) {
-    if (this.authed.value) {
+    if (this.authed) {
       return await this.connection.invoke<ResultType>('Delete', key, domain);
     }
     return BadRequst;
@@ -206,7 +209,7 @@ export default class AnyStore extends Object {
    * @returns {ResultType} 添加结果
    */
   public async insert(collName: string, data: any, domain: string) {
-    if (this.authed.value) {
+    if (this.authed) {
       return await this.connection.invoke<ResultType>('Insert', collName, data, domain);
     }
     return BadRequst;
@@ -219,7 +222,7 @@ export default class AnyStore extends Object {
    * @returns {ResultType} 更新结果
    */
   public async update(collName: string, update: any, domain: string) {
-    if (this.authed.value) {
+    if (this.authed) {
       return await this.connection.invoke<ResultType>('Update', collName, update, domain);
     }
     return BadRequst;
@@ -232,7 +235,7 @@ export default class AnyStore extends Object {
    * @returns {ResultType} 移除结果
    */
   public async remove(collName: string, match: any, domain: string) {
-    if (this.authed.value) {
+    if (this.authed) {
       return await this.connection.invoke<ResultType>('Remove', collName, match, domain);
     }
     return BadRequst;
@@ -245,7 +248,7 @@ export default class AnyStore extends Object {
    * @returns {ResultType} 移除结果
    */
   public async aggregate(collName: string, options: any, domain: string) {
-    if (this.authed.value) {
+    if (this.authed) {
       return await this.connection.invoke<ResultType>(
         'Aggregate',
         collName,
@@ -269,7 +272,7 @@ export default class AnyStore extends Object {
     });
   }
   private _resubscribed() {
-    if (this.authed.value) {
+    if (this.authed) {
       Object.keys(this._subscribeCallbacks).forEach(async (fullKey) => {
         let key = fullKey.split('|')[0];
         let domain = fullKey.split('|')[1];

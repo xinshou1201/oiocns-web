@@ -4,14 +4,19 @@ import React from 'react';
 
 import { chat } from '@/module/chat/orgchat';
 
-import content from './groupContent.module.less';
+import contentStyle from './groupContent.module.less';
 
-const GroupContent = () => {
+interface Iprops {
+  goPageEnds: Function;
+}
+
+const GroupContent = (props: Iprops) => {
+  const { goPageEnds } = props;
   const isShowTime = (index: number) => {
     if (index == 0) return true;
     return (
-      moment(chat.curMsgs.value[index].createTime).diff(
-        chat.curMsgs.value[index - 1].createTime,
+      moment(chat.curMsgs[index].createTime).diff(
+        chat.curMsgs[index - 1].createTime,
         'minute',
       ) > 3
     );
@@ -38,6 +43,8 @@ const GroupContent = () => {
 
   // 重新编辑功能
   const handleReWrite = (txt: string) => {
+    console.log('重新编辑功能', txt);
+
     // info.value = txt;
     // emit('handleReWrite', txt);
   };
@@ -49,7 +56,7 @@ const GroupContent = () => {
     if (item.chatId) {
       return true;
     }
-    return item.spaceId === chat.userId.value;
+    return item.spaceId === chat.userId;
   };
   const recallMsg = (item: any) => {
     item.edit = false;
@@ -65,14 +72,23 @@ const GroupContent = () => {
     });
   };
 
+  // 滚动设置到底部
+  const goPageEnd = () => {
+    // nextTick(() => {
+    //   // console.log('滚动底部', nodeRef.value.scrollHeight);
+    //   nodeRef.value.scrollTop = nodeRef.value.scrollHeight;
+    // });
+  };
+  goPageEnds(goPageEnd());
+
   return (
-    <div className={content.group_content_wrap}>
+    <div className={contentStyle.group_content_wrap}>
       {chat.curMsgs.map((item, index) => {
         return (
           <React.Fragment key={item.fromId}>
             {/* 聊天间隔时间3分钟则 显示时间 */}
             {isShowTime(index) ? (
-              <div className={content.chats_space_Time}>
+              <div className={contentStyle.chats_space_Time}>
                 <span>{showChatTime(item.createTime)}</span>
               </div>
             ) : (
@@ -81,11 +97,11 @@ const GroupContent = () => {
             {/* 重新编辑 */}
             {item.msgType === 'recall' ? (
               <div
-                className={`${content.group_content_left} ${content.con} ${content.recall}`}>
+                className={`${contentStyle.group_content_left} ${contentStyle.con} ${contentStyle.recall}`}>
                 {item.showTxt}
                 {item.allowEdit ? (
                   <span
-                    className={content.reWrite}
+                    className={contentStyle.reWrite}
                     onClick={() => {
                       handleReWrite(item.msgBody);
                     }}>
@@ -99,8 +115,8 @@ const GroupContent = () => {
               ''
             )}
             {/* 左侧聊天内容显示 */}
-            {item.fromId !== chat.userId.value ? (
-              <div className={`${content.group_content_left} ${content.con}`}>
+            {item.fromId !== chat.userId ? (
+              <div className={`${contentStyle.group_content_left} ${contentStyle.con}`}>
                 <Popover
                   content={
                     canDelete(item) ? (
@@ -117,10 +133,10 @@ const GroupContent = () => {
                   }
                   title="Title"
                   trigger="click">
-                  <div className={content.con_content}>
-                    {chat.curChat.value.typeName !== '人员' ? (
+                  <div className={contentStyle.con_content}>
+                    {chat?.curChat?.typeName !== '人员' ? (
                       <span className="con-content-name">
-                        {chat.getName(item.fromId)}
+                        {chat.getName(item.fromId) || ''}
                       </span>
                     ) : (
                       ''
@@ -132,7 +148,8 @@ const GroupContent = () => {
             ) : (
               <>
                 {/* 右侧聊天内容显示 */}
-                <div className={`${content.group_content_right} ${content.con}`}>
+                <div
+                  className={`${contentStyle.group_content_right} ${contentStyle.con}`}>
                   <Popover
                     content={
                       canDelete(item) ? (
@@ -158,8 +175,8 @@ const GroupContent = () => {
                     }
                     title="Title"
                     trigger="click">
-                    <div className={content.con_content}>
-                      {chat.curChat.value.typeName !== '人员' ? (
+                    <div className={contentStyle.con_content}>
+                      {chat.curChat?.typeName !== '人员' ? (
                         <span className="con-content-name">
                           {chat.getName(item.fromId)}
                         </span>
