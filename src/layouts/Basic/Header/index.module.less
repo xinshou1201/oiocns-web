@@ -1,26 +1,10 @@
-@import '~antd/es/style/themes/variable';
-
-@header-height: 56px;
-@pro-header-hover-bg: rgba(0, 0, 0, 0.025);
-@bar-icon-color: #a6aec7;
-.layout-header {
-  height: @header-height;
-  line-height: @header-height;
-  margin-bottom: 2px;
+// 头部容器
+.basic-header {
+  margin-bottom: 4px;
   background-color: #fff;
-  box-shadow: 0 2px 8px #f0f1f2;
   display: flex;
   justify-content: space-between;
-  padding: 0 24px;
-}
-
-.menu {
-  :global(.anticon) {
-    margin-right: 8px;
-  }
-  :global(.ant-dropdown-menu-item) {
-    min-width: 160px;
-  }
+  padding: 0 24px !important ;
 }
 
 .right {
@@ -80,27 +64,5 @@
   .loading {
     margin-left: 8;
     margin-right: 8;
-  }
-}
-
-@media only screen and (max-width: @screen-md) {
-  :global(.ant-divider-vertical) {
-    vertical-align: unset;
-  }
-  .name {
-    display: none;
-  }
-  .right {
-    position: absolute;
-    top: 0;
-    right: 12px;
-    .account {
-      .avatar {
-        margin-right: 0;
-      }
-    }
-    .search {
-      display: none;
-    }
   }
 }

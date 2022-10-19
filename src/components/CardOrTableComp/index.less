@@ -1,0 +1,47 @@
+.common-table-wrap {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.common-table {
+  height: 100%;
+  flex: 1;
+
+  .ogo-table-thead th {
+    background-color: @table-header-background;
+  }
+}
+
+.common-table-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+
+  .btn-box {
+    display: flex;
+
+    .anticon {
+      width: 32px;
+      height: 20px;
+      box-sizing: border-box;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 10px;
+      margin-right: 5px;
+      border-radius: 10px;
+
+      &.active {
+        color: #fff;
+        background-color: @primary-color;
+      }
+    }
+  }
+
+}
+
+.stripe {
+  background-color: #fafafa;
+}
