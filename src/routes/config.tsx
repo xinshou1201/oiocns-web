@@ -24,6 +24,8 @@ import {
   WalletOutlined,
 } from '@ant-design/icons';
 import React from 'react';
+import { RouteConfig } from 'react-router-config';
+import { Redirect as RouterRedirect } from 'react-router-dom';
 
 import BasicLayout from '@/layouts/Basic';
 import PassportLayout from '@/layouts/Passport';
@@ -33,7 +35,7 @@ import PassportLogin from '@/pages/Passport/Login';
 import PassportRegister from '@/pages/Passport/Register';
 import Redirect from '@/pages/Redirect';
 
-export interface IRouteConfig {
+export interface IRouteConfig extends RouteConfig {
   // 路由路径
   path: string;
   // 路由组件
@@ -175,8 +177,12 @@ const MarketRouter: IRouteConfig[] = [
     path: '/market',
     component: React.lazy(() => import('@/pages/Market')),
     title: '市场',
-    redirect: '/market/app',
     routes: [
+      {
+        path: '/market',
+        title: '市场',
+        render: () => <RouterRedirect to="/market/app" />,
+      },
       {
         path: '/market/app',
         title: '应用市场',
@@ -395,6 +401,12 @@ const Routers: IRouteConfig[] = [
       ...MarketRouter,
       ...SettingRouter,
       ...PersonRouter,
+      {
+        path: '*',
+        title: '页面不存在',
+        component: React.lazy(() => import('@/pages/NoFond')),
+        // render: () => <RouterRedirect to="/noFond" />,
+      },
     ],
   },
   {
