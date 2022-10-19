@@ -7,7 +7,7 @@ import BreadCrumb from '@/components/BreadCrumb';
 import ContentTemplate from '@/components/ContentTemplate';
 import { IRouteConfig } from '@/routes/config';
 
-import MarketClassify from './Classify';
+import MarketClassify from './components/Classify';
 
 interface PageType {
   route: IRouteConfig;
