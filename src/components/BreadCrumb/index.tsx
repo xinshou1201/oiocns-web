@@ -3,6 +3,7 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import routes, { IRouteConfig } from '../../routes/config';
+import { IconFont } from '../IconFont';
 import cls from './index.module.less';
 
 const breadcrumbNameMap: Record<string, IRouteConfig> = {};
@@ -35,12 +36,18 @@ const BreadCrumb: React.FC = () => {
     return (
       <Breadcrumb.Item key={url} className={cls['comp-breadcrumb']}>
         <Link to={url}>{breadcrumbNameMap[url].title}</Link>
-        {breadcrumbNameMap[url].icon &&
-          typeof breadcrumbNameMap[url].icon !== 'string' && (
-            <span className={cls['comp-breadcrumb-icon']}>
-              {breadcrumbNameMap[url].icon}
-            </span>
-          )}
+        {url === location.pathname &&
+        breadcrumbNameMap[url].icon &&
+        typeof breadcrumbNameMap[url].icon !== 'string' ? (
+          <span className={cls['comp-breadcrumb-icon']}>
+            {breadcrumbNameMap[url].icon}
+          </span>
+        ) : (
+          <IconFont
+            type={breadcrumbNameMap[url].icon as string}
+            className={cls['comp-breadcrumb-icon']}
+          />
+        )}
       </Breadcrumb.Item>
     );
   });

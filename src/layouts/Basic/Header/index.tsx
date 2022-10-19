@@ -14,7 +14,7 @@ const BasicHeader: React.FC = () => {
   return (
     <Header className={cls[`basic-header`]}>
       <OrganizationalUnits />
-      <Space size={36}>
+      <Space size={32} align="center">
         <HeaderHome />
         <HeaderNav />
         <UserAvatar></UserAvatar>
