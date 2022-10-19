@@ -1,5 +1,6 @@
 import API from '../../services';
-import { CommonResponse, IdPageReq, PageReq } from './../typings';
+import { CommonResponse, IdPage, Page } from '../typings';
+import { IdPageReq, PageReq } from './../index';
 import { Company } from '.';
 
 // 单位(公司)业务
@@ -8,8 +9,8 @@ class CompanyService {
    * 获取用户已加入的单位组织
    * @params {ListProps}
    */
-  public getJoinedCompany(req: PageReq): Promise<Company[]> {
-    return API.company.getJoinedCompany({ data: req }).then(
+  public getJoinedCompany(req: Page): Promise<Company[]> {
+    return API.company.getJoinedCompany({ data: new PageReq(req) }).then(
       (res: CommonResponse) => {
         if (res.success) {
           return res.data?.result || [];
@@ -28,8 +29,8 @@ class CompanyService {
    * 获取集团下的单位
    * @returns 单位、公司列表
    */
-  public getGroupCompanies(req: IdPageReq): Promise<Company[]> {
-    return API.person.getGroupCompanies({ data: req }).then(
+  public getGroupCompanies(req: IdPage): Promise<Company[]> {
+    return API.person.getGroupCompanies({ data: new IdPageReq(req) }).then(
       (res: CommonResponse) => {
         if (res.success) {
           return res.data;

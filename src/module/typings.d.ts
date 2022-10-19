@@ -10,6 +10,26 @@ export type CommonResponse = {
 };
 
 /**
+ * 分页查询返回的数据
+ */
+export type PageData<P = {}> = {
+  limit: number;
+	total: number;
+	result: P[];
+}
+
+/**
+ * 分页返回Response
+ * 请求体
+ */
+ export type PageResponse<P = {}> = {
+  code: number;
+  data: PageData<P>;
+  msg: string;
+  success: boolean;
+};
+
+/**
  * 扩展
  * 请求体
  */
@@ -22,34 +42,11 @@ export type ExtendReq = {
 };
 
 /**
- * ID分页查询
- * 请求体
- */
-export type IdPageReq = {
-  id: number | string;
-  offset: number;
-  limit: number;
-  filter: string;
-};
-
-/**
  * ID查询
  * 请求体
  */
 export type IdReq = {
   id: number | string;
-};
-
-/**
- * ID和状态分页查询
- * 请求体
- */
-export type IdStatusPageReq = {
-  id: number | string;
-  status: number | string;
-  offset: number;
-  limit: number;
-  filter: string;
 };
 
 /**
@@ -59,16 +56,6 @@ export type IdStatusPageReq = {
 export type IdStatusReq = {
   id: number | string;
   status: number | string;
-};
-
-/**
- * 分页查询
- * 请求体
- */
-export type PageReq = {
-  offset: number;
-  limit: number;
-  filter?: string;
 };
 
 /**
@@ -83,23 +70,49 @@ export type QueryExtendReq = {
 };
 
 /**
- * 通过状态字段分页查询
+ * ID分页查询
  * 请求体
  */
-export type StatusPageReq = {
-  status: number | string;
-  offset: number;
-  limit: number;
+ export type IdPage = {
+  id: number | string;
+  page: number;
+  pageSize: number;
   filter: string;
 };
 
 /**
- * 分页搜索
+ * 通过状态字段分页查询
+ * 请求体
  */
-export type SearchReq = {
-  offset: number;
-  limit: number;
+export type StatusPage = {
+  status: number | string;
+  page: number;
+  pageSize: number;
+  filter: string;
+};
+
+/**
+ * ID和状态分页查询
+ * 请求体
+ */
+ export type IdStatusPage = {
+  id: number | string;
+  status: number | string;
+  page: number;
+  pageSize: number;
+  filter: string;
+};
+
+/**
+ * 分页查询
+ * 请求体
+ */
+ export type Page = {
+  page: number;
+  pageSize: number;
   filter?: string;
 };
+
+
 
 
