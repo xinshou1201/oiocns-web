@@ -5,7 +5,7 @@ import React from 'react';
  * 办事-好友申请
  * @returns
  */
-const TodoFriend = () => {
+const TodoFriend: React.FC = () => {
   return <Card>办事-好友申请</Card>;
 };
 

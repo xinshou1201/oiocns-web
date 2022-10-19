@@ -4,7 +4,7 @@ import React from 'react';
  * 安全管理
  * @returns
  */
-const PersonSafe = () => {
+const PersonSafe: React.FC = () => {
   return <h2>安全管理</h2>;
 };
 

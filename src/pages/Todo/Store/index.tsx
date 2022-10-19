@@ -5,7 +5,7 @@ import React from 'react';
  * 办事-商店审核
  * @returns
  */
-const TodoStore = () => {
+const TodoStore: React.FC = () => {
   return <Card>办事-商店审核</Card>;
 };
 

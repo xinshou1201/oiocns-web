@@ -1,6 +1,10 @@
 import { Button, Card, Table } from 'antd';
+import { ColumnsType } from 'antd/lib/table';
 import Title from 'antd/lib/typography/Title';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
+import { Company } from '@/module/org';
+import companyService from '@/module/org/company.service';
 
 import cls from './index.module.less';
 
@@ -8,23 +12,19 @@ import cls from './index.module.less';
  * 用户信息-加入的单位(公司)
  * @returns
  */
-const PersonInfoCompany = () => {
-  const dataSource = [
-    {
-      id: 'name',
-      name: '杭州电子科技大学',
-      code: 32,
-      remark: '杭州电子科技大学',
-    },
-    {
-      id: 'code',
-      name: '浙江省财政厅',
-      code: 42,
-      remark: '浙江省财政厅',
-    },
-  ];
+const PersonInfoCompany: React.FC = () => {
+  const [companies, setCompanies] = useState<Company[]>([]);
 
-  const columns = [
+  const getCompanies = async () => {
+    const data = await companyService.getJoinedCompany({ offset: 0, limit: 1000 });
+    setCompanies(data);
+  };
+
+  useEffect(() => {
+    getCompanies();
+  }, []);
+
+  const columns: ColumnsType<Company> = [
     {
       title: '单位名称',
       dataIndex: 'name',
@@ -39,6 +39,7 @@ const PersonInfoCompany = () => {
       title: '单位描述',
       dataIndex: 'remark',
       key: 'remark',
+      render: (_, { team }) => team.remark,
     },
   ];
   return (
@@ -49,7 +50,7 @@ const PersonInfoCompany = () => {
           <Button type="link">加入单位</Button>
         </div>
       </div>
-      <Table dataSource={dataSource} columns={columns} />
+      <Table dataSource={companies} columns={columns} rowKey={(r) => r.id} />
     </Card>
   );
 };

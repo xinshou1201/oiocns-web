@@ -5,7 +5,7 @@ import React from 'react';
  * 地址管理
  * @returns
  */
-const PersonAddress = () => {
+const PersonAddress: React.FC = () => {
   return <Card>用户信息</Card>;
 };
 
