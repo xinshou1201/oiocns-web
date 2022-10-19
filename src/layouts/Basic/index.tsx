@@ -4,7 +4,7 @@ import { Layout } from 'antd';
 import React, { useEffect } from 'react';
 import { renderRoutes } from 'react-router-config';
 
-// import { chat } from '@/module/chat/orgchat';
+import { chat } from '@/module/chat/orgchat';
 import { IRouteConfig } from '@/routes/config';
 import useStore from '@/store';
 
@@ -25,6 +25,8 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       getUserInfo();
     }
   }, []);
+  const token = sessionStorage.getItem('Token');
+  chat.start(token);
 
   return (
     <Layout className={styles['page-layout']}>
