@@ -1,68 +1,10 @@
 // 头部容器
 .basic-header {
-  margin-bottom: 4px;
-  background-color: #fff;
+  height: @header-height !important;
+  line-height: @header-height !important;
+  margin-bottom: @margin-xs;
+  background-color: @component-background;
   display: flex;
   justify-content: space-between;
   padding: 0 24px !important ;
-}
-
-.right {
-  display: flex;
-  height: @header-height;
-  margin-left: auto;
-  overflow: hidden;
-
-  .name {
-    width: 70px;
-    height: @header-height;
-    overflow: hidden;
-    line-height: @header-height;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-  .action {
-    display: flex;
-    align-items: center;
-    height: @header-height;
-    padding: 0 12px;
-    cursor: pointer;
-    transition: all 0.3s;
-    > span {
-      vertical-align: middle;
-    }
-    &:hover {
-      background: @pro-header-hover-bg;
-    }
-    &:global(.opened) {
-      background: @pro-header-hover-bg;
-    }
-    .action-icon {
-      color: @bar-icon-color;
-      font-size: 22px;
-    }
-    &.active {
-      .action-icon {
-        color: @primary-color !important;
-      }
-    }
-  }
-  .search {
-    padding: 0 12px;
-    &:hover {
-      background: transparent;
-    }
-  }
-  .account {
-    .avatar {
-      margin-right: 8px;
-      color: @primary-color;
-      vertical-align: top;
-      background: rgba(255, 255, 255, 0.85);
-    }
-  }
-  .loading {
-    margin-left: 8;
-    margin-right: 8;
-  }
 }

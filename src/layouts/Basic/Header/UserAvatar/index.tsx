@@ -89,7 +89,10 @@ const UserAvatar: React.FC = () => {
   return (
     <Dropdown overlay={menu} placement="bottomLeft">
       {user.avatar ? (
-        <Avatar src={'https://joeschmoe.io/api/v1/random'} alt={user.userName}></Avatar>
+        <Avatar
+          src={'https://joeschmoe.io/api/v1/random'}
+          alt={user.userName}
+          size={28}></Avatar>
       ) : (
         <Avatar className={cls['header-user-avatar']} alt={user.userName}>
           {user.userName?.substring(0, 1)}
