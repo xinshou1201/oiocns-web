@@ -26,7 +26,7 @@ type ContentTemplateType = {
  * 包含：左侧、内容区顶部(面包屑、操作区)、内容区
  * @returns
  */
-const ContentTemplate: React.FC<ContentTemplateType & RouteComponentProps> = (props) => {
+const ContentTemplate: React.FC<ContentTemplateType> = (props) => {
   const {
     className,
     content,
