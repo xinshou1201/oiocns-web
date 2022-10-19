@@ -11,7 +11,7 @@ import React from 'react';
 import cls from './index.module.less';
 import MarketClassifyTree from './Tree';
 
-const MarketClassify = ({ history }: any) => {
+const MarketClassify: React.FC<any> = ({ history }) => {
   const items = [
     {
       label: '开放市场',

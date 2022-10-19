@@ -1,6 +1,5 @@
-import { Col, Layout, Row } from 'antd';
 import React from 'react';
-import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { Col, Layout, Row } from 'antd';
 import BreadCrumb from '../BreadCrumb';
 
 import cls from './index.module.less';
@@ -11,7 +10,8 @@ const { Sider, Content } = Layout;
  * 内容区模板类
  */
 type ContentTemplateType = {
-  content?: React.ReactNode; // 内容区
+  className?: string; //wrap calss
+  content: React.ReactNode; // 内容区
   sider?: React.ReactNode; // 左侧
   contentTop?: React.ReactNode; // 内容区顶部
   contentTopLeft?: React.ReactNode; // 内容区顶部左侧
@@ -28,6 +28,7 @@ type ContentTemplateType = {
  */
 const ContentTemplate: React.FC<ContentTemplateType & RouteComponentProps> = (props) => {
   const {
+    className,
     content,
     sider,
     // contentTop,
@@ -36,9 +37,9 @@ const ContentTemplate: React.FC<ContentTemplateType & RouteComponentProps> = (pr
     hideBreadCrumb = false,
     children,
   } = props;
-  // TODO 布局样式、侧边展开和收缩
+  // TODO 布局样式、侧边展开和收缩 侧边栏顶部([icon/名称] 需传入展示)
   return (
-    <Layout>
+    <Layout className={`${className}`} style={{ height: '100%' }}>
       {sider && (
         <Sider className={cls.sider} width={220}>
           {sider}
@@ -62,4 +63,4 @@ const ContentTemplate: React.FC<ContentTemplateType & RouteComponentProps> = (pr
   );
 };
 
-export default withRouter(ContentTemplate);
+export default ContentTemplate;
