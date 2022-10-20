@@ -5,7 +5,7 @@ import React from 'react';
  * 部门设置
  * @returns
  */
-const SettingDept = () => {
+const SettingDept: React.FC = () => {
   return <Card>部门设置</Card>;
 };
 

@@ -5,7 +5,7 @@ import React from 'react';
  * 仓库-文档
  * @returns
  */
-const StoreDoc = () => {
+const StoreDoc: React.FC = () => {
   return <Card>仓库-文档</Card>;
 };
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import './index.less';
 
 import { Pagination, Table } from 'antd';
@@ -11,12 +12,13 @@ interface PageType {
   dataSource: any[]; // 展示数据源
   columns: ColumnsType<DataType>;
   total?: number; // 总条数
-  // eslint-disable-next-line no-unused-vars
   onChange?: (page: number, pageSize: number) => void; // 弹出切换页码事件
   selectMore?: boolean; //是否开启选择区域
   stripe?: boolean; // 斑马纹
   style?: React.CSSProperties; // wrap样式加载 对表格外部margin pading 等定制展示
-  cardContent?: React.ReactNode;
+  renderCardContent?: (
+    data: Pick<PageType, 'dataSource'>['dataSource'], //保持与dataSource 类型一致
+  ) => React.ReactNode;
   [key: string]: any; // 其他属性
 }
 
@@ -29,11 +31,10 @@ const Index: React.FC<PageType> = ({
   stripe = false,
   style,
   onChange,
-  cardContent,
+  renderCardContent,
   ...rest
 }) => {
   const [pageType, setPageType] = useState<PageShowType>(defaultPageType || 'table');
-
   /**
    * @desc: 多选功能函数
    * @return {*}
@@ -80,7 +81,9 @@ const Index: React.FC<PageType> = ({
         {...rest}
       />
     ) : (
-      <div className="common-table">{cardContent}</div>
+      <div className="common-card">
+        {renderCardContent && renderCardContent(dataSource)}
+      </div>
     );
   }, [pageType]);
   /**

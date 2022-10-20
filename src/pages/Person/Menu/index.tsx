@@ -23,7 +23,7 @@ import cls from './index.module.less';
  * 个人页面菜单
  * @returns
  */
-const PersonMenu = () => {
+const PersonMenu: React.FC = () => {
   const history = useHistory();
 
   /* 信息中心菜单 */

@@ -5,7 +5,7 @@ import React from 'react';
  * 帮助中心
  * @returns
  */
-const PersonHelp = () => {
+const PersonHelp: React.FC = () => {
   return <Card>帮助中心</Card>;
 };
 
