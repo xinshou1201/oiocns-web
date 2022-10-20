@@ -28,7 +28,6 @@ const Groupinputbox = () => {
   };
   // 解析聊天内容
   const reCreatChatContent = (elementChild: NodeList | any[]): Array<string> => {
-    // console.log(elementChild)
     const arrElement = Array.from(elementChild);
     // const newSpace  = document.createDocumentFragment()
     if (arrElement.length > 0) {
@@ -94,11 +93,7 @@ const Groupinputbox = () => {
     selection.addRange(range);
   };
   return (
-    <div
-      className={inputboxStyle.group_input_wrap}
-      onKeyUp={() => {
-        submit();
-      }}>
+    <div className={inputboxStyle.group_input_wrap}>
       <div className={inputboxStyle.icons_box}>
         <div style={{ marginTop: '4px' }}>
           <Popover
@@ -137,7 +132,7 @@ const Groupinputbox = () => {
           <Button
             type="primary"
             style={{ backgroundColor: '#21ba45', color: '#fff', border: 'none' }}
-            onClick={submit}>
+            onClick={() => submit()}>
             发送
           </Button>
         </div>

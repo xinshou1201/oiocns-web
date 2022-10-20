@@ -13,11 +13,8 @@ interface Iprops {
 }
 
 const Groupheader = (props: Iprops) => {
-  console.log('hahah', chat.chats);
-
   const { handleViewDetail } = props;
   const [label, setLabel] = useState<string>('');
-  const [group, setGroup] = useState<number>(1); // moke数据 1是个人 2是群组
   const handleAddFun = () => {
     // emit('addUserOrCohort')
     // console.log('测试', info.detail);
@@ -26,32 +23,28 @@ const Groupheader = (props: Iprops) => {
   const handleMoreFun = () => {
     handleViewDetail();
   };
+  console.log('zzz', chat.curChat);
+
   return (
     <div className={headerStyle.group_header_wrap}>
-      <ul className={`${headerStyle.user} ${headerStyle.flex}`}>
+      <div className={`${headerStyle.user} ${headerStyle.flex}`}>
         <HeadImg name={chat.curChat?.name} label={label} />
         <div className={headerStyle.user_info}>
           <div className={`${headerStyle.flex} ${headerStyle.user_info_top}`}>
             <div className={`${headerStyle.user_info_top_name}`}>
               {chat.curChat?.name}
-              {/* {chat.curChat?.personNum > 0 ? (
-                <span> ({chat.curChat?.personNum})</span>
+              {chat?.curChat?.typeName === '群组' ? (
+                <span>({chat?.curChat?.personNum})</span>
               ) : (
-                ''
-              )} */}
-              {group === 1 ? (
                 <Breadcrumb>
                   <Breadcrumb.Item>杭州电子科技大学</Breadcrumb.Item>
                   <Breadcrumb.Item>同事</Breadcrumb.Item>
                 </Breadcrumb>
-              ) : (
-                <span>(25)</span>
               )}
             </div>
-            {/* <Tag color="#3e5ed8">{chat.curChat?.label}</Tag> */}
           </div>
         </div>
-      </ul>
+      </div>
       <span className={headerStyle.btn_box}>
         {chat.curChat?.typeName !== '人员' ? (
           <PlusOutlined

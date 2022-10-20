@@ -1,8 +1,11 @@
+/* eslint-disable no-unused-vars */
 import { Button, message, Popover } from 'antd';
 import moment from 'moment';
-import React from 'react';
+import React, { useRef } from 'react';
 
+import HeadImg from '@/components/headImg/headImg';
 import { chat } from '@/module/chat/orgchat';
+import { debounce } from '@/utils/tools';
 
 import contentStyle from './groupContent.module.less';
 
@@ -12,6 +15,7 @@ interface Iprops {
 
 const GroupContent = (props: Iprops) => {
   const { goPageEnds } = props;
+  const contentNodeRef = useRef<HTMLDivElement>(null); // dom节点
   const isShowTime = (index: number) => {
     if (index == 0) return true;
     return (
@@ -44,7 +48,6 @@ const GroupContent = (props: Iprops) => {
   // 重新编辑功能
   const handleReWrite = (txt: string) => {
     console.log('重新编辑功能', txt);
-
     // info.value = txt;
     // emit('handleReWrite', txt);
   };
@@ -72,6 +75,18 @@ const GroupContent = (props: Iprops) => {
     });
   };
 
+  // // 实时滚动条高度
+  // const scrollTop = debounce(async () => {
+  //   let scroll = nodeRef.scrollTop;
+  //   if (chat.curMsgs.length > 0 && scroll < 20) {
+  //     let beforeHeight = nodeRef.scrollHeight;
+  //     let count = await chat.getHistoryMsg();
+  //     if (count > 0) {
+  //       nodeRef.scrollTop = nodeRef.scrollHeight - beforeHeight;
+  //     }
+  //   }
+  // }, 200);
+
   // 滚动设置到底部
   const goPageEnd = () => {
     // nextTick(() => {
@@ -85,7 +100,7 @@ const GroupContent = (props: Iprops) => {
     <div className={contentStyle.group_content_wrap}>
       {chat.curMsgs.map((item, index) => {
         return (
-          <React.Fragment key={item.fromId}>
+          <React.Fragment key={item.fromId + index}>
             {/* 聊天间隔时间3分钟则 显示时间 */}
             {isShowTime(index) ? (
               <div className={contentStyle.chats_space_Time}>
@@ -131,17 +146,24 @@ const GroupContent = (props: Iprops) => {
                       ''
                     )
                   }
-                  title="Title"
                   trigger="click">
-                  <div className={contentStyle.con_content}>
-                    {chat?.curChat?.typeName !== '人员' ? (
-                      <span className="con-content-name">
-                        {chat.getName(item.fromId) || ''}
-                      </span>
-                    ) : (
-                      ''
-                    )}
-                    <span></span>
+                  <div className={contentStyle.con_body}>
+                    <HeadImg name={chat.getName(item.fromId)} label={''} />
+                    <div className={`${contentStyle.con_content}`}>
+                      {chat?.curChat?.typeName !== '人员' ? (
+                        <div
+                          className={`${contentStyle.con_content} ${contentStyle.name}`}>
+                          {chat.getName(item.fromId) || ''}
+                        </div>
+                      ) : (
+                        ''
+                      )}
+                      {/* <div
+                        className={`${contentStyle.con_content} ${contentStyle.link}`}></div> */}
+                      <div
+                        className={`${contentStyle.con_content} ${contentStyle.txt}`}
+                        dangerouslySetInnerHTML={{ __html: item.msgBody }}></div>
+                    </div>
                   </div>
                 </Popover>
               </div>
@@ -175,15 +197,15 @@ const GroupContent = (props: Iprops) => {
                     }
                     title="Title"
                     trigger="click">
-                    <div className={contentStyle.con_content}>
-                      {chat.curChat?.typeName !== '人员' ? (
-                        <span className="con-content-name">
-                          {chat.getName(item.fromId)}
-                        </span>
-                      ) : (
-                        ''
-                      )}
-                      <span></span>
+                    <div className={contentStyle.con_body}>
+                      <div className={contentStyle.con_content}>
+                        {/* <div
+                          className={`${contentStyle.con_content} ${contentStyle.link}`}></div> */}
+                        <div
+                          className={`${contentStyle.con_content} ${contentStyle.txt}`}
+                          dangerouslySetInnerHTML={{ __html: item.msgBody }}></div>
+                      </div>
+                      <HeadImg name={chat.getName(item.fromId)} />
                     </div>
                   </Popover>
                 </div>

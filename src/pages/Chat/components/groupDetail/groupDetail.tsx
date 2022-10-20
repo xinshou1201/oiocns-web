@@ -1,17 +1,15 @@
 /* eslint-disable no-constant-condition */
 /* eslint-disable no-unused-vars */
 import { DownOutlined, RightOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Col, Empty, Modal, Row } from 'antd';
+import { Button, Checkbox, Col, Empty, message, Modal, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
 
 import HeadImg from '@/components/headImg/headImg';
 import { chat } from '@/module/chat/orgchat';
+import API from '@/services';
 
 import detailStyle from './groupdetail.module.less';
 
-// interface Iprops {
-//   clearHistoryMsg?: Function;
-// }
 interface itemResult {
   code: string;
   createTime: string;
@@ -27,46 +25,60 @@ interface itemResult {
 }
 
 const Groupdetail = () => {
-  // const { clearHistoryMsg } = props;
-  // const openDialogAdd = () => {
-  //   dialogVisible.value = true;
-  //   chat.chats.forEach((item) => {
-  //     if (item.id === chat.userId) {
-  //       state.friendsData = item.chats.filter((c) => {
-  //         if (c.typeName === '人员') {
-  //           let exist = false;
-  //           chat.qunPersons.forEach((p) => {
-  //             if (c.id === p.id) {
-  //               exist = true;
-  //             }
-  //           });
-  //           return !exist;
-  //         }
-  //         return false;
-  //       });
-  //     }
-  //   });
-  // };
-  // const openDialogDel = () => {
-  //   dialogVisibleDel.value = true;
-  // };
+  const openDialogAdd = () => {
+    setIsModalOpen(true);
+    chat.chats.forEach((item) => {
+      if (item.id === chat.userId) {
+        state.friendsData = item.chats.filter((c) => {
+          if (c.typeName === '人员') {
+            let exist = false;
+            chat.qunPersons.forEach((p) => {
+              if (c.id === p.id) {
+                exist = true;
+              }
+            });
+            return !exist;
+          }
+          return false;
+        });
+      }
+    });
+  };
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // 邀请好友
   const [isShiftUp, setIsShiftUp] = useState<boolean>(false); // 移出群聊
-  const [showPersons, setShowPersons] = useState<any>(); // moke
-  const [state, setState] = useState<any>([]); // moke
+  const [state, setState] = useState<any>({
+    userList: [], //群成员
+    total: 0, //总数
+    isEditNickName: false, //是否编辑昵称
+    isQunName: false, //是否编辑群名称
+    isIgnoreMsg: false, //是否免打扰信息
+    isStick: false, //是否置顶
+    friendsData: [], // 我的好友
+    ids: [], // 所选择到的好友id列表
+    delfriendsData: [], // 群聊人员
+    delids: [], // 所选择到的好友id列表 移出
+  });
 
-  useEffect(() => {
-    const a: any = [];
-    for (let i = 1; i <= 16; i++) {
-      a.push(i);
-    }
-    setShowPersons(a);
-    setState(a);
-  }, []);
   // 确认
-  const handleOk = () => {
+  const handleOk = async () => {
     setIsModalOpen(false);
     setIsShiftUp(false);
+
+    $services.cohort
+      .pullPerson({
+        data: {
+          id: chat.curChat?.id,
+          targetIds: state.ids,
+        },
+      })
+      .then((res: ResultType) => {
+        if (res.code == 200) {
+          message.success('邀请成功');
+          chat.getPersons(true);
+        } else {
+          message.warning('您不是群管理员');
+        }
+      });
   };
   // 取消
   const handleCancel = () => {
@@ -76,21 +88,20 @@ const Groupdetail = () => {
   // 添加选择人员事件
   const onClickBox = (item: itemResult, index: number) => {
     if (state?.ids.indexOf(item.id) !== -1) {
-      state.ids.splice(state.ids.indexOf(item.id), 1);
+      setState({ ...state, ids: state?.ids.filter((v: any) => v.id === item.id) });
     } else {
-      state.ids.push(item.id);
+      setState({ ...state, ids: [...state.ids, item.id] });
     }
   };
+
   // 移出选择人员事件
   const onClickBoxDel = (item: itemResult, index: number) => {
     if (state.delids.indexOf(item.id) !== -1) {
-      state.delids.splice(state.delids.indexOf(item.id), 1);
+      setState({ ...state, delids: state?.delids.filter((v: any) => v.id === item.id) });
     } else {
-      state.delids.push(item.id);
+      setState({ ...state, delids: [...state.delids, item.id] });
     }
   };
-  console.log('详情', chat);
-
   return (
     <>
       <div className={detailStyle.group_detail_wrap}>
@@ -99,45 +110,33 @@ const Groupdetail = () => {
             <HeadImg name={chat.curChat?.name} label={''} />
           </Col>
           <Col span={20}>
-            {/* <h4 className={detailStyle.title}>{chat.curChat?.name}</h4>
-            <div className="base-info-desc">{chat.curChat?.remark}</div> */}
             <h4 className={detailStyle.title}>
-              兔鸟<span className={detailStyle.number}>(28)</span>
+              {chat.curChat?.name}
+              {chat.curChat?.typeName !== '人员' ? (
+                <span className={detailStyle.number}>({chat.curChat?.personNum})</span>
+              ) : (
+                ''
+              )}
             </h4>
-            <div className={detailStyle.base_info_desc}>打刀妹先打嘴</div>
+            <div className={detailStyle.base_info_desc}>{chat.curChat?.remark}</div>
           </Col>
         </Row>
-        <ul className={detailStyle.user_list}>
-          <ul className={`${detailStyle.img_list} ${detailStyle.con}`}>
-            {/* {showPersons.map((item, index) => {
+        <div className={detailStyle.user_list}>
+          <div className={`${detailStyle.img_list} ${detailStyle.con}`}>
+            {chat?.qunPersons.map((item: any, index: any) => {
               return (
-                <div key={item.id} title={item.name}>
-                  HeadImg
-                  <span className="img-list-con-name">{item.name}</span>
+                <div key={item.id} title={item.name} className={detailStyle.show_persons}>
+                  <HeadImg name={item.name} label={''} />
+                  <span className={detailStyle.img_list_con_name}>{item.name}</span>
                 </div>
               );
-            })} */}
-            {showPersons &&
-              showPersons.map((item: any, index: any) => {
-                return (
-                  <div
-                    key={item.id}
-                    title={item.name}
-                    className={detailStyle.show_persons}>
-                    <HeadImg name={chat.curChat?.name} label={''} />
-                    {/* <span className="img-list-con-name">{item.name}</span> */}
-                    <span className={detailStyle.img_list_con_name}>王雨</span>
-                  </div>
-                );
-              })}
-            {/* {chat.curChat?.typeName === '群组' ? ( */}
-            {'群组' === '群组' ? (
+            })}
+            {chat.curChat?.typeName === '群组' ? (
               <>
                 <div
                   className={`${detailStyle.img_list_con} ${detailStyle.img_list_add}`}
                   onClick={() => {
-                    // openDialogAdd();
-                    setIsModalOpen(true);
+                    openDialogAdd();
                   }}>
                   +
                 </div>
@@ -154,8 +153,7 @@ const Groupdetail = () => {
               ''
             )}
 
-            {/* {chat.curChat?.personNum > 13 ? ( */}
-            {showPersons && showPersons.length > 13 ? (
+            {chat.curChat?.personNum > 1 ? (
               <span
                 className={`${detailStyle.img_list} ${detailStyle.more_btn}`}
                 onClick={() => {
@@ -169,18 +167,17 @@ const Groupdetail = () => {
             ) : (
               ''
             )}
-          </ul>
+          </div>
 
-          {/* {chat.curChat?.typeName === '群组' ? ( */}
-          {'群组' === '群组' ? (
+          {chat.curChat?.typeName === '群组' ? (
             <>
               <div className={`${detailStyle.con} ${detailStyle.setting_con} `}>
                 <span className={detailStyle.con_label}>群聊名称</span>
-                <span className={detailStyle.con_value}>市场部第一小组</span>
+                <span className={detailStyle.con_value}>{chat.curChat?.remark}</span>
               </div>
               <div className={`${detailStyle.con} ${detailStyle.setting_con} `}>
                 <span className={detailStyle.con_label}>群聊描述</span>
-                <span className={detailStyle.con_value}>市场部第一小组</span>
+                <span className={detailStyle.con_value}>{chat.curChat?.remark}</span>
               </div>
               <div className={`${detailStyle.con} ${detailStyle.setting_con} `}>
                 <span className={detailStyle.con_label}>我在本群的昵称</span>
@@ -202,7 +199,7 @@ const Groupdetail = () => {
             <span>查找聊天记录</span>
             <RightOutlined />
           </div>
-        </ul>
+        </div>
         {chat.curChat?.spaceId === chat.userId ? (
           <div className={`${detailStyle.footer} ${detailStyle.group_detail_wrap}`}>
             <Button
@@ -217,9 +214,6 @@ const Groupdetail = () => {
                 <Button type="primary" danger>
                   退出该群
                 </Button>
-                {/* <Button type="primary" danger>
-                  解散该群
-                </Button> */}
               </>
             ) : (
               <>
@@ -240,7 +234,7 @@ const Groupdetail = () => {
         onCancel={handleCancel}
         getContainer={false}>
         <div className={detailStyle.invitateBox}>
-          {state && state.length > 0 ? (
+          {state.friendsData?.length > 0 ? (
             <>
               {state.friendsData?.map((item: any, index: any) => {
                 return (
@@ -251,15 +245,18 @@ const Groupdetail = () => {
                       onClickBox(item, index);
                     }}>
                     <div className={`${detailStyle.invitateBox} ${detailStyle.flex}`}>
-                      <HeadImg name={item?.name} />
+                      <HeadImg name={item?.name} label={''} />
                       <div className={`${detailStyle.invitateBox} ${detailStyle.name}`}>
-                        王雨
+                        {item.name}
                       </div>
                     </div>
                     <div
                       className={`${detailStyle.invitateBox} ${detailStyle.btn}`}
-                      // style={state?.ids.includes(item.id) ? 'background:#466DFF' : ''}
-                    >
+                      style={{
+                        backgroundColor: `${
+                          state?.ids.includes(item.id) ? '#466DFF' : ''
+                        }`,
+                      }}>
                       {state?.ids.includes(item.id) ? (
                         <div
                           className={`${detailStyle.invitateBox} ${detailStyle.btn} ${detailStyle.in}`}></div>
@@ -284,7 +281,7 @@ const Groupdetail = () => {
         getContainer={false}>
         <div className={detailStyle.invitateBox}>
           <>
-            {state.friendsData?.map((item: any, index: any) => {
+            {chat.qunPersons?.map((item, index) => {
               return (
                 <div
                   key={item.id}
@@ -293,16 +290,19 @@ const Groupdetail = () => {
                     onClickBoxDel(item, index);
                   }}>
                   <div className={`${detailStyle.invitateBox} ${detailStyle.flex}`}>
-                    <HeadImg name={item?.name} />
+                    <HeadImg name={item?.name} label={''} />
                     <div className={`${detailStyle.invitateBox} ${detailStyle.name}`}>
-                      王雨
+                      {item.name}
                     </div>
                   </div>
                   <div
                     className={`${detailStyle.invitateBox} ${detailStyle.btn}`}
-                    // style={state?.ids.includes(item.id) ? 'background:#466DFF' : ''}
-                  >
-                    {state?.ids.includes(item.id) ? (
+                    style={{
+                      backgroundColor: `${
+                        state?.delids.includes(item.id) ? '#466DFF' : ''
+                      }`,
+                    }}>
+                    {state?.delids.includes(item.id) ? (
                       <div
                         className={`${detailStyle.invitateBox} ${detailStyle.btn} ${detailStyle.in}`}></div>
                     ) : (

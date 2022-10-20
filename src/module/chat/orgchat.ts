@@ -7,7 +7,7 @@ import api from '@/services';
 import notify from '@/utils/notify';
 import { StringPako } from '@/utils/package';
 
-// import { TargetType } from '../enums';
+import { TargetType } from '../enums';
 
 /** 消息类型 */
 // export enum MessageType {
@@ -268,7 +268,7 @@ export default class OrgChat extends Object {
     if (this.authed) {
       if (this.curChat) {
         this.openChats = this.openChats.filter((item) => {
-          return item.id !== this.curChat.id || item.spaceId !== this.curChat.spaceId;
+          return item.id !== this.curChat?.id || item.spaceId !== this.curChat?.spaceId;
         });
       }
       if (chat && chat.id.length > 0) {

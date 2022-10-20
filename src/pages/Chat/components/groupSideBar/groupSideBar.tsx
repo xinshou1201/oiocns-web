@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { RedoOutlined, ZoomInOutlined } from '@ant-design/icons';
 import { Input, Tabs } from 'antd';
 import React, { useEffect, useState } from 'react';
@@ -8,12 +9,12 @@ import { formatDate } from '@/utils/index';
 
 import sideStyle from './groupSidebar.module.less';
 
-// interface Iprops {
-//   clearHistoryMsg: Function;
-// }
+interface Iprops {
+  openChanged: Function;
+}
 
-const GroupSideBar = () => {
-  // const { clearHistoryMsg } = props;
+const GroupSideBar = (props: Iprops) => {
+  const { openChanged } = props;
   const getInfo = () => {
     const data = chat.chats;
     if (data.length === 0) {
@@ -25,6 +26,7 @@ const GroupSideBar = () => {
   getInfo();
   const [searchValue, setSearchValue] = useState<string>(''); // 搜索值
   let [openIdArr, setOpenIdArr] = useState<Array<string>>([]);
+  const [isMounted, setIsMounted] = useState<boolean>(false); // 是否已加载--判断是否需要默认打开
   const onChange = (values: string) => {
     setSearchValue(values);
   };
@@ -55,29 +57,32 @@ const GroupSideBar = () => {
       };
     });
     // 首次进入页面默认打开第一个分组
-    // if (!isMounted.value && openIdArr.value.length === 0 && showInfoArr.length > 0) {
-    //   // 当从关系-群组 进入会话携带id 则进入对应聊天室
-    //   if (routerParams.defaultOpenID) {
-    //     openIdArr.value.push(routerParams.spaceId as string);
-    //     const aimItem = showInfoArr
-    //       .find((item) => item.id == routerParams.spaceId)
-    //       ?.chats.find((item) => item.id == routerParams.defaultOpenID);
-    //     aimItem && openChanged(aimItem);
-    //   } else {
-    //     if (topGroup.chats.length < 1) {
-    //       openIdArr.value.push(showInfoArr[0].id);
-    //     } else {
-    //       openIdArr.value.push('toping');
-    //     }
-    //   }
-    //   isMounted.value = true;
-    // }
+    if (!isMounted && openIdArr.length === 0 && showInfoArr.length > 0) {
+      // // 当从关系-群组 进入会话携带id 则进入对应聊天室
+      // if (routerParams.defaultOpenID) {
+      //   openIdArr.push(routerParams.spaceId as string);
+      //   const aimItem = showInfoArr
+      //     .find((item) => item.id == routerParams.spaceId)
+      //     ?.chats.find((item) => item.id == routerParams.defaultOpenID);
+      //   aimItem && openChanged(aimItem);
+      // } else {
+      if (topGroup.chats.length < 1) {
+        openIdArr.push(showInfoArr[0].id);
+      } else {
+        openIdArr.push('toping');
+      }
+      // }
+      setIsMounted(true);
+    }
     if (topGroup.chats.length > 0) {
       return [topGroup, ...showInfoArr];
     }
     return showInfoArr;
   };
-  console.log('ppp', showList);
+  const openChangeds = async (child: ImMsgChildType) => {
+    await chat.setCurrent(child);
+    // openChanged(child);
+  };
 
   useEffect(() => {
     showList();
@@ -96,7 +101,6 @@ const GroupSideBar = () => {
   const handleFormatDate = (timeStr: string) => {
     const nowTime = new Date().getTime();
     const showTime = new Date(timeStr).getTime();
-
     // 超过一天 展示 月/日
     if (nowTime - showTime > 3600 * 24 * 1000) {
       return formatDate(timeStr, 'M月d日');
@@ -131,7 +135,9 @@ const GroupSideBar = () => {
                   <div className={`${sideStyle.group_con} ${sideStyle.item}`}>
                     {/* 分组标题 */}
                     <div
-                      className={`${sideStyle.con_title} ${sideStyle.flex}`}
+                      className={`${sideStyle.con_title} ${sideStyle.flex} ${
+                        openIdArr.includes(item.id) ? sideStyle.active : ''
+                      }`}
                       onClick={() => {
                         handleOpenSpace(item.id);
                       }}>
@@ -152,24 +158,26 @@ const GroupSideBar = () => {
                                   <span>{child.noRead}</span>
                                 </div>
                               ) : (
-                                <div className={sideStyle.group_con_show}>
-                                  <div>
-                                    <p
-                                      className={`${sideStyle.group_con_show} ${sideStyle.name}`}>
-                                      <span
-                                        className={`${sideStyle.group_con_show} ${sideStyle.name} ${sideStyle.label}`}>
-                                        {child.name}
-                                      </span>
-                                      <span
-                                        className={`${sideStyle.group_con_show} ${sideStyle.name} ${sideStyle.time}`}>
-                                        {handleFormatDate(child.msgTime)}
-                                      </span>
-                                    </p>
+                                <div
+                                  className={sideStyle.group_con_show}
+                                  onClick={() => {
+                                    openChangeds(child);
+                                  }}>
+                                  <div
+                                    className={`${sideStyle.group_con_show} ${sideStyle.name}`}>
+                                    <div
+                                      className={`${sideStyle.group_con_show} ${sideStyle.name} ${sideStyle.label}`}>
+                                      {child.name}
+                                    </div>
+                                    <div
+                                      className={`${sideStyle.group_con_show} ${sideStyle.name} ${sideStyle.time}`}>
+                                      {handleFormatDate(child.msgTime)}
+                                    </div>
                                   </div>
-                                  <p
+                                  <div
                                     className={`${sideStyle.group_con_show} ${sideStyle.msg}`}>
                                     {child.showTxt}
-                                  </p>
+                                  </div>
                                 </div>
                               )}
                             </div>
@@ -181,7 +189,7 @@ const GroupSideBar = () => {
                     )}
                     {/* 如果该分组没有被打开 但是有未读消息 则把未读消息会话显示出来 */}
                     {item.chats
-                      .filter((v) => v.noRead > 0)
+                      .filter((v: any) => v.noRead > 0)
                       .map((child: any) => {
                         return (
                           <div key={child.id + child.name}>
@@ -193,22 +201,22 @@ const GroupSideBar = () => {
                             ) : (
                               <div className={`${sideStyle.group_con_show}`}>
                                 <div>
-                                  <p
+                                  <div
                                     className={`${sideStyle.group_con_show} ${sideStyle.name}`}>
-                                    <span
+                                    <div
                                       className={`${sideStyle.group_con_show} ${sideStyle.label}`}>
                                       {child.name}
-                                    </span>
-                                    <span
+                                    </div>
+                                    <div
                                       className={`${sideStyle.group_con_show} ${sideStyle.time}`}>
                                       {handleFormatDate(child.msgTime)}
-                                    </span>
-                                  </p>
+                                    </div>
+                                  </div>
                                 </div>
-                                <p
+                                <div
                                   className={`${sideStyle.group_con_show} ${sideStyle.msg}`}>
                                   {child.showTxt}
-                                </p>
+                                </div>
                               </div>
                             )}
                           </div>

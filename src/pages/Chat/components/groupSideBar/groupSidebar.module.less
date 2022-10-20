@@ -92,7 +92,7 @@
         color: var(--el-text-color);
 
         &.active {
-          color: var(--el-color-primary);
+          color: #3e5ed8;
           border-bottom: none;
         }
       }
@@ -107,7 +107,7 @@
         &:hover,
         &.active {
           // border-radius: 6px;
-          color: var(--el-menu-active-color);
+          color: #3e5ed8;
           background-color: var(--el-menu-hover-bg-color);
         }
         border-bottom: 1px solid #dcdfe6;
@@ -130,6 +130,7 @@
         justify-content: space-between;
         align-items: center;
         flex-wrap: nowrap;
+        max-width: 180px;
 
         &.label {
           font-size: 14px;
@@ -143,6 +144,8 @@
         &.time {
           color: #a8a8a8;
           font-size: 12px;
+          display: flex;
+          justify-content: flex-end;
         }
       }
 
