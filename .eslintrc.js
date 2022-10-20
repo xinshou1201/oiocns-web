@@ -33,8 +33,8 @@ module.exports = {
     // 'jsx-a11y/click-events-have-key-events': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
-    'simple-import-sort/imports': 'warn',
-    'simple-import-sort/exports': 'error',
+    // 'simple-import-sort/imports': 'warn', // 引入顺序排序功能
+    'simple-import-sort/exports': 'error', // 导出顺序排序
 
     //解决ts中，本身是可以有空的构造函数的误判问题 START
     'no-useless-constructor': 'off',
