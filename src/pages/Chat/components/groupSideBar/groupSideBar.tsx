@@ -158,28 +158,29 @@ const GroupSideBar = (props: Iprops) => {
                                   <span>{child.noRead}</span>
                                 </div>
                               ) : (
+                                ''
+                              )}
+                              <div
+                                className={sideStyle.group_con_show}
+                                onClick={() => {
+                                  openChangeds(child);
+                                }}>
                                 <div
-                                  className={sideStyle.group_con_show}
-                                  onClick={() => {
-                                    openChangeds(child);
-                                  }}>
+                                  className={`${sideStyle.group_con_show} ${sideStyle.name}`}>
                                   <div
-                                    className={`${sideStyle.group_con_show} ${sideStyle.name}`}>
-                                    <div
-                                      className={`${sideStyle.group_con_show} ${sideStyle.name} ${sideStyle.label}`}>
-                                      {child.name}
-                                    </div>
-                                    <div
-                                      className={`${sideStyle.group_con_show} ${sideStyle.name} ${sideStyle.time}`}>
-                                      {handleFormatDate(child.msgTime)}
-                                    </div>
+                                    className={`${sideStyle.group_con_show} ${sideStyle.name} ${sideStyle.label}`}>
+                                    {child.name}
                                   </div>
                                   <div
-                                    className={`${sideStyle.group_con_show} ${sideStyle.msg}`}>
-                                    {child.showTxt}
+                                    className={`${sideStyle.group_con_show} ${sideStyle.name} ${sideStyle.time}`}>
+                                    {handleFormatDate(child.msgTime)}
                                   </div>
                                 </div>
-                              )}
+                                <div
+                                  className={`${sideStyle.group_con_show} ${sideStyle.msg}`}>
+                                  {child.showTxt}
+                                </div>
+                              </div>
                             </div>
                           );
                         })}

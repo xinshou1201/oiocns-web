@@ -5,8 +5,8 @@ import { Button, Checkbox, Col, Empty, message, Modal, Row } from 'antd';
 import React, { useEffect, useState } from 'react';
 
 import HeadImg from '@/components/headImg/headImg';
+import CohortServers from '@/module/chat/cohortchat';
 import { chat } from '@/module/chat/orgchat';
-import API from '@/services';
 
 import detailStyle from './groupdetail.module.less';
 
@@ -59,26 +59,33 @@ const Groupdetail = () => {
     delids: [], // 所选择到的好友id列表 移出
   });
 
-  // 确认
+  // 邀请确认
   const handleOk = async () => {
     setIsModalOpen(false);
+    const { data, code } = await CohortServers.getpullPerson({
+      id: chat.curChat?.id,
+      targetIds: state.ids,
+    });
+    if (code === 200) {
+      message.success('邀请成功');
+      chat.getPersons(true);
+    } else {
+      message.warning('您不是群管理员');
+    }
+  };
+  // 移出确认
+  const handleMoveOk = async () => {
     setIsShiftUp(false);
-
-    $services.cohort
-      .pullPerson({
-        data: {
-          id: chat.curChat?.id,
-          targetIds: state.ids,
-        },
-      })
-      .then((res: ResultType) => {
-        if (res.code == 200) {
-          message.success('邀请成功');
-          chat.getPersons(true);
-        } else {
-          message.warning('您不是群管理员');
-        }
-      });
+    const { data, code } = await CohortServers.getremovePerson({
+      id: chat.curChat?.id,
+      targetIds: state.delids,
+    });
+    if (code === 200) {
+      message.success('移出成功');
+      chat.getPersons(true);
+    } else {
+      message.warning('您不是群管理员');
+    }
   };
   // 取消
   const handleCancel = () => {
@@ -102,6 +109,7 @@ const Groupdetail = () => {
       setState({ ...state, delids: [...state.delids, item.id] });
     }
   };
+
   return (
     <>
       <div className={detailStyle.group_detail_wrap}>
@@ -276,7 +284,7 @@ const Groupdetail = () => {
       <Modal
         title="移出群聊"
         open={isShiftUp}
-        onOk={handleOk}
+        onOk={handleMoveOk}
         onCancel={handleCancel}
         getContainer={false}>
         <div className={detailStyle.invitateBox}>

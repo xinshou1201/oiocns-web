@@ -1,11 +1,10 @@
 /* eslint-disable no-unused-vars */
 import { Button, message, Popover } from 'antd';
 import moment from 'moment';
-import React, { useRef } from 'react';
+import React from 'react';
 
 import HeadImg from '@/components/headImg/headImg';
 import { chat } from '@/module/chat/orgchat';
-import { debounce } from '@/utils/tools';
 
 import contentStyle from './groupContent.module.less';
 
@@ -15,7 +14,6 @@ interface Iprops {
 
 const GroupContent = (props: Iprops) => {
   const { goPageEnds } = props;
-  const contentNodeRef = useRef<HTMLDivElement>(null); // dom节点
   const isShowTime = (index: number) => {
     if (index == 0) return true;
     return (
