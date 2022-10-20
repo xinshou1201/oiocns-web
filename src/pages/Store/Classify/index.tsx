@@ -3,7 +3,6 @@ import {
   DatabaseOutlined,
   FileTextOutlined,
   FundOutlined,
-  HomeOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
 import React from 'react';
@@ -29,12 +28,12 @@ const StoreClassify: React.FC = () => {
 
   return (
     <div className={cls.container}>
-      <div className={cls.top}>
+      {/* <div className={cls.top}>
         <div className={cls.title}>
           <HomeOutlined />
           <strong>仓库</strong>
         </div>
-      </div>
+      </div> */}
       <div>
         <div className={cls.subTitle}>常用分类</div>
         <Menu items={items} onClick={to} />
