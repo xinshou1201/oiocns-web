@@ -25,7 +25,7 @@ import {
 } from '@ant-design/icons';
 import React from 'react';
 import { RouteConfig } from 'react-router-config';
-import { Redirect as RouterRedirect } from 'react-router-dom';
+// import { Redirect as RouterRedirect } from 'react-router-dom';
 
 import BasicLayout from '@/layouts/Basic';
 import PassportLayout from '@/layouts/Passport';
@@ -178,11 +178,11 @@ const MarketRouter: IRouteConfig[] = [
     component: React.lazy(() => import('@/pages/Market')),
     title: '市场',
     routes: [
-      {
-        path: '/market',
-        title: '市场',
-        render: () => <RouterRedirect to="/market/app" />,
-      },
+      // {
+      //   path: '/market',
+      //   title: '市场',
+      //   render: () => <RouterRedirect to="/market/app" />,
+      // },
       {
         path: '/market/app',
         title: '应用市场',
