@@ -134,7 +134,8 @@ const GroupContent = (props: Iprops) => {
                   content={
                     canDelete(item) ? (
                       <Button
-                        type="primary"
+                        type="text"
+                        danger
                         onClick={() => {
                           deleteMsg(item);
                         }}>
@@ -172,28 +173,29 @@ const GroupContent = (props: Iprops) => {
                   className={`${contentStyle.group_content_right} ${contentStyle.con}`}>
                   <Popover
                     content={
-                      canDelete(item) ? (
-                        <>
+                      <>
+                        <Button
+                          type="text"
+                          style={{ color: '#3e5ed8' }}
+                          onClick={() => {
+                            recallMsg(item);
+                          }}>
+                          撤回
+                        </Button>
+                        {canDelete(item) ? (
                           <Button
-                            type="primary"
-                            onClick={() => {
-                              recallMsg(item);
-                            }}>
-                            撤回
-                          </Button>
-                          <Button
-                            type="primary"
+                            type="text"
+                            danger
                             onClick={() => {
                               deleteMsg(item);
                             }}>
                             删除
                           </Button>
-                        </>
-                      ) : (
-                        ''
-                      )
+                        ) : (
+                          ''
+                        )}
+                      </>
                     }
-                    title="Title"
                     trigger="click">
                     <div className={contentStyle.con_body}>
                       <div className={contentStyle.con_content}>
