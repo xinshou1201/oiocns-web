@@ -5,14 +5,14 @@ import React from 'react';
 
 const { RangePicker } = DatePicker;
 
-const valueEnum: any = {
+const valueEnum = {
   0: 'close',
   1: 'running',
   2: 'online',
   3: 'error',
 };
 
-const ProcessMap: any = {
+const ProcessMap = {
   close: 'normal',
   running: 'active',
   online: 'success',
@@ -42,7 +42,7 @@ for (let i = 0; i < 5; i += 1) {
     callNumber: Math.floor(Math.random() * 2000),
     progress: Math.ceil(Math.random() * 100) + 1,
     creator: creators[Math.floor(Math.random() * creators.length)],
-    status: valueEnum[Math.floor(Math.random() * 10) % 4],
+    status: valueEnum[Math.floor(Math.random() * 10) % 4] as string,
     createdAt: Date.now() - Math.floor(Math.random() * 100000),
     memo:
       i % 2 === 1
@@ -129,7 +129,6 @@ export default () => {
     <ProTable<TableListItem>
       columns={columns}
       rowSelection={{
-        // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
         // 注释该行则默认不显示下拉选项
         selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
         defaultSelectedRowKeys: [1],
@@ -142,11 +141,11 @@ export default () => {
               取消选择
             </a>
           </span>
-          <span>{`展示合计: ${selectedRows.reduce(
+          <span>{`容器数量: ${selectedRows.reduce(
             (pre, item) => pre + item.containers,
             0,
           )} 个`}</span>
-          <span>{`展示其他: ${selectedRows.reduce(
+          <span>{`调用量: ${selectedRows.reduce(
             (pre, item) => pre + item.callNumber,
             0,
           )} 次`}</span>
@@ -165,8 +164,8 @@ export default () => {
       options={false}
       search={false}
       rowKey="key"
-      headerTitle="列表名称"
-      toolBarRender={() => [<Button key="show">操作区域</Button>]}
+      headerTitle="批量操作"
+      toolBarRender={() => [<Button key="show">查看日志</Button>]}
     />
   );
 };

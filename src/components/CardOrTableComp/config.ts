@@ -31,6 +31,18 @@ export const data: DataType[] = [
     age: 99,
     address: 'Sidney No. 1 Lake Park',
   },
+  {
+    key: '5',
+    name: '测试数据5',
+    age: 99,
+    address: 'Sidney No. 1 Lake Park',
+  },
+  {
+    key: '6',
+    name: '测试数据6',
+    age: 99,
+    address: 'Sidney No. 1 Lake Park',
+  },
 ];
 export const columns: ColumnsType<any> = [
   {

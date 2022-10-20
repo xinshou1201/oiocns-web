@@ -1,17 +1,17 @@
-import './index.less';
-
 import React from 'react';
+import './index.less';
+import appLogo from '@/assets/img/appLogo.png';
 
 const dataSource = [
   {
     title: '资产监管平台',
-    url: 'https://gw.alipayobjects.com/zos/bmw-prod/ae0adacf-9456-4ed3-b1ab-51e4417d8d0c.svg',
+    url: appLogo,
     desc: '这是一段',
     key: 1,
   },
   {
     title: '资产管理应用',
-    url: 'https://gw.alipayobjects.com/zos/antfincdn/aPkFc8Sj7n/method-draw-image.svg',
+    url: appLogo,
     desc: '应用的说明',
     key: 4,
   },

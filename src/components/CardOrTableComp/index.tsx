@@ -1,19 +1,21 @@
+import React, { useMemo, useState } from 'react';
+import type { ProColumns } from '@ant-design/pro-components';
 /* eslint-disable no-unused-vars */
 import './index.less';
 
-import { Pagination, Table } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
-import React, { useMemo, useState } from 'react';
+import { Dropdown, Menu, Pagination } from 'antd';
+import { ProTable } from '@ant-design/pro-components';
 
 import { IconFont } from '@/components/IconFont';
+import { EllipsisOutlined } from '@ant-design/icons';
 
 interface PageType {
   defaultPageType?: PageShowType; //当前展示类型 card: 卡片; list: 列表
   dataSource: any[]; // 展示数据源
-  columns: ColumnsType<DataType>;
+  columns: ProColumns<DataType>[];
+  rowKey: string | Function;
   total?: number; // 总条数
   onChange?: (page: number, pageSize: number) => void; // 弹出切换页码事件
-  selectMore?: boolean; //是否开启选择区域
   stripe?: boolean; // 斑马纹
   style?: React.CSSProperties; // wrap样式加载 对表格外部margin pading 等定制展示
   renderCardContent?: (
@@ -26,8 +28,8 @@ const Index: React.FC<PageType> = ({
   defaultPageType,
   dataSource,
   columns,
+  rowKey,
   total,
-  selectMore = false,
   stripe = false,
   style,
   onChange,
@@ -35,41 +37,60 @@ const Index: React.FC<PageType> = ({
   ...rest
 }) => {
   const [pageType, setPageType] = useState<PageShowType>(defaultPageType || 'table');
-  /**
-   * @desc: 多选功能函数
-   * @return {*}
-   */
-  const rowSelection = {
-    onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
-      console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    },
-    // 禁用选择功能
-    // getCheckboxProps: (record: DataType) => ({
-    //   disabled: record.name === 'Disabled User', // Column configuration not to be checked
-    //   name: record.name,
-    // }),
-  };
-
+  const menu = (
+    <Menu
+      items={[
+        {
+          label: '1st menu item',
+          key: '1',
+        },
+        {
+          label: '2nd menu item',
+          key: '2',
+        },
+        {
+          label: '3rd menu item',
+          key: '3',
+        },
+      ]}
+    />
+  );
   /**
    * @desc: 渲染表格主体
    * @return {表格主体}
    */
+  const resetColumns: ProColumns<DataType>[] = useMemo(() => {
+    return [
+      ...columns,
+      {
+        title: '操作',
+        width: 80,
+        key: 'option',
+        valueType: 'option',
+        fixed: 'right',
+        render: () => [
+          <Dropdown
+            className="operation-btn"
+            openClassName="test"
+            overlay={menu}
+            key="ss">
+            <EllipsisOutlined />
+          </Dropdown>,
+        ],
+      },
+    ];
+  }, [columns]);
   const renderTable = useMemo(() => {
     return pageType === 'table' ? (
-      <Table
+      <ProTable
         className="common-table"
+        columns={resetColumns}
         bordered
-        size="small"
-        columns={columns}
         dataSource={dataSource}
-        rowSelection={
-          selectMore
-            ? {
-                type: 'checkbox',
-                ...rowSelection,
-              }
-            : undefined
-        }
+        // scroll={{ x: 1300 }}
+        options={false}
+        search={false}
+        rowKey="key"
         pagination={false}
         rowClassName={
           stripe
