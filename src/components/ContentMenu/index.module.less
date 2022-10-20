@@ -1,0 +1,38 @@
+@import '~antd/es/style/themes/variable';
+
+.sider {
+  .title {
+    background-color: @system-menu-active-background;
+    border-radius: @border-radius-base;
+    margin: @margin-xs;
+    text-align: center;
+    padding: 6px;
+  }
+  .icon {
+    color: @primary-color;
+    font-size: 20px;
+  }
+  :global(.ogo-menu-sub.ogo-menu-inline) {
+    background: @component-background;
+  }
+  :global(.ogo-menu:not(.ogo-menu-horizontal) .ogo-menu-item-selected),
+  :global(.ogo-menu-item:hover),
+  :global(.ogo-menu-item-acitve:hover) {
+    background-color: @custom-menu-active-background;
+    color: @text-color;
+  }
+  :global(.ogo-menu-item) {
+    color: @system-menu-color;
+  }
+  :global(.ogo-menu-item:hover .ogo-menu-item-icon),
+  :global(.ogo-menu-item.ogo-menu-item-selected .ogo-menu-item-icon) {
+    color: @primary-color;
+  }
+  :global(.ogo-menu-vertical),
+  :global(.ogo-menu-inline) {
+    border: none;
+  }
+  :global(.ogo-menu-inline .ogo-menu-item-selected::after) {
+    opacity: 0;
+  }
+}

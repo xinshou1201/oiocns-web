@@ -9,11 +9,13 @@ import routes from '@/routes/config';
 
 const App = () => {
   return (
-    <ConfigProvider prefixCls="ogo">
-      <Suspense fallback={<Spin size="large" className="layout__loading" />}>
-        <BrowserRouter>{renderRoutes(routes)}</BrowserRouter>
-      </Suspense>
-    </ConfigProvider>
+    <BrowserRouter>
+      <ConfigProvider prefixCls="ogo">
+        <Suspense fallback={<Spin size="large" className="layout__loading" />}>
+          {renderRoutes(routes)}
+        </Suspense>
+      </ConfigProvider>
+    </BrowserRouter>
   );
 };
 

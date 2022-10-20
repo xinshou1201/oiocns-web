@@ -4,7 +4,7 @@ import Title from 'antd/lib/typography/Title';
 import React, { useEffect, useState } from 'react';
 
 import { Company } from '@/module/org';
-import companyService from '@/module/org/company.service';
+import companyService from '@/module/org/company';
 
 import cls from './index.module.less';
 
@@ -16,7 +16,7 @@ const PersonInfoCompany: React.FC = () => {
   const [companies, setCompanies] = useState<Company[]>([]);
 
   const getCompanies = async () => {
-    const data = await companyService.getJoinedCompany({ offset: 0, limit: 1000 });
+    const data = await companyService.getJoinedCompany({ page: 1, pageSize: 1000 });
     setCompanies(data);
   };
 

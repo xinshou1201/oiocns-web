@@ -25,8 +25,8 @@ export function flattenRoute(
       auth: typeof route.auth !== 'undefined' ? route.auth : auth,
     });
 
-    if (route.children && deep) {
-      result.push(...flattenRoute(route.children, deep, auth));
+    if (route.routes && deep) {
+      result.push(...flattenRoute(route.routes, deep, auth));
     }
   }
 
@@ -78,10 +78,10 @@ function findRoutesByPaths(
   );
 }
 
-export function getPageTitle(routeList: IRoute[]): string {
+export function getCurrentPage(routeList: IRoute[]): IRoute | null {
   const route = routeList.find((child) => child.path === window.location.pathname);
 
-  return route ? route.meta.title : '';
+  return route || null;
 }
 
 export function getPagePathList(pathname?: string): string[] {
