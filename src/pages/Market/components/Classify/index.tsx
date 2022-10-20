@@ -3,7 +3,6 @@ import {
   DatabaseFilled,
   FileTextFilled,
   FundFilled,
-  HomeOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
 import React from 'react';
@@ -39,22 +38,14 @@ const MarketClassify: React.FC<any> = ({ history }) => {
   };
   return (
     <div className={cls.container}>
-      <div className={cls.top}>
-        <div className={cls.title}>
-          <HomeOutlined />
-          <strong>市场</strong>
-        </div>
-      </div>
-      <div>
-        <div className={cls.subTitle}>常用分类</div>
-        <Menu
-          mode="inline"
-          items={items}
-          defaultOpenKeys={['openMarket']}
-          onClick={({ key }) => handleChange(key)}
-        />
-        <MarketClassifyTree></MarketClassifyTree>
-      </div>
+      <div className={cls.subTitle}>常用分类</div>
+      <Menu
+        mode="inline"
+        items={items}
+        defaultOpenKeys={['openMarket']}
+        onClick={({ key }) => handleChange(key)}
+      />
+      <MarketClassifyTree></MarketClassifyTree>
     </div>
   );
 };

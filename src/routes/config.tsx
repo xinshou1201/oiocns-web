@@ -94,7 +94,7 @@ const ChatRouter: IRouteConfig[] = [
   {
     path: '/chat',
     title: '沟通',
-    icon: 'HomeFilled',
+    icon: 'icon-message',
     component: React.lazy(() => import('@/pages/Chat')),
   },
 ];
@@ -104,7 +104,7 @@ const TodoRouter: IRouteConfig[] = [
   {
     path: '/todo',
     title: '办事',
-    icon: 'HomeFilled',
+    icon: 'icon-todo',
     component: React.lazy(() => import('@/pages/Todo')),
     routes: [
       {
@@ -140,7 +140,7 @@ const StoreRouter: IRouteConfig[] = [
   {
     path: '/store',
     title: '仓库',
-    icon: 'HomeFilled',
+    icon: 'icon-store',
     component: React.lazy(() => import('@/pages/Store')),
     routes: [
       {
@@ -177,12 +177,8 @@ const MarketRouter: IRouteConfig[] = [
     path: '/market',
     component: React.lazy(() => import('@/pages/Market')),
     title: '市场',
+    icon: 'icon-guangshangcheng',
     routes: [
-      {
-        path: '/market',
-        title: '市场',
-        render: () => <RouterRedirect to="/market/app" />,
-      },
       {
         path: '/market/app',
         title: '应用市场',
@@ -195,6 +191,11 @@ const MarketRouter: IRouteConfig[] = [
         icon: 'icon-message',
         component: React.lazy(() => import('@/pages/Market/Docx')),
       },
+      {
+        path: '/market',
+        title: '市场',
+        render: () => <RouterRedirect to="/market/app" />,
+      },
     ],
   },
 ];
@@ -204,7 +205,7 @@ const SettingRouter: IRouteConfig[] = [
   {
     path: '/setting',
     title: '设置',
-    icon: <SettingOutlined />,
+    icon: 'icon-setting',
     component: React.lazy(() => import('@/pages/Setting')),
     routes: [
       {
