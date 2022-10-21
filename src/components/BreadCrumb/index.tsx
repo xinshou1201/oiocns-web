@@ -44,7 +44,7 @@ const BreadCrumb: React.FC = () => {
           </span>
         ) : (
           <IconFont
-            type={breadcrumbNameMap[url].icon as string}
+            type={(breadcrumbNameMap[url].icon as string) || ''}
             className={cls['comp-breadcrumb-icon']}
           />
         )}

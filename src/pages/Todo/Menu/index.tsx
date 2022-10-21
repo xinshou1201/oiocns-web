@@ -45,12 +45,12 @@ const TodoMenu: React.FC = () => {
 
   return (
     <div className={cls.container}>
-      <div className={cls.top}>
+      {/* <div className={cls.top}>
         <div className={cls.title}>
           <HomeOutlined />
           <strong>办事</strong>
         </div>
-      </div>
+      </div> */}
       <div>
         <div className={cls.subTitle}>平台待办</div>
         <Menu items={items} onClick={to} />
