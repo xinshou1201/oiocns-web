@@ -6,8 +6,8 @@ import AppCard from '@/components/AppCardComp';
 import { columns, data } from '@/components/CardOrTableComp/config';
 
 const MarketApp = () => {
-  const renderCardFun = (data: any) => {
-    return data.map((item: any) => {
+  const renderCardFun = (dataArr: any) => {
+    return dataArr.map((item: any) => {
       return <AppCard className="card" data={item} key={item.key} />;
     });
   };
