@@ -1,4 +1,4 @@
-import { SearchOutlined } from '@ant-design/icons';
+import { LeftCircleOutlined, SearchOutlined } from '@ant-design/icons';
 import { Input, Tree } from 'antd';
 import type { DataNode, TreeProps } from 'antd/es/tree';
 import React, { useState } from 'react';
@@ -108,6 +108,16 @@ const StoreClassifyTree: React.FC = () => {
     }
     setGData(data);
   };
+  const renderTreeTitle = (node: any) => {
+    return (
+      <div className={cls.treeTitleBox}>
+        <div>{node.title}</div>
+        <div>
+          <text>按钮</text>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div>
@@ -117,6 +127,8 @@ const StoreClassifyTree: React.FC = () => {
       </div>
       <Tree
         className="draggable-tree"
+        switcherIcon={<LeftCircleOutlined />}
+        titleRender={renderTreeTitle}
         defaultExpandedKeys={expandedKeys}
         draggable
         blockNode

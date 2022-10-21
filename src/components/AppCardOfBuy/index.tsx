@@ -1,9 +1,9 @@
-import cls from './index.module.less';
-
 import React from 'react';
 import { CheckCard } from '@ant-design/pro-components';
 import { Button, Dropdown, Menu } from 'antd';
 import { EllipsisOutlined } from '@ant-design/icons';
+import cls from './index.module.less';
+
 interface indexType {
   className?: string;
   showBtn?: boolean; //是否展示按钮
