@@ -5,6 +5,7 @@ import React, { useEffect, useState } from 'react';
 
 import HeadImg from '@/components/headImg/headImg';
 import { chat } from '@/module/chat/orgchat';
+import useChatStore from '@/store/chat';
 import { formatDate } from '@/utils/index';
 
 import sideStyle from './groupSidebar.module.less';
@@ -24,6 +25,7 @@ const GroupSideBar = (props: Iprops) => {
     }
   };
   getInfo();
+  const { setCurrent }: any = useChatStore();
   const [searchValue, setSearchValue] = useState<string>(''); // 搜索值
   let [openIdArr, setOpenIdArr] = useState<Array<string>>([]);
   const [isMounted, setIsMounted] = useState<boolean>(false); // 是否已加载--判断是否需要默认打开
@@ -80,7 +82,8 @@ const GroupSideBar = (props: Iprops) => {
     return showInfoArr;
   };
   const openChangeds = async (child: ImMsgChildType) => {
-    await chat.setCurrent(child);
+    // await chat.setCurrent(child);
+    await setCurrent(child);
     // openChanged(child);
   };
 

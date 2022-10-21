@@ -1,19 +1,63 @@
-// 因此不需要在最外层提供一个类似redux的Provider包裹层
+/* eslint-disable no-unused-vars */
 import create from 'zustand';
 
-// 数据持久化，会缓存到 storage
-// import { persist } from 'zustand/middleware';
+// import AnyStore, { BadRequst } from '@/hubs/anystore';
+import { chat } from '@/module/chat/orgchat';
 
-// 创建 store
-// eslint-disable-next-line no-unused-vars
-const useChatStore = create<any>((set: any, _get: any) => ({
+const useChatStore = create((set) => ({
+  hisMsgCollName: 'chat-message',
+  closed: false,
+  stoped: false,
+  lastMsg: {},
+  openChats: [],
   chats: [],
-  setChats: async (data: any) => {
-    console.log('打印chat', data);
-
-    set({ user: [...data] });
+  userId: '',
+  spaceId: '',
+  curMsgs: [],
+  nameMap: {},
+  curChat: null, //ok
+  authed: false,
+  isconnecting: false,
+  qunPersons: [],
+  // 接收消息
+  RecvMsg: () => {
+    chat.connection.on('RecvMsg', (data: any) => {
+      set({ data });
+    });
+  },
+  // 撤回消息
+  RecallMsg: async (msg: any) => {
+    return await chat.connection.invoke('RecallMsg', msg);
+  },
+  _recallMsg: async (data: any) => {
+    return await chat._recallMsg(data);
+  },
+  // 清空会话历史消息
+  clearMsg: async () => {
+    if (get().this.curChat) {
+      this.anyStore
+        .remove(
+          this.hisMsgCollName,
+          {
+            sessionId: this.curChat.id,
+          },
+          'user',
+        )
+        .then((res: ResultType) => {
+          // if (res.data > 0 && this.curMsgs.length > 0) {
+          //   this.curMsgs = [];
+          // }
+        });
+    }
+  },
+  //设置当前会话
+  setCurrent: async (chats: ImMsgChildType | null) => {
+    return await chat.setCurrent(chats);
+  },
+  //查询历史消息
+  getHistoryMsg: async () => {
+    return await chat.getHistoryMsg();
   },
 }));
 
-// 暴露单一实例
 export default useChatStore;

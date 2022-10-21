@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import HeadImg from '@/components/headImg/headImg';
 import CohortServers from '@/module/chat/cohortchat';
 import { chat } from '@/module/chat/orgchat';
+import useChatStore from '@/store/chat';
 
 import detailStyle from './groupdetail.module.less';
 
@@ -44,6 +45,7 @@ const Groupdetail = () => {
       }
     });
   };
+  const { clearMsg }: any = useChatStore();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // 邀请好友
   const [isShiftUp, setIsShiftUp] = useState<boolean>(false); // 移出群聊
   const [state, setState] = useState<any>({
@@ -213,7 +215,8 @@ const Groupdetail = () => {
             <Button
               type="primary"
               onClick={() => {
-                chat.clearMsg();
+                // chat.clearMsg();
+                clearMsg();
               }}>
               清空聊天记录
             </Button>

@@ -5,6 +5,7 @@ import React from 'react';
 
 import HeadImg from '@/components/headImg/headImg';
 import { chat } from '@/module/chat/orgchat';
+import useChatStore from '@/store/chat';
 
 import contentStyle from './groupContent.module.less';
 
@@ -14,6 +15,7 @@ interface Iprops {
 
 const GroupContent = (props: Iprops) => {
   const { goPageEnds } = props;
+  const { RecallMsg }: any = useChatStore();
   const isShowTime = (index: number) => {
     if (index == 0) return true;
     return (
@@ -66,7 +68,7 @@ const GroupContent = (props: Iprops) => {
       delete item.chatId;
       delete item.sessionId;
     }
-    chat.recallMsg(item).then((res: ResultType) => {
+    RecallMsg(item).then((res: ResultType) => {
       if (res.data != 1) {
         message.warning('只能撤回2分钟内发送的消息');
       }

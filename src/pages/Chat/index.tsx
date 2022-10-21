@@ -42,6 +42,8 @@ const Chat = () => {
   useEffect(() => {
     scrollEvent();
   }, []);
+  console.log('zzzzzzzzzzz', chat.curChat);
+
   return (
     <div className={charsStyle.cohort_wrap}>
       <div className={charsStyle.custom_group_silder_menu}>
