@@ -3,6 +3,8 @@ import { IdPage, Page, PageResponse } from '../typings';
 import { IdPageReq, PageReq } from './../index';
 import { Company } from '.';
 
+import useUserStore from '@/store/user';
+
 /**
  * 单位(公司)业务
  */
@@ -12,16 +14,20 @@ class CompanyService {
    */
   public getJoinedCompany(req: Page): Promise<Company[]> {
     return API.company.getJoinedCompany({ data: new PageReq(req) }).then(
-      (res: PageResponse) => {
+      (res: PageResponse<Company>) => {
         if (res.success) {
-          return res.data?.result || [];
+          const joinedCompanies = res.data?.result || [];
+          const { setJoinedCompanies } = useUserStore.getState();
+          setJoinedCompanies(joinedCompanies);
+          console.log('888888888888888');
+          return joinedCompanies;
         } else {
           console.error(res.msg);
           return [];
         }
       },
       (error: any) => {
-        console.error(error);
+        throw error;
       },
     );
   }
@@ -41,7 +47,7 @@ class CompanyService {
         }
       },
       (error: any) => {
-        console.error(error);
+        throw error;
       },
     );
   }
