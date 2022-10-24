@@ -2,6 +2,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 import { chat } from '@/module/chat/orgchat';
+import useChatStore from '@/store/chat';
 
 import GroupContent from './components/groupContent/groupContent';
 import GroupDetail from './components/groupDetail/groupDetail';
@@ -12,6 +13,7 @@ import charsStyle from './index.module.less';
 const Chat = () => {
   const [isShowDetail, setIsShowDetail] = useState<boolean>(false);
   const [contentWrapRef, setContentWrapRef] = useState(null);
+  const { curChat }: any = useChatStore();
   const messageNodeRef = useRef<HTMLDivElement>(null); // dom节点
   // 展示详情页
   const handleViewDetail = () => {
@@ -42,7 +44,6 @@ const Chat = () => {
   useEffect(() => {
     scrollEvent();
   }, []);
-  console.log('zzzzzzzzzzz', chat.curChat);
 
   return (
     <div className={charsStyle.cohort_wrap}>
@@ -51,7 +52,7 @@ const Chat = () => {
       </div>
       {/* 右侧展示主体 */}
       <div className={charsStyle.chart_page}>
-        {chat.curChat !== null ? (
+        {curChat !== null ? (
           <>
             {/* 头部 */}
             <GroupHeader handleViewDetail={handleViewDetail} />

@@ -186,13 +186,13 @@ export default class OrgChat extends Object {
   }
   /** 获取未读消息数量 */
   public getNoReadCount() {
-    // let sum: number = 0;
-    // this.chats.forEach((item) => {
-    //   item.chats.forEach((chat) => {
-    //     sum += chat.noRead || 0;
-    //   });
-    // });
-    // return sum > 999 ? '999+' : sum > 0 ? sum.toString() : '';
+    let sum: number = 0;
+    this.chats.forEach((item) => {
+      item.chats.forEach((chat) => {
+        sum += chat.noRead || 0;
+      });
+    });
+    return sum > 999 ? '999+' : sum > 0 ? sum.toString() : '';
   }
   /**
    * 发送消息
@@ -266,23 +266,17 @@ export default class OrgChat extends Object {
    * @param {ImMsgChildType} chat 当前会话
    */
   public async setCurrent(chat: ImMsgChildType | null) {
-    console.log('切换聊天窗口');
     if (this.authed) {
       if (this.curChat) {
         this.openChats = this.openChats.filter((item) => {
           return item.id !== this.curChat?.id || item.spaceId !== this.curChat?.spaceId;
         });
       }
-      console.log('切换聊天窗口的chat', chat);
-      console.log('切换聊天窗口之前的curChat', this.curChat);
-
       if (chat && chat.id.length > 0) {
         this.curMsgs = [];
         this.qunPersons = [];
         chat.noRead = 0;
         this.curChat = chat;
-        console.log('切换聊天窗口之后的curChat', this.curChat);
-
         await this.getHistoryMsg();
         if (chat.typeName !== TargetType.Person) {
           await this.getPersons(true);
@@ -345,7 +339,6 @@ export default class OrgChat extends Object {
    * @returns 查询到的历史消息
    */
   public async getHistoryMsg() {
-    console.log('执行获取历史消息');
     if (this.authed && this.curChat) {
       if (this.curChat.spaceId === this.userId) {
         let match: any = { sessionId: this.curChat.id };

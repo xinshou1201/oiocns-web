@@ -15,15 +15,16 @@ interface Iprops {
 
 const GroupContent = (props: Iprops) => {
   const { goPageEnds } = props;
-  const { RecallMsg }: any = useChatStore();
+  const ChatStore: any = useChatStore();
+
   const isShowTime = (index: number) => {
     if (index == 0) return true;
-    return (
-      moment(chat.curMsgs[index].createTime).diff(
-        chat.curMsgs[index - 1].createTime,
-        'minute',
-      ) > 3
-    );
+    // return (
+    //   moment(chat.curMsgs[index].createTime).diff(
+    //     chat.curMsgs[index - 1].createTime,
+    //     'minute',
+    //   ) > 3
+    // );
   };
 
   // 显示聊天间隔时间
@@ -53,7 +54,7 @@ const GroupContent = (props: Iprops) => {
   };
   const deleteMsg = (item: any) => {
     item.edit = false;
-    chat.deleteMsg(item);
+    ChatStore.deleteMsg(item);
   };
   const canDelete = (item: any) => {
     if (item.chatId) {
@@ -68,7 +69,7 @@ const GroupContent = (props: Iprops) => {
       delete item.chatId;
       delete item.sessionId;
     }
-    RecallMsg(item).then((res: ResultType) => {
+    ChatStore.recallMsgs(item).then((res: ResultType) => {
       if (res.data != 1) {
         message.warning('只能撤回2分钟内发送的消息');
       }
@@ -98,7 +99,7 @@ const GroupContent = (props: Iprops) => {
 
   return (
     <div className={contentStyle.group_content_wrap}>
-      {chat.curMsgs.map((item, index) => {
+      {ChatStore?.curMsgs.map((item: any, index: any) => {
         return (
           <React.Fragment key={item.fromId + index}>
             {/* 聊天间隔时间3分钟则 显示时间 */}
