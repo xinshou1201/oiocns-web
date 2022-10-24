@@ -77,7 +77,7 @@ export type QueryExtendReq = {
   id: number | string;
   page: number;
   pageSize: number;
-  filter: string;
+  filter?: string;
 };
 
 /**
@@ -88,7 +88,7 @@ export type StatusPage = {
   status: number | string;
   page: number;
   pageSize: number;
-  filter: string;
+  filter?: string;
 };
 
 /**
@@ -100,7 +100,7 @@ export type StatusPage = {
   status: number | string;
   page: number;
   pageSize: number;
-  filter: string;
+  filter?: string;
 };
 
 /**

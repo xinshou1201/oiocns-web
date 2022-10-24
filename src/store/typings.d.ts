@@ -16,11 +16,13 @@ interface CompanyState {
   
 interface UserState {
     user: User | {}; // 用户信息
+    curWorkSpace: WorkSpace | {};  // 用户当前的工作空间
     workspaces: WorkSpace[]; // 用户工作空间
     fridends: Person[]; // 用户的好友
     cohorts: Cohort[]; // 用户的群组(创建和加入)
     joinedCompanies: Company[]; // 用户加入的公司(单位)
     setUser: (user: User) => void;
+    setCurWorkspace: (workspace: WorkSpace) => void;
     setWorkspaces: (workspaces: WorkSpace[]) => void;
     setFriends: (fridends: Person[]) => void;
     setCohorts: (cohorts: Cohort[]) => void;

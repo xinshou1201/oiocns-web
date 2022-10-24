@@ -54,12 +54,6 @@ const PersonMenu: React.FC = () => {
 
   return (
     <div className={cls.container}>
-      <div className={cls.top}>
-        <div className={cls.title}>
-          <HomeOutlined />
-          <strong>我的</strong>
-        </div>
-      </div>
       <div>
         <div className={cls.subTitle}>信息中心</div>
         <Menu items={infoMenuItems} onClick={to} />

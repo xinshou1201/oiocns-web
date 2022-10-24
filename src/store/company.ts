@@ -8,7 +8,7 @@ import { CompanyState } from './typings';
 const useCompanyStore = create<CompanyState>((set) => ({
   company: {}, // 当前单位
   orgTree: [], // 当前单位：创建的部门或工作组树
-  groups: [],  // 当前单位：创建的集团
+  groups: [], // 当前单位：创建的集团
   cohorts: [], // 当前单位：创建的群组
   persons: [], // 当前单位：所有人员
   setCompany: (company: Company) => set({ company }),
