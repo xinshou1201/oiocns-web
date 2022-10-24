@@ -11,18 +11,18 @@ import { EllipsisOutlined } from '@ant-design/icons';
 
 interface PageType {
   dataSource: any[]; // 展示数据源
-  rowKey: string | Function; //唯一key
+  rowKey: string; //唯一key
   defaultPageType?: PageShowType; //当前展示类型 card: 卡片; list: 列表
   showChangeBtn?: boolean; //是否展示 图列切换按钮
   hideOperation?: boolean; //是否展示 默认操作区域
   columns?: ProColumns<DataType>[]; //表格头部数组
   total?: number; // 总条数 总数量
-  onChange?: (pageNum: number, pageSize: number) => void; // 弹出切换页码事件
+  onChange?: (page: number, pageSize: number) => void; // 弹出切换页码事件
   stripe?: boolean; // 斑马纹
   style?: React.CSSProperties; // wrap样式加载 对表格外部margin pading 等定制展示
   renderCardContent?: (
-    data?: Pick<PageType, 'dataSource'>['dataSource'], //渲染卡片样式 Data保持与dataSource 类型一致;或者直接传进展示组件
-  ) => React.ReactNode;
+    data?: PageType['dataSource'], //渲染卡片样式 Data保持与dataSource 类型一致;或者直接传进展示组件
+  ) => React.ReactNode | React.ReactNode[];
   [key: string]: any; // 其他属性方法
 }
 
@@ -41,12 +41,16 @@ const Index: React.FC<PageType> = ({
   ...rest
 }) => {
   const [pageType, setPageType] = useState<PageShowType>(defaultPageType || 'table');
-  const menu = (
+
+  const menu = (data: any) => (
     <Menu
       items={[
         {
           label: '操作1',
           key: '1',
+          onClick: () => {
+            console.log('data', data);
+          },
         },
         {
           label: '操作1',
@@ -72,8 +76,8 @@ const Index: React.FC<PageType> = ({
         key: 'option',
         valueType: 'option',
         fixed: 'right',
-        render: () => [
-          <Dropdown className="operation-btn" overlay={menu} key="key">
+        render: (_text, record) => [
+          <Dropdown className="operation-btn" overlay={menu(record)} key="key">
             <EllipsisOutlined />
           </Dropdown>,
         ],
@@ -82,7 +86,7 @@ const Index: React.FC<PageType> = ({
   }, [columns]);
   const renderTable = useMemo(() => {
     return pageType === 'table' ? (
-      <ProTable
+      <ProTable<PageType['dataSource']>
         className="common-table"
         columns={hideOperation ? columns : resetColumns}
         bordered
@@ -90,7 +94,7 @@ const Index: React.FC<PageType> = ({
         // scroll={{ x: 1300 }}
         options={false}
         search={false}
-        rowKey="key"
+        rowKey={rowKey || 'key'}
         pagination={false}
         rowClassName={
           stripe
@@ -106,7 +110,7 @@ const Index: React.FC<PageType> = ({
         {renderCardContent && renderCardContent(dataSource)}
       </div>
     );
-  }, [pageType]);
+  }, [pageType, dataSource]);
   /**
    * @desc: 自定义表格 底部区域
    * @return {底部组件}
