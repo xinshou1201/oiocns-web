@@ -14,7 +14,7 @@ type ContentMenuProps = {
 };
 
 // 根据数据类型渲染icon
-const createIcon = (icon?: string | React.Component) => {
+const createIcon = (icon?: string | React.ReactNode) => {
   return typeof icon == 'string' ? (
     <IconFont type={(icon as string) || ''} className={cls['icon']} />
   ) : (

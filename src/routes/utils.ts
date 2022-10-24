@@ -56,10 +56,29 @@ function getSystemRouteList(): IRoute[] {
 }
 
 /**
+ * 遍历路由，初始化映射关系
+ * @param routes 路由
+ */
+const initMap = (routeList: IRouteConfig[]): Record<string, IRouteConfig>[] => {
+  const child: Record<string, IRouteConfig>[] = [];
+  routeList.forEach((route) => {
+    const r = { [route.path]: route };
+    child.push(r);
+    if (route.routes && route.routes.length > 0) {
+      const reslut = initMap(route.routes);
+      child.push(...reslut);
+    }
+  });
+
+  return child;
+};
+
+/**
  * 这里会将 config 中所有路由解析成三个数组
  * 第一个: 最外层的路由，例如  Layout UserLayout ...
  * 第二个: 系统路由, 例如 Login Register RegisterResult
  * 第三个: 业务路由，为 / 路由下的业务路由
+ * 第四个： 面包屑路由映射
  */
 
 export const layoutRouteList = getLayoutRouteList();
@@ -67,6 +86,8 @@ export const layoutRouteList = getLayoutRouteList();
 export const businessRouteList = getBusinessRouteList();
 
 export const systemRouteList = getSystemRouteList();
+
+export const breadcrumbRouteMap = initMap(routes);
 
 function findRoutesByPaths(
   pathList: string[],

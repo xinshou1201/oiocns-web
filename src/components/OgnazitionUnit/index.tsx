@@ -2,12 +2,15 @@ import { CaretDownOutlined } from '@ant-design/icons';
 import { Avatar, Button, Col, Divider, Row, Skeleton, Space, Typography } from 'antd';
 import React, { useEffect, useState } from 'react';
 
-import CompanyServices from '@/module/company';
+import CompanyServices from '@/module/org/company';
 import PersonServices from '@/module/person';
 import useStore from '@/store';
 import { SpaceType } from '@/store/type';
+import TableSearchModal from '../TableSearchModal';
 
 import styles from './index.module.less';
+import { Company } from '@/module/org/index';
+import { ProColumns } from '@ant-design/pro-components';
 type OrganizationalUnitsProps = {};
 
 // 菜单列表项
@@ -30,10 +33,41 @@ const OrganizationalUnits: React.FC<OrganizationalUnitsProps> = () => {
   const [current, setCurrent] = useState<SpaceType>();
   const [menuList, setMenuList] = useState<SpaceType[]>([]);
   const [showMenu, setShowMenu] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const columns: ProColumns<Company>[] = [
+    {
+      title: '序号',
+      width: 90,
+      valueType: 'index',
+    },
+    {
+      dataIndex: 'code',
+      title: '编码',
+      width: 200,
+      hideInTable: true,
+    },
+    {
+      dataIndex: 'name',
+      title: '单位名称',
+      width: 200,
+      hideInSearch: true,
+    },
+    {
+      dataIndex: 'code',
+      title: '统一社会信用代码',
+      width: 200,
+      hideInSearch: true,
+    },
+    {
+      dataIndex: 'remark',
+      title: '单位简介',
+      hideInSearch: true,
+    },
+  ];
   // 获取工作单位列表
   const getList = async () => {
-    const { data } = await CompanyServices.getJoinedCompany({
-      current: 1,
+    const data = await CompanyServices.getJoinedCompany({
+      page: 1,
       pageSize: 100,
     });
     setMenuList([...data, userSpace]);
@@ -74,7 +108,6 @@ const OrganizationalUnits: React.FC<OrganizationalUnitsProps> = () => {
           className={`${styles[`down-icon`]} ${showMenu ? styles.active : ''}`}
         />
       </Space>
-
       <div
         className={`${styles.list} ${showMenu ? styles.active : ''}`}
         // style={{ height: showMenu ? menuList.length * 56 : 0 }}
@@ -98,12 +131,38 @@ const OrganizationalUnits: React.FC<OrganizationalUnitsProps> = () => {
             </Button>
           </Col>
           <Col span={12}>
-            <Button type="text" block>
+            <Button type="text" block onClick={() => setShowModal(true)}>
               加入单位
             </Button>
           </Col>
         </Row>
       </div>
+      <TableSearchModal
+        modalConfig={{
+          title: '加入单位 ',
+          open: showModal,
+          width: 720,
+          onOk: () => {
+            console.log(`确定按钮`);
+            setShowModal(false);
+          },
+          onCancel: () => {
+            console.log(`取消按钮`);
+            setShowModal(false);
+          },
+        }}
+        tableConfig={{
+          columns: columns as any,
+          request: async (params) => {
+            const { data, success, total } = await CompanyServices.searchCompany({
+              filter: params?.code,
+              page: params.current || 1,
+              pageSize: params.pageSize || 20,
+            });
+            return { data, success, total };
+          },
+        }}
+      />
     </div>
   ) : (
     <Skeleton active />

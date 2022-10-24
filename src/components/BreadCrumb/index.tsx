@@ -20,34 +20,33 @@ const initMap = (routes: IRouteConfig[]) => {
     }
   });
 };
-
+// 渲染图标
+const createIcon = (icon?: string | React.ReactNode) => {
+  if (!icon) return '';
+  return typeof icon !== 'string' ? (
+    <span className={cls['comp-breadcrumb-icon']}>{icon}</span>
+  ) : (
+    <IconFont type={(icon as string) || ''} className={cls['comp-breadcrumb-icon']} />
+  );
+};
 /**
  * 全局面包屑
  * @returns
  */
 const BreadCrumb: React.FC = () => {
   initMap(routes);
+
   const location = useLocation();
   const pathSnippets = location.pathname.split('/').filter((i) => i);
 
   // TODO 修改样式
   const items = pathSnippets.map((_, index) => {
     const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
+
     return (
       <Breadcrumb.Item key={url} className={cls['comp-breadcrumb']}>
+        {url === location.pathname ? createIcon(breadcrumbNameMap[url]?.icon || '') : ''}
         <Link to={url}>{breadcrumbNameMap[url].title}</Link>
-        {url === location.pathname &&
-        breadcrumbNameMap[url].icon &&
-        typeof breadcrumbNameMap[url].icon !== 'string' ? (
-          <span className={cls['comp-breadcrumb-icon']}>
-            {breadcrumbNameMap[url].icon}
-          </span>
-        ) : (
-          <IconFont
-            type={(breadcrumbNameMap[url].icon as string) || ''}
-            className={cls['comp-breadcrumb-icon']}
-          />
-        )}
       </Breadcrumb.Item>
     );
   });
