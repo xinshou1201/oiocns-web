@@ -9,6 +9,7 @@ import companyService from '@/module/org/company';
 import cls from './index.module.less';
 import { useQuery } from '@tanstack/react-query';
 import SearchCompany from '@/bizcomponents/SearchCompany';
+// import SearchPerson from '@/bizcomponents/SearchPerson';
 
 /**
  * 用户信息-加入的单位(公司)
@@ -65,14 +66,14 @@ const PersonInfoCompany: React.FC = () => {
       </div>
       <Table dataSource={data} columns={columns} rowKey={(r) => r.id} />
       <Modal
-        title="加入单位"
+        title="添加好友"
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
-        okText="确定"
-        cancelText="取消">
+        width={800}>
         <div>
           <SearchCompany></SearchCompany>
+          {/* <SearchPerson></SearchPerson> */}
         </div>
       </Modal>
     </Card>
