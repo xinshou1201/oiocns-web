@@ -19,7 +19,6 @@ class CompanyService {
           const joinedCompanies = res.data?.result || [];
           const { setJoinedCompanies } = useUserStore.getState();
           setJoinedCompanies(joinedCompanies);
-          console.log('888888888888888');
           return joinedCompanies;
         } else {
           console.error(res.msg);

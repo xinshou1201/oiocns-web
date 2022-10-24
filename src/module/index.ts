@@ -43,7 +43,7 @@ export class IdStatusPageReq {
   status: number | string;
   offset: number;
   limit: number;
-  filter: string;
+  filter?: string;
   constructor(p: IdStatusPage) {
     this.id = p.id;
     this.offset = (p.page - 1) * p.pageSize || 0;
