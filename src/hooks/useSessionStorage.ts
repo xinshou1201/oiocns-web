@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react';
 
-const useLocalStorage = (
+//设置一个值 同时存储在sessionStore里
+const useSessionStorage = (
   key: string,
   defaultValue: string,
 ): [string, React.Dispatch<React.SetStateAction<string>>] => {
   const [value, setValue] = useState(defaultValue);
   useEffect(() => {
-    window.localStorage.setItem(key, value);
+    window.sessionStorage.setItem(key, value);
   }, [key, value]);
   return [value, setValue];
 };
 
-export default useLocalStorage;
+export default useSessionStorage;
