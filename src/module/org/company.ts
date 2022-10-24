@@ -51,14 +51,15 @@ class CompanyService {
    */
   public searchCompany(req: Page): Promise<TableResponse<Company[]>> {
     return API.company.searchCompany({ data: new PageReq(req) }).then(
-      (res: PageResponse) => {
-        const { data, success } = res;
-        if (success) {
-          return { data: data.result, total: data.total, success }; //表格数据
-        } else {
+      (res: PageResponse<Company>) => {
+        const {
+          data: { result = [], total = 0 },
+          success,
+        } = res;
+        if (!success) {
           console.error(res.msg);
-          return { data: [], total: 0, success };
         }
+        return { data: result, total, success }; //表格数据
       },
       (error: any) => {
         console.error(error);

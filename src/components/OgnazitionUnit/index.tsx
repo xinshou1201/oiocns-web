@@ -1,16 +1,24 @@
 import { CaretDownOutlined } from '@ant-design/icons';
-import { Avatar, Button, Col, Divider, Row, Skeleton, Space, Typography } from 'antd';
+import {
+  Avatar,
+  Button,
+  Col,
+  Divider,
+  Modal,
+  Row,
+  Skeleton,
+  Space,
+  Typography,
+} from 'antd';
 import React, { useEffect, useState } from 'react';
 
 import CompanyServices from '@/module/org/company';
+import CompanySearchTable from '../CompanySearchTable';
 import PersonServices from '@/module/person';
 import useStore from '@/store';
 import { SpaceType } from '@/store/type';
-import TableSearchModal from '../TableSearchModal';
 
 import styles from './index.module.less';
-import { Company } from '@/module/org/index';
-import { ProColumns } from '@ant-design/pro-components';
 type OrganizationalUnitsProps = {};
 
 // 菜单列表项
@@ -34,43 +42,14 @@ const OrganizationalUnits: React.FC<OrganizationalUnitsProps> = () => {
   const [menuList, setMenuList] = useState<SpaceType[]>([]);
   const [showMenu, setShowMenu] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
-  const columns: ProColumns<Company>[] = [
-    {
-      title: '序号',
-      width: 90,
-      valueType: 'index',
-    },
-    {
-      dataIndex: 'code',
-      title: '编码',
-      width: 200,
-      hideInTable: true,
-    },
-    {
-      dataIndex: 'name',
-      title: '单位名称',
-      width: 200,
-      hideInSearch: true,
-    },
-    {
-      dataIndex: 'code',
-      title: '统一社会信用代码',
-      width: 200,
-      hideInSearch: true,
-    },
-    {
-      dataIndex: 'remark',
-      title: '单位简介',
-      hideInSearch: true,
-    },
-  ];
+
   // 获取工作单位列表
   const getList = async () => {
     const data = await CompanyServices.getJoinedCompany({
       page: 1,
       pageSize: 100,
     });
-    setMenuList([...data, userSpace]);
+    setMenuList([...data, userSpace]); // 合并组织单位和个人空间数据
   };
   // 选中组织单位后进行空间切换
   const handleClickMenu = async (item: SpaceType) => {
@@ -131,38 +110,36 @@ const OrganizationalUnits: React.FC<OrganizationalUnitsProps> = () => {
             </Button>
           </Col>
           <Col span={12}>
-            <Button type="text" block onClick={() => setShowModal(true)}>
+            <Button
+              type="text"
+              block
+              onClick={() => {
+                setShowMenu(false);
+                setShowModal(true);
+              }}>
               加入单位
             </Button>
           </Col>
         </Row>
       </div>
-      <TableSearchModal
-        modalConfig={{
-          title: '加入单位 ',
-          open: showModal,
-          width: 720,
-          onOk: () => {
-            console.log(`确定按钮`);
-            setShowModal(false);
-          },
-          onCancel: () => {
-            console.log(`取消按钮`);
-            setShowModal(false);
-          },
+      <Modal
+        title="加入单位"
+        width={900}
+        destroyOnClose={true}
+        bodyStyle={{
+          padding: 0,
         }}
-        tableConfig={{
-          columns: columns as any,
-          request: async (params) => {
-            const { data, success, total } = await CompanyServices.searchCompany({
-              filter: params?.code,
-              page: params.current || 1,
-              pageSize: params.pageSize || 20,
-            });
-            return { data, success, total };
-          },
+        open={showModal}
+        onOk={() => {
+          console.log(`确定按钮`);
+          setShowModal(false);
         }}
-      />
+        onCancel={() => {
+          console.log(`取消按钮`);
+          setShowModal(false);
+        }}>
+        <CompanySearchTable />
+      </Modal>
     </div>
   ) : (
     <Skeleton active />

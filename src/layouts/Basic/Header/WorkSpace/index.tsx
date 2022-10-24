@@ -1,18 +1,28 @@
 import { CaretDownOutlined } from '@ant-design/icons';
-import { Avatar, Button, Col, Divider, Row, Skeleton, Space, Typography } from 'antd';
+import {
+  Avatar,
+  Button,
+  Col,
+  Divider,
+  Modal,
+  Row,
+  Skeleton,
+  Space,
+  Typography,
+} from 'antd';
 import React, { useEffect, useState } from 'react';
 
-import CompanyServices from '@/module/company';
+import CompanyServices from '@/module/org/company';
+import CompanySearchTable from '../CompanySearchTable';
 import PersonServices from '@/module/person';
+import useStore from '@/store';
 import { SpaceType } from '@/store/type';
 
-import useStore from './../../../../store';
 import styles from './index.module.less';
-
 type OrganizationalUnitsProps = {};
 
 // 菜单列表项
-const MenuItem = (item: SpaceType) => {
+const OrganizationalItem = (item: SpaceType) => {
   return item && item.name ? (
     <Space>
       <Avatar className={styles.avatar} size={32}>
@@ -26,21 +36,21 @@ const MenuItem = (item: SpaceType) => {
 };
 
 /* 组织单位头部左侧组件 */
-const WorkSpace: React.FC<OrganizationalUnitsProps> = () => {
+const OrganizationalUnits: React.FC<OrganizationalUnitsProps> = () => {
   const { user, getUserInfo, setUser, userSpace } = useStore((state) => ({ ...state }));
   const [current, setCurrent] = useState<SpaceType>();
   const [menuList, setMenuList] = useState<SpaceType[]>([]);
   const [showMenu, setShowMenu] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   // 获取工作单位列表
   const getList = async () => {
-    const { data } = await CompanyServices.getJoinedCompany({
-      current: 1,
+    const data = await CompanyServices.getJoinedCompany({
+      page: 1,
       pageSize: 100,
     });
-    setMenuList([...data, userSpace]);
+    setMenuList([...data, userSpace]); // 合并组织单位和个人空间数据
   };
-
   // 选中组织单位后进行空间切换
   const handleClickMenu = async (item: SpaceType) => {
     if (!item?.id) return;
@@ -58,7 +68,6 @@ const WorkSpace: React.FC<OrganizationalUnitsProps> = () => {
       setShowMenu(false);
     }
   };
-
   useEffect(() => {
     // 获取用户加入的单位组织
     if (user) {
@@ -73,18 +82,20 @@ const WorkSpace: React.FC<OrganizationalUnitsProps> = () => {
   return user ? (
     <div className={styles.menu} onMouseLeave={() => setShowMenu(false)}>
       <Space onClick={() => setShowMenu(!showMenu)} className={styles['current-item']}>
-        {current ? MenuItem(current) : <Skeleton active />}
+        {current ? OrganizationalItem(current) : <Skeleton active />}
         <CaretDownOutlined
           className={`${styles[`down-icon`]} ${showMenu ? styles.active : ''}`}
         />
       </Space>
-
-      <div className={`${styles.list} ${showMenu ? styles.active : ''}`}>
+      <div
+        className={`${styles.list} ${showMenu ? styles.active : ''}`}
+        // style={{ height: showMenu ? menuList.length * 56 : 0 }}
+      >
         <div className={styles[`menu-list`]}>
           {menuList.map((n) =>
             current && n.id !== current.id ? (
               <div className={styles.item} onClick={() => handleClickMenu(n)} key={n.id}>
-                {MenuItem(n)}
+                {OrganizationalItem(n)}
               </div>
             ) : (
               ''
@@ -99,16 +110,40 @@ const WorkSpace: React.FC<OrganizationalUnitsProps> = () => {
             </Button>
           </Col>
           <Col span={12}>
-            <Button type="text" block>
+            <Button
+              type="text"
+              block
+              onClick={() => {
+                setShowMenu(false);
+                setShowModal(true);
+              }}>
               加入单位
             </Button>
           </Col>
         </Row>
       </div>
+      <Modal
+        title="加入单位"
+        width={900}
+        destroyOnClose={true}
+        bodyStyle={{
+          padding: 0,
+        }}
+        open={showModal}
+        onOk={() => {
+          console.log(`确定按钮`);
+          setShowModal(false);
+        }}
+        onCancel={() => {
+          console.log(`取消按钮`);
+          setShowModal(false);
+        }}>
+        <CompanySearchTable />
+      </Modal>
     </div>
   ) : (
     <Skeleton active />
   );
 };
 
-export default WorkSpace;
+export default OrganizationalUnits;
