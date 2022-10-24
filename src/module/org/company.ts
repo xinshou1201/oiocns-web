@@ -3,6 +3,8 @@ import { IdPage, Page, PageResponse, TableResponse } from '../typings';
 import { IdPageReq, PageReq } from './../index';
 import { Company } from '.';
 
+import useUserStore from '@/store/user';
+
 /**
  * 单位(公司)业务
  */
@@ -12,16 +14,19 @@ class CompanyService {
    */
   public getJoinedCompany(req: Page): Promise<Company[]> {
     return API.company.getJoinedCompany({ data: new PageReq(req) }).then(
-      (res: PageResponse) => {
+      (res: PageResponse<Company>) => {
         if (res.success) {
-          return res.data?.result || [];
+          const joinedCompanies = res.data?.result || [];
+          const { setJoinedCompanies } = useUserStore.getState();
+          setJoinedCompanies(joinedCompanies);
+          return joinedCompanies;
         } else {
           console.error(res.msg);
           return [];
         }
       },
       (error: any) => {
-        console.error(error);
+        throw error;
       },
     );
   }
@@ -31,7 +36,7 @@ class CompanyService {
    * @returns 单位、公司列表
    */
   public getGroupCompanies(req: IdPage): Promise<Company[]> {
-    return API.person.getGroupCompanies({ data: new IdPageReq(req) }).then(
+    return API.company.getGroupCompanies({ data: new IdPageReq(req) }).then(
       (res: PageResponse) => {
         if (res.success) {
           return res.data;
@@ -41,13 +46,13 @@ class CompanyService {
         }
       },
       (error: any) => {
-        console.error(error);
+        throw error;
       },
     );
   }
   /**
-   * 获取集团下的单位
-   * @returns 根据编码搜索单位
+   * 搜索单位(公司)
+   * @returns 根据编码搜索单位, 单位、公司表格需要的数据格式
    */
   public searchCompany(req: Page): Promise<TableResponse<Company[]>> {
     return API.company.searchCompany({ data: new PageReq(req) }).then(

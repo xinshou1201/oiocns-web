@@ -1,5 +1,5 @@
-import { Breadcrumb } from 'antd';
-import React from 'react';
+import { Breadcrumb, Menu } from 'antd';
+import React, { ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import routes, { IRouteConfig } from '../../routes/config';
@@ -20,15 +20,16 @@ const initMap = (routes: IRouteConfig[]) => {
     }
   });
 };
-// 渲染图标
-const createIcon = (icon?: string | React.ReactNode) => {
-  if (!icon) return '';
-  return typeof icon !== 'string' ? (
-    <span className={cls['comp-breadcrumb-icon']}>{icon}</span>
-  ) : (
+
+// 根据数据类型渲染icon
+const createIcon = (icon?: string | React.Component | ReactNode) => {
+  return typeof icon == 'string' ? (
     <IconFont type={(icon as string) || ''} className={cls['comp-breadcrumb-icon']} />
+  ) : (
+    <span className={cls['comp-breadcrumb-icon']}>{icon as ReactNode}</span> || ''
   );
 };
+
 /**
  * 全局面包屑
  * @returns
@@ -39,12 +40,33 @@ const BreadCrumb: React.FC = () => {
   const location = useLocation();
   const pathSnippets = location.pathname.split('/').filter((i) => i);
 
-  // TODO 修改样式
+  // TODO 面包屑下拉菜单
   const items = pathSnippets.map((_, index) => {
     const url = `/${pathSnippets.slice(0, index + 1).join('/')}`;
-
+    let menu = undefined;
+    if (breadcrumbNameMap[url].routes) {
+      const items = breadcrumbNameMap[url].routes?.map((r) => {
+        return {
+          key: r.path,
+          label: (
+            <div>
+              <Link to={r.path}>
+                {createIcon(r.icon)}
+                {r.title}
+              </Link>
+            </div>
+          ),
+        };
+      });
+      menu = (
+        <>
+          <Menu items={items}></Menu>
+        </>
+      );
+    }
     return (
-      <Breadcrumb.Item key={url} className={cls['comp-breadcrumb']}>
+      <Breadcrumb.Item key={url} className={cls['comp-breadcrumb']} overlay={menu}>
+        {createIcon(breadcrumbNameMap[url].icon)}
         {url === location.pathname ? createIcon(breadcrumbNameMap[url]?.icon || '') : ''}
         <Link to={url}>{breadcrumbNameMap[url].title}</Link>
       </Breadcrumb.Item>
