@@ -8,20 +8,23 @@ import { ProTable } from '@ant-design/pro-components';
 
 import { IconFont } from '@/components/IconFont';
 import { EllipsisOutlined } from '@ant-design/icons';
+import { MarketTypes } from 'typings/marketType';
 
 interface PageType {
-  dataSource: any[]; // 展示数据源
+  dataSource: MarketTypes.ProductType[]; // 展示数据源
   rowKey: string; //唯一key
   defaultPageType?: PageShowType; //当前展示类型 card: 卡片; list: 列表
   showChangeBtn?: boolean; //是否展示 图列切换按钮
   hideOperation?: boolean; //是否展示 默认操作区域
   columns?: ProColumns<any, 'text'>[]; //表格头部数组
   total?: number; // 总条数 总数量
-  onChange?: (page: number, pageSize: number) => void; // 弹出切换页码事件
+  page?: number; // 当前页
   stripe?: boolean; // 斑马纹
   style?: React.CSSProperties; // wrap样式加载 对表格外部margin pading 等定制展示
+  onChange?: (page: number, pageSize: number) => void; // 弹出切换页码事件
+  operation?: (item: MarketTypes.ProductType) => MarketTypes.OperationType[]; //操作区域数据
   renderCardContent?: (
-    data?: PageType['dataSource'], //渲染卡片样式 Data保持与dataSource 类型一致;或者直接传进展示组件
+    dataArr: MarketTypes.ProductType[], //渲染卡片样式 Data保持与dataSource 类型一致;或者直接传进展示组件
   ) => React.ReactNode | React.ReactNode[];
   [key: string]: any; // 其他属性方法
 }
@@ -33,7 +36,9 @@ const Index: React.FC<PageType> = ({
   columns = [],
   rowKey,
   hideOperation = false,
+  operation,
   total,
+  page,
   stripe = false,
   style,
   onChange,
@@ -42,27 +47,15 @@ const Index: React.FC<PageType> = ({
 }) => {
   const [pageType, setPageType] = useState<PageShowType>(defaultPageType || 'table');
 
-  const menu = (data: any) => (
-    <Menu
-      items={[
-        {
-          label: '操作1',
-          key: '1',
-          onClick: () => {
-            console.log('data', data);
-          },
-        },
-        {
-          label: '操作1',
-          key: '2',
-        },
-        {
-          label: '操作1',
-          key: '3',
-        },
-      ]}
-    />
-  );
+  /**
+   * @desc: 操作按钮区域
+   * @param {any} item - 表格单条数据 data
+   * @return {Menu} - 渲染 按钮组
+   */
+  const menu = (item: any) => {
+    return <Menu items={operation && operation(item)} />;
+  };
+
   /**
    * @desc: 渲染表格主体
    * @return {表格主体}
@@ -84,9 +77,10 @@ const Index: React.FC<PageType> = ({
       },
     ];
   }, [columns]);
+  // 表格主体 卡片与表格切换功能--增加缓存
   const renderTable = useMemo(() => {
     return pageType === 'table' ? (
-      <ProTable<PageType['dataSource']>
+      <ProTable<MarketTypes.ProductType>
         className="common-table"
         columns={hideOperation ? columns : resetColumns}
         bordered
@@ -145,6 +139,7 @@ const Index: React.FC<PageType> = ({
         <Pagination
           total={total || 0}
           onChange={onChange}
+          current={page || 1}
           showTotal={(total: number) => `共 ${total} 条`}
           showSizeChanger
         />
