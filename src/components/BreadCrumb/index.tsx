@@ -67,7 +67,6 @@ const BreadCrumb: React.FC = () => {
     return (
       <Breadcrumb.Item key={url} className={cls['comp-breadcrumb']} overlay={menu}>
         {createIcon(breadcrumbNameMap[url].icon)}
-        {url === location.pathname ? createIcon(breadcrumbNameMap[url]?.icon || '') : ''}
         <Link to={url}>{breadcrumbNameMap[url].title}</Link>
       </Breadcrumb.Item>
     );

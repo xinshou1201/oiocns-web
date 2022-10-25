@@ -1,7 +1,7 @@
 import { Layout, Space } from 'antd';
 import React from 'react';
 
-import OrganizationalUnits from '@/components/OgnazitionUnit';
+import OrganizationalUnits from './WorkSpace';
 
 import HeaderHome from './Home';
 import cls from './index.module.less';

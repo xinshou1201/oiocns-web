@@ -13,7 +13,7 @@ import {
 import React, { useEffect, useState } from 'react';
 
 import CompanyServices from '@/module/org/company';
-import CompanySearchTable from '../CompanySearchTable';
+import SearchCompany from '@/bizcomponents/SearchCompany';
 import PersonServices from '@/module/person';
 import useStore from '@/store';
 import { SpaceType } from '@/store/type';
@@ -124,12 +124,11 @@ const OrganizationalUnits: React.FC<OrganizationalUnitsProps> = () => {
       </div>
       <Modal
         title="加入单位"
-        width={900}
+        width={670}
         destroyOnClose={true}
-        bodyStyle={{
-          padding: 0,
-        }}
         open={showModal}
+        bodyStyle={{ padding: 0 }}
+        okText="确定加入"
         onOk={() => {
           console.log(`确定按钮`);
           setShowModal(false);
@@ -138,7 +137,7 @@ const OrganizationalUnits: React.FC<OrganizationalUnitsProps> = () => {
           console.log(`取消按钮`);
           setShowModal(false);
         }}>
-        <CompanySearchTable />
+        <SearchCompany />
       </Modal>
     </div>
   ) : (
