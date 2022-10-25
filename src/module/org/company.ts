@@ -1,5 +1,5 @@
 import API from '../../services';
-import { IdPage, Page, PageResponse } from '../typings';
+import { IdPage, Page, PageData, PageResponse } from '../typings';
 import { IdPageReq, PageReq } from './../index';
 import { Company } from '.';
 
@@ -36,7 +36,27 @@ class CompanyService {
    * @returns 单位、公司列表
    */
   public getGroupCompanies(req: IdPage): Promise<Company[]> {
-    return API.person.getGroupCompanies({ data: new IdPageReq(req) }).then(
+    return API.company.getGroupCompanies({ data: new IdPageReq(req) }).then(
+      (res: PageResponse) => {
+        if (res.success) {
+          return res.data;
+        } else {
+          console.error(res.msg);
+          return [];
+        }
+      },
+      (error: any) => {
+        throw error;
+      },
+    );
+  }
+
+  /**
+   * 搜索单位(公司)
+   * @returns 单位、公司列表
+   */
+  public searchCompany(req: Page): Promise<PageData<Company>> {
+    return API.company.searchCompany({ data: new PageReq(req) }).then(
       (res: PageResponse) => {
         if (res.success) {
           return res.data;

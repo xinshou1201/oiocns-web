@@ -1,19 +1,35 @@
-import { Button, Card, Table } from 'antd';
+import { Button, Card, Modal, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import Title from 'antd/lib/typography/Title';
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Company } from '@/module/org';
 import companyService from '@/module/org/company';
 
 import cls from './index.module.less';
 import { useQuery } from '@tanstack/react-query';
+import SearchCompany from '@/bizcomponents/SearchCompany';
+// import SearchPerson from '@/bizcomponents/SearchPerson';
 
 /**
  * 用户信息-加入的单位(公司)
  * @returns
  */
 const PersonInfoCompany: React.FC = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+
   const { data } = useQuery<Company[]>(['company.getJoinedCompany'], () =>
     companyService.getJoinedCompany({ page: 1, pageSize: 1000 }),
   );
@@ -43,10 +59,23 @@ const PersonInfoCompany: React.FC = () => {
           <strong>我的单位</strong>
         </Title>
         <div>
-          <Button type="link">加入单位</Button>
+          <Button type="link" onClick={showModal}>
+            加入单位
+          </Button>
         </div>
       </div>
       <Table dataSource={data} columns={columns} rowKey={(r) => r.id} />
+      <Modal
+        title="添加好友"
+        open={isModalOpen}
+        onOk={handleOk}
+        onCancel={handleCancel}
+        width={800}>
+        <div>
+          <SearchCompany></SearchCompany>
+          {/* <SearchPerson></SearchPerson> */}
+        </div>
+      </Modal>
     </Card>
   );
 };
