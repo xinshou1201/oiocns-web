@@ -14,11 +14,11 @@ type ContentMenuProps = {
 };
 
 // 根据数据类型渲染icon
-const createIcon = (icon?: string | React.Component) => {
+const createIcon = (icon?: string | React.Component | React.ReactNode) => {
   return typeof icon == 'string' ? (
     <IconFont type={(icon as string) || ''} className={cls['icon']} />
   ) : (
-    icon || ''
+    <span className={cls['icon']}>{icon as React.ReactNode}</span> || ''
   );
 };
 
@@ -26,14 +26,15 @@ const ContentMenu: React.FC<RouteComponentProps & ContentMenuProps> = (props) =>
   const currentMacthRoute = businessRouteList.find(
     (child) => child.path === props.match.path,
   );
-  // console.log(currentMacthRoute);
   return (
     <Sider className={cls.sider} width={220}>
       {currentMacthRoute && (
         <div className={cls.title}>
           <Space>
             <>{createIcon(currentMacthRoute?.icon)}</>
-            <strong>{currentMacthRoute.title}</strong>
+            <div>
+              <strong>{currentMacthRoute.title}</strong>
+            </div>
           </Space>
         </div>
       )}

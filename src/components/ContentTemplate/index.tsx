@@ -20,8 +20,8 @@ type ContentTemplateType = {
   contentTopLeft?: React.ReactNode; // 内容区顶部左侧
   contentTopRight?: React.ReactNode; // 内容区顶部右侧
   hideBreadCrumb?: boolean; // 是否隐藏面包屑
-  children?: React.ReactNode;
-  route?: IRouteConfig;
+  children?: React.ReactNode; // 子组件
+  route?: IRouteConfig; // 路由
 };
 
 /**
@@ -36,7 +36,7 @@ const ContentTemplate: React.FC<ContentTemplateType> = (props) => {
     content,
     sider,
     // contentTop,
-    // contentTopLeft,
+    contentTopLeft,
     contentTopRight,
     hideBreadCrumb = false,
     children,
@@ -49,7 +49,7 @@ const ContentTemplate: React.FC<ContentTemplateType> = (props) => {
       <Layout className={cls.container}>
         {(!hideBreadCrumb || contentTopRight) && (
           <Row className={cls[`content-top`]}>
-            <Col>{!hideBreadCrumb && <BreadCrumb />}</Col>
+            <Col>{!hideBreadCrumb ? <BreadCrumb /> : contentTopLeft}</Col>
             <Col>{contentTopRight}</Col>
           </Row>
         )}

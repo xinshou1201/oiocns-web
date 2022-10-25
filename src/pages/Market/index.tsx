@@ -21,10 +21,7 @@ const Market: React.FC<PageType> = (props) => {
   const { route, history } = props;
   // console.log(renderRoutes(route.routes));
   return (
-    <ContentTemplate
-      sider={<MarketClassify history={history} />}
-      // contentTopLeft={<BreadCrumb />}
-    >
+    <ContentTemplate sider={<MarketClassify history={history} />}>
       {renderRoutes(route.routes)}
     </ContentTemplate>
   );

@@ -1,8 +1,9 @@
 interface DataType {
   key: React.Key;
   name: string;
-  age: number;
-  address: string;
+  size: number;
+  desc: string;
+  creatTime: string;
 }
 import type { ColumnsType } from 'antd/es/table';
 
@@ -10,26 +11,44 @@ export const data: DataType[] = [
   {
     key: '1',
     name: '测试数据1',
-    age: 32,
-    address: 'New York No. 1 Lake Park',
+    size: 32,
+    desc: 'New York No. 1 Lake Park',
+    creatTime: '2022-12-12',
   },
   {
     key: '2',
     name: '测试数据2',
-    age: 42,
-    address: 'London No. 1 Lake Park',
+    size: 42,
+    desc: 'London No. 1 Lake Park',
+    creatTime: '2022-12-12',
   },
   {
     key: '3',
     name: '测试数据3',
-    age: 32,
-    address: 'Sidney No. 1 Lake Park',
+    size: 32,
+    desc: 'Sidney No. 1 Lake Park',
+    creatTime: '2022-12-12',
   },
   {
     key: '4',
     name: '测试数据4',
-    age: 99,
-    address: 'Sidney No. 1 Lake Park',
+    size: 99,
+    desc: 'Sidney No. 1 Lake Park',
+    creatTime: '2022-12-12',
+  },
+  {
+    key: '5',
+    name: '测试数据5',
+    size: 955,
+    desc: 'Sidney No. 1 Lake Park',
+    creatTime: '2022-12-12',
+  },
+  {
+    key: '6',
+    name: '测试数据6',
+    size: 66,
+    desc: 'Sidney No. 1 Lake Park',
+    creatTime: '2022-12-12',
   },
 ];
 export const columns: ColumnsType<any> = [
@@ -47,10 +66,14 @@ export const columns: ColumnsType<any> = [
   },
   {
     title: '年龄',
-    dataIndex: 'age',
+    dataIndex: 'size',
   },
   {
-    title: '地址',
-    dataIndex: 'address',
+    title: '描述',
+    dataIndex: 'desc',
+  },
+  {
+    title: '时间',
+    dataIndex: 'creatTime',
   },
 ];

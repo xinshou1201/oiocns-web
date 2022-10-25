@@ -14,15 +14,15 @@ export type CommonResponse = {
  */
 export type PageData<P = {}> = {
   limit: number;
-	total: number;
-	result: P[];
-}
+  total: number;
+  result: P[];
+};
 
 /**
  * 分页返回Response
  * 请求体
  */
- export type PageResponse<P = {}> = {
+export type PageResponse<P = {}> = {
   code: number;
   data: PageData<P>;
   msg: string;
@@ -73,11 +73,11 @@ export type QueryExtendReq = {
  * ID分页查询
  * 请求体
  */
- export type IdPage = {
+export type IdPage = {
   id: number | string;
   page: number;
   pageSize: number;
-  filter: string;
+  filter?: string;
 };
 
 /**
@@ -88,31 +88,38 @@ export type StatusPage = {
   status: number | string;
   page: number;
   pageSize: number;
-  filter: string;
+  filter?: string;
 };
 
 /**
  * ID和状态分页查询
  * 请求体
  */
- export type IdStatusPage = {
+export type IdStatusPage = {
   id: number | string;
   status: number | string;
   page: number;
   pageSize: number;
-  filter: string;
+  filter?: string;
 };
 
 /**
  * 分页查询
  * 请求体
  */
- export type Page = {
+export type Page = {
   page: number;
   pageSize: number;
   filter?: string;
 };
 
-
-
-
+/**
+ * ProTable Response
+ * 表格需要的响应格式
+ */
+export type TableResponse<T> = {
+  total: number;
+  data: T;
+  msg?: string;
+  success: boolean;
+};

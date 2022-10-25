@@ -10,16 +10,15 @@
   }
   .icon {
     color: @primary-color;
-    font-size: 20px;
+    font-size: 18px;
   }
   :global(.ogo-menu-sub.ogo-menu-inline) {
     background: @component-background;
   }
-  :global(.ogo-menu:not(.ogo-menu-horizontal) .ogo-menu-item-selected),
   :global(.ogo-menu-item:hover),
-  :global(.ogo-menu-item-acitve:hover) {
-    background-color: @custom-menu-active-background;
+  :global(.ogo-menu:not(.ogo-menu-horizontal) .ogo-menu-item-selected) {
     color: @text-color;
+    background-color: @custom-menu-active-background;
   }
   :global(.ogo-menu-item) {
     color: @system-menu-color;
@@ -31,6 +30,10 @@
   :global(.ogo-menu-vertical),
   :global(.ogo-menu-inline) {
     border: none;
+  }
+  :global(.ogo-menu-item-acitve),
+  :global(.ogo-menu-item-acitve:hover) {
+    color: @text-color;
   }
   :global(.ogo-menu-inline .ogo-menu-item-selected::after) {
     opacity: 0;

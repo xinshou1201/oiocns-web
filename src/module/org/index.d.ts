@@ -1,9 +1,11 @@
 /**
  *
- * Organization 相关严格类型
+ * Organization 相关类型
  *
  * ===========================================================
  */
+
+
 /**
  * 组织分类
  */
@@ -15,7 +17,9 @@
   /* 部门 */
   Dept = '部门',
   /* 工作组 */
-  Cohort = '工作组',
+  WorkGroup = '工作组',
+  /* 群组 */
+  Cohort = '群组',
   /* 职权、角色 */
   Authority = '角色',
   /* 身份 */
@@ -60,6 +64,13 @@ export interface Org {
 }
 
 /**
+ * 用户
+ */
+export interface User extends Person {
+  identitys: Identity[]
+}
+
+/**
  * 单位、公司
  */
 export interface Company extends Org {
@@ -83,8 +94,17 @@ export interface Dept extends Org {
 /**
  * 工作组
  */
+ export interface WorkGroup extends Org {
+  typeName: OrgType.WorkGroup;
+}
+
+
+/**
+ * 群组
+ */
 export interface Cohort extends Org {
   typeName: OrgType.Cohort;
+  belongId: string;
 }
 
 /**
@@ -92,6 +112,7 @@ export interface Cohort extends Org {
  */
 export interface Authority extends Org {
   typeName: OrgType.Authority;
+  public: boolean;
 }
 
 /**
@@ -99,11 +120,39 @@ export interface Authority extends Org {
  */
 export interface Identity extends Org {
   typeName: OrgType.Identity;
+  authId: string;
+  belongId: string;
 }
 
 /**
- * 人员、用户
+ * 人员
  */
 export interface Person extends Org {
   typeName: OrgType.Person;
+}
+
+/**
+ * 组织树(单位或工作组)
+ */
+export interface OrgTree extends Org {
+  children?: OrgTree[]
+}
+
+/**
+ * 工作空间类型
+ */
+ export enum WorkSpaceType {
+  /* 单位、公司 */
+  Company = '单位',
+  /* 个人 */
+  Person = '个人',
+}
+
+/**
+ * 工作空间
+ */
+export interface WorkSpace{
+  id: string;
+  name: string;
+  type: WorkSpaceType.Company | WorkSpaceType.Person
 }

@@ -1,5 +1,10 @@
-import { SearchOutlined } from '@ant-design/icons';
-import { Input, Tree } from 'antd';
+import {
+  EllipsisOutlined,
+  LeftCircleOutlined,
+  PlusOutlined,
+  SearchOutlined,
+} from '@ant-design/icons';
+import { Dropdown, Input, Menu, Tree } from 'antd';
 import type { DataNode, TreeProps } from 'antd/es/tree';
 import React, { useState } from 'react';
 
@@ -9,6 +14,37 @@ const x = 3;
 const y = 2;
 const z = 1;
 const defaultData: DataNode[] = [];
+// 树形控件 更多操作
+const menu = (
+  <Menu
+    items={[
+      {
+        key: '1',
+        label: '重命名',
+      },
+      {
+        key: '2',
+        label: '创建副本',
+      },
+      {
+        key: '3',
+        label: '拷贝链接',
+      },
+      {
+        key: '4',
+        label: '移动到',
+      },
+      {
+        key: '5',
+        label: '收藏',
+      },
+      {
+        key: '6',
+        label: '删除',
+      },
+    ]}
+  />
+);
 
 const generateData = (_level: number, _preKey?: React.Key, _tns?: DataNode[]) => {
   const preKey = _preKey || '0';
@@ -108,6 +144,19 @@ const StoreClassifyTree: React.FC = () => {
     }
     setGData(data);
   };
+  const renderTreeTitle = (node: any) => {
+    return (
+      <div className={cls.treeTitleBox}>
+        <div>{node.title}</div>
+        <div onClick={(e: any) => e.stopPropagation()}>
+          <PlusOutlined className={cls.titleIcon} />
+          <Dropdown overlay={menu} placement="bottom" trigger={['click']}>
+            <EllipsisOutlined className={cls.titleIcon} rotate={90} />
+          </Dropdown>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div>
@@ -117,6 +166,8 @@ const StoreClassifyTree: React.FC = () => {
       </div>
       <Tree
         className="draggable-tree"
+        switcherIcon={<LeftCircleOutlined />}
+        titleRender={renderTreeTitle}
         defaultExpandedKeys={expandedKeys}
         draggable
         blockNode
