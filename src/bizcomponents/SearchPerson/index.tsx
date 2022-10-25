@@ -32,8 +32,10 @@ const personInfoList: React.FC<Person[]> = (persons) => (
  * @returns
  */
 const SearchPerson: React.FC<SearchPersonProps> = ({ confirm }) => {
+  const [value, setValue] = useState<string>();
   const [persons, setPersons] = useState<Person[]>([]);
   const keyWordChange = async (e: any) => {
+    setValue(e.target.value);
     if (e.target.value) {
       const res = await personService.searchPerson(e.target.value);
       setPersons(res);
@@ -51,10 +53,13 @@ const SearchPerson: React.FC<SearchPersonProps> = ({ confirm }) => {
             <SearchOutlined />
           </Tooltip>
         }
+        value={value}
         onChange={keyWordChange}
       />
       <div>{persons.length > 0 && personInfoList(persons)}</div>
-      {persons.length == 0 && <Result icon={<SmileOutlined />} title="暂无此用户" />}
+      {value && persons.length == 0 && (
+        <Result icon={<SmileOutlined />} title="暂无此用户" />
+      )}
     </div>
   );
 };
