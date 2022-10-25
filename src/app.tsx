@@ -1,6 +1,6 @@
 import './global.less';
 
-import { ConfigProvider, Spin, message, Modal, Notification } from 'antd';
+import { ConfigProvider, Spin, message, notification } from 'antd';
 import React, { Suspense, useState } from 'react';
 import { renderRoutes } from 'react-router-config';
 import { BrowserRouter } from 'react-router-dom';
@@ -27,15 +27,15 @@ const queryClient = new QueryClient({
     },
   },
 });
+
 message.config({
   prefixCls: 'ogo-message',
 });
-Modal.config({
-  rootPrefixCls: 'ogo',
+
+notification.config({
+  prefixCls: 'ogo-notification',
 });
-Notification.config({
-  rootPrefixCls: 'ogo-notification',
-});
+
 const App = () => {
   const [locale] = useState(zhCN);
 
