@@ -2,24 +2,25 @@ import { AudioOutlined, SmileOutlined } from '@ant-design/icons';
 import { Button, message, Popover } from 'antd';
 import React, { useEffect, useState } from 'react';
 
-import { chat } from '@/module/chat/orgchat';
+import useChatStore from '@/store/chat';
 
 import inputboxStyle from './groupinputbox.module.less';
 
 const Groupinputbox = () => {
   const [imgUrls, setImgUrls] = useState<Array<string>>([]);
+  const ChatStore: any = useChatStore();
   // 提交聊天内容
   const submit = async () => {
-    const inputContent = document.getElementById('insterHtml').childNodes;
-    const text =
+    const inputContent: any = document.getElementById('insterHtml')?.childNodes;
+    const text: any =
       inputContent?.length > 0
-        ? reCreatChatContent(document.getElementById('insterHtml').childNodes)
-        : [document.getElementById('insterHtml').innerHTML];
+        ? reCreatChatContent(document.getElementById('insterHtml')?.childNodes)
+        : [document.getElementById('insterHtml')?.innerHTML];
     let massage = text.join('').trim();
     if (massage.length > 0) {
-      await chat.sendMsg({
-        toId: chat.curChat.id,
-        spaceId: chat.curChat.spaceId,
+      await ChatStore.sendMsg({
+        toId: ChatStore.curChat?.id,
+        spaceId: ChatStore.curChat?.spaceId,
         msgType: 'text',
         msgBody: massage,
       });
@@ -65,8 +66,8 @@ const Groupinputbox = () => {
   const keyDown = (e: any) => {
     if (e.ctrlKey && e.keyCode == 13) {
       //用户点击了ctrl+enter触发
-      const value = document.getElementById('insterHtml').innerHTML;
-      if (!value.includes('<div><br></div>')) {
+      const value = document.getElementById('insterHtml')?.innerHTML;
+      if (!value?.includes('<div><br></div>')) {
         document.getElementById('insterHtml').innerHTML += '<div><br></div>';
       }
       setFocus();

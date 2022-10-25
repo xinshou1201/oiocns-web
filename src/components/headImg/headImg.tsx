@@ -14,7 +14,7 @@ interface Iprops {
 }
 const HeadImg = (props: Iprops) => {
   const {
-    name = '王雨',
+    name = '',
     label = '',
     url,
     limit = 2,

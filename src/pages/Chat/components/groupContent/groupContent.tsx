@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { Button, message, Popover } from 'antd';
 import moment from 'moment';
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import HeadImg from '@/components/headImg/headImg';
 import { chat } from '@/module/chat/orgchat';
@@ -16,16 +16,29 @@ interface Iprops {
 const GroupContent = (props: Iprops) => {
   const { goPageEnds } = props;
   const ChatStore: any = useChatStore();
-
+  const messageNodeRef = useRef<HTMLDivElement>(null); // dom节点
+  const [selectId, setSelectId] = useState<string>('');
   const isShowTime = (index: number) => {
     if (index == 0) return true;
-    // return (
-    //   moment(chat.curMsgs[index].createTime).diff(
-    //     chat.curMsgs[index - 1].createTime,
-    //     'minute',
-    //   ) > 3
-    // );
+    return (
+      moment(ChatStore.curMsgs[index].createTime).diff(
+        ChatStore.curMsgs[index - 1].createTime,
+        'minute',
+      ) > 3
+    );
   };
+  const scrollEvent = () => {
+    if (messageNodeRef.current) {
+      messageNodeRef.current.scrollIntoView({
+        behavior: 'auto',
+        block: 'end',
+        inline: 'start',
+      });
+    }
+  };
+  useEffect(() => {
+    scrollEvent();
+  }, [ChatStore.curMsgs, ChatStore.setCurrent]);
 
   // 显示聊天间隔时间
   const showChatTime = (chatDate: moment.MomentInput) => {
@@ -76,26 +89,7 @@ const GroupContent = (props: Iprops) => {
     });
   };
 
-  // // 实时滚动条高度
-  // const scrollTop = debounce(async () => {
-  //   let scroll = nodeRef.scrollTop;
-  //   if (chat.curMsgs.length > 0 && scroll < 20) {
-  //     let beforeHeight = nodeRef.scrollHeight;
-  //     let count = await chat.getHistoryMsg();
-  //     if (count > 0) {
-  //       nodeRef.scrollTop = nodeRef.scrollHeight - beforeHeight;
-  //     }
-  //   }
-  // }, 200);
-
-  // 滚动设置到底部
-  const goPageEnd = () => {
-    // nextTick(() => {
-    //   // console.log('滚动底部', nodeRef.value.scrollHeight);
-    //   nodeRef.value.scrollTop = nodeRef.value.scrollHeight;
-    // });
-  };
-  goPageEnds(goPageEnd());
+  goPageEnds();
 
   return (
     <div className={contentStyle.group_content_wrap}>
@@ -134,6 +128,14 @@ const GroupContent = (props: Iprops) => {
             {item.fromId !== chat.userId ? (
               <div className={`${contentStyle.group_content_left} ${contentStyle.con}`}>
                 <Popover
+                  trigger="hover"
+                  overlayClassName={contentStyle.targerBoxClass}
+                  open={selectId == item.chatId}
+                  key={item.chatId}
+                  placement="bottom"
+                  onOpenChange={() => {
+                    setSelectId('');
+                  }}
                   content={
                     canDelete(item) ? (
                       <Button
@@ -147,21 +149,23 @@ const GroupContent = (props: Iprops) => {
                     ) : (
                       ''
                     )
-                  }
-                  trigger="click">
-                  <div className={contentStyle.con_body}>
+                  }>
+                  <div
+                    className={contentStyle.con_body}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectId(item.chatId);
+                    }}>
                     <HeadImg name={chat.getName(item.fromId)} label={''} />
                     <div className={`${contentStyle.con_content}`}>
-                      {chat?.curChat?.typeName !== '人员' ? (
+                      {ChatStore?.curChat?.typeName !== '人员' ? (
                         <div
                           className={`${contentStyle.con_content} ${contentStyle.name}`}>
-                          {chat.getName(item.fromId) || ''}
+                          {ChatStore.getName(item.fromId) || ''}
                         </div>
                       ) : (
                         ''
                       )}
-                      {/* <div
-                        className={`${contentStyle.con_content} ${contentStyle.link}`}></div> */}
                       <div
                         className={`${contentStyle.con_content} ${contentStyle.txt}`}
                         dangerouslySetInnerHTML={{ __html: item.msgBody }}></div>
@@ -175,8 +179,32 @@ const GroupContent = (props: Iprops) => {
                 <div
                   className={`${contentStyle.group_content_right} ${contentStyle.con}`}>
                   <Popover
+                    trigger="hover"
+                    overlayClassName={contentStyle.targerBoxClass}
+                    open={selectId == item.chatId}
+                    key={item.chatId}
+                    placement="bottom"
+                    onOpenChange={() => {
+                      setSelectId('');
+                    }}
                     content={
                       <>
+                        {/* <Button
+                          type="text"
+                          style={{ color: '#3e5ed8' }}
+                          onClick={() => {
+                            recallMsg(item);
+                          }}>
+                          复制
+                        </Button>
+                        <Button
+                          type="text"
+                          style={{ color: '#3e5ed8' }}
+                          onClick={() => {
+                            recallMsg(item);
+                          }}>
+                          转发
+                        </Button> */}
                         <Button
                           type="text"
                           style={{ color: '#3e5ed8' }}
@@ -198,12 +226,14 @@ const GroupContent = (props: Iprops) => {
                           ''
                         )}
                       </>
-                    }
-                    trigger="click">
-                    <div className={contentStyle.con_body}>
+                    }>
+                    <div
+                      className={contentStyle.con_body}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectId(item.chatId);
+                      }}>
                       <div className={contentStyle.con_content}>
-                        {/* <div
-                          className={`${contentStyle.con_content} ${contentStyle.link}`}></div> */}
                         <div
                           className={`${contentStyle.con_content} ${contentStyle.txt}`}
                           dangerouslySetInnerHTML={{ __html: item.msgBody }}></div>
@@ -217,6 +247,12 @@ const GroupContent = (props: Iprops) => {
           </React.Fragment>
         );
       })}
+      <div
+        ref={messageNodeRef}
+        style={{
+          clear: 'both',
+          width: '100%',
+        }}></div>
     </div>
   );
 };

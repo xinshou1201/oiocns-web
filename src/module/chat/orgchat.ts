@@ -77,8 +77,6 @@ export default class OrgChat extends Object {
     });
     this.anyStore = AnyStore.getInstance();
     this.anyStore.subscribed('orgChat', 'user', (data) => {
-      console.log('orgChat,user', data);
-
       this._loadChats(data);
     });
   }
@@ -120,7 +118,6 @@ export default class OrgChat extends Object {
             if (!this.authed) {
               this.anyStore.get('orgChat', 'user').then((res) => {
                 if (res.success) {
-                  console.log('info', res.data);
                   this._loadChats(res.data);
                 }
               });
@@ -358,7 +355,6 @@ export default class OrgChat extends Object {
           'user',
         );
         if (res.success && Array.isArray(res.data)) {
-          console.log('历史消息的res', res.data);
           res.data.forEach((item: any) => {
             item.id = item.chatId;
             item.msgBody = StringPako.inflate(item.msgBody);

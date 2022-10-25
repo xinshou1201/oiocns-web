@@ -28,6 +28,12 @@ const useChatStore = create((set, get: any) => ({
   onMessage: (callback: (data: any) => void) => {
     get().messageCallback = callback;
   },
+  // 接收消息
+  RecvMsg: () => {
+    chat.connection.on('RecvMsg', (data: any) => {
+      get()._recvMsg(data);
+    });
+  },
   // 查询名称代码字典
   getName: (id: string) => {
     let name = get().nameMap[id] || '';
@@ -72,7 +78,6 @@ const useChatStore = create((set, get: any) => ({
   },
   //删除消息
   deleteMsg: (msg: any) => {
-    console.log('删除消息', msg);
     if (!msg.chatId) {
       msg.chatId = msg.id;
     }
@@ -127,11 +132,11 @@ const useChatStore = create((set, get: any) => ({
         set({ curChat: chat });
         await get().getHistoryMsg();
         if (chat.typeName !== TargetType.Person) {
-          // await this.getPersons(true);
+          await get().getPersons(true);
         }
         get().openChats.push(get().curChat);
       }
-      // this._cacheChats();
+      // get()._cacheChats();
     }
   },
   // 置顶会话
@@ -268,6 +273,7 @@ const useChatStore = create((set, get: any) => ({
     }
     return BadRequst;
   },
+  // 接收消息
   _recvMsg: (data: any) => {
     data = get()._handlerMsg(data);
     if (get().messageCallback) {
@@ -348,7 +354,7 @@ const useChatStore = create((set, get: any) => ({
       });
       item.chats = newChats;
     });
-    // get()._cacheChats();
+    get()._cacheChats();
     return data;
   },
   _recallMsg: async (data: any) => {
@@ -417,10 +423,10 @@ const useChatStore = create((set, get: any) => ({
         operation: 'replaceAll',
         data: {
           name: '我的消息',
-          chats: get().chats,
-          nameMap: get().nameMap,
-          openChats: get().openChats,
-          lastMsg: get().lastMsg,
+          chats: chat.chats,
+          nameMap: chat.nameMap,
+          openChats: chat.openChats,
+          lastMsg: chat.lastMsg,
         },
       },
       'user',
@@ -460,11 +466,6 @@ const useChatStore = create((set, get: any) => ({
         'user',
       );
     }
-  },
-  RecvMsg: () => {
-    chat.connection.on('RecvMsg', (data: any) => {
-      set({ data });
-    });
   },
 }));
 
