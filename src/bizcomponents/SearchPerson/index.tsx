@@ -1,64 +1,66 @@
-import type { ProColumns } from '@ant-design/pro-components';
-import { ProTable } from '@ant-design/pro-components';
-import React from 'react';
+import { SearchOutlined, SmileOutlined } from '@ant-design/icons';
+import { Card, Input, List, Result, Tooltip } from 'antd';
+import React, { useState } from 'react';
 import { Person } from '../../module/org/index';
+import PersonInfoCard from './../PersonInfoCard';
 
 import personService from '../../module/org/person';
+import cls from './index.module.less';
 
-const columns: ProColumns<Person>[] = [
-  {
-    title: '序号',
-    dataIndex: 'index',
-    valueType: 'index',
-  },
-  {
-    title: '账号',
-    dataIndex: 'name',
-    key: 'name',
-  },
-  {
-    title: '昵称',
-    dataIndex: 'code',
-    key: 'code',
-  },
-  {
-    title: '姓名',
-    dataIndex: 'code',
-    key: 'code',
-  },
-  {
-    title: '手机',
-    dataIndex: 'code',
-    key: 'code',
-  },
-  {
-    title: '座右铭',
-    dataIndex: 'code',
-    key: 'code',
-  },
-  {
-    title: '单位描述',
-    dataIndex: 'remark',
-    key: 'remark',
-  },
-];
+type SearchPersonProps = {
+  // eslint-disable-next-line no-unused-vars
+  confirm: (person: Person) => void;
+};
+
+/**
+ * 人员信息展示列表
+ * @param persons 人员列表
+ * @returns
+ */
+const personInfoList: React.FC<Person[]> = (persons) => (
+  <Card bordered={false}>
+    <List
+      itemLayout="horizontal"
+      dataSource={persons}
+      renderItem={(person: Person) => <PersonInfoCard person={person}></PersonInfoCard>}
+    />
+  </Card>
+);
 
 /**
  * 搜索人员
  * @returns
  */
-const SearchPerson: React.FC = () => {
+const SearchPerson: React.FC<SearchPersonProps> = ({ confirm }) => {
+  const [value, setValue] = useState<string>();
+  const [persons, setPersons] = useState<Person[]>([]);
+  const keyWordChange = async (e: any) => {
+    setValue(e.target.value);
+    if (e.target.value) {
+      const res = await personService.searchPerson(e.target.value);
+      setPersons(res);
+      confirm(res[0]);
+    }
+  };
+
   return (
-    <ProTable<Person>
-      columns={columns}
-      request={(params) => personService.searchPerson(params)}
-      search={false}
-      rowKey="key"
-      options={{
-        search: true,
-      }}
-      headerTitle="搜索用户"
-    />
+    <div className={cls['search-person-container']}>
+      <Input
+        className={cls['search-person-input']}
+        placeholder="请输入用户账号"
+        suffix={
+          <Tooltip title="搜索用户">
+            <SearchOutlined />
+          </Tooltip>
+        }
+        value={value}
+        onChange={keyWordChange}
+      />
+      <div>{persons.length > 0 && personInfoList(persons)}</div>
+      {value && persons.length == 0 && (
+        <Result icon={<SmileOutlined />} title="暂无此用户" />
+      )}
+    </div>
   );
 };
 

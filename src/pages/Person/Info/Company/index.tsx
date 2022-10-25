@@ -3,13 +3,13 @@ import { ColumnsType } from 'antd/lib/table';
 import Title from 'antd/lib/typography/Title';
 import React, { useState } from 'react';
 
-import { Company } from '@/module/org';
+import { Company, Person } from '@/module/org';
 import companyService from '@/module/org/company';
 
 import cls from './index.module.less';
 import { useQuery } from '@tanstack/react-query';
-import SearchCompany from '@/bizcomponents/SearchCompany';
-// import SearchPerson from '@/bizcomponents/SearchPerson';
+// import SearchCompany from '@/bizcomponents/SearchCompany';
+import SearchPerson from '@/bizcomponents/SearchPerson';
 
 /**
  * 用户信息-加入的单位(公司)
@@ -52,6 +52,10 @@ const PersonInfoCompany: React.FC = () => {
       render: (_, { team }) => team.remark,
     },
   ];
+
+  const confirm = (person: Person) => {
+    console.log(person);
+  };
   return (
     <Card>
       <div className={cls['person-info-content-header']}>
@@ -70,10 +74,10 @@ const PersonInfoCompany: React.FC = () => {
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
-        width={800}>
+        width={550}>
         <div>
-          <SearchCompany></SearchCompany>
-          {/* <SearchPerson></SearchPerson> */}
+          {/* <SearchCompany></SearchCompany> */}
+          <SearchPerson confirm={confirm}></SearchPerson>
         </div>
       </Modal>
     </Card>

@@ -15,6 +15,8 @@ interface AppCardType {
   data: any; //props
   className?: string;
   cusProps?: defaultObjType; // 卡片字段 对应数据字段
+  // eslint-disable-next-line no-unused-vars
+  onClick?: (event?: any) => void;
 }
 const defaultObj = {
   name: 'name',
@@ -41,17 +43,17 @@ const menu = (
     ]}
   />
 );
-const AppCardComp: React.FC<AppCardType> = ({ className, data, cusProps }) => {
+const AppCardComp: React.FC<AppCardType> = ({ className, data, cusProps, onClick }) => {
   const {
     name = 'name',
     size = 'size',
     type = 'type',
     desc = 'desc',
     creatTime = 'creatTime',
-  } = cusProps || defaultObj;
+  } = { ...defaultObj, ...cusProps };
   const Title = () => {
     return (
-      <div className="card-title flex">
+      <div className="card-title flex" onClick={onClick}>
         <div className="card-title-left">
           <Avatar className="card-title-left-logo" size={50} src={AppLogo} />
           <div className="card-title-left-info">

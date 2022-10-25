@@ -2,8 +2,10 @@
 
 1. 模块及组件的文件夹 首字母必须大写
 2. 模块名称下创建 components 存放子组件 子组件需用文件夹包裹
-3、src/module 模块文件夹存放各业务代码，命名规则为：业务名.service.ts; service类处理好相关的业务，返回给UI层的数据是已处理好的数据
-示例如下:
+3. src/module 模块文件夹存放各业务代码，命名规则为：业务名.service.ts; service类处理好相关的业务，返回给UI层的数据是已处理好的数据
+
+- 示例如下:
+
 ```
 └── anydata  // 边缘数据
 ├── appstore // 应用市场
@@ -16,29 +18,32 @@
    ├──person.service.ts     // 人员相关业务
    ├──workflow.service.ts   // 工作流相关业务
 ```
+
 4. 公共组件(非业务) 放入 src/components 下,文件夹 首字母必须大写
 5. 公共业务组件(业务) 放入 src/bizcomponents 下,文件夹 首字母必须大写
 6.
 
 案例如下:
+
 ```
-└── src //源码目录
-├── Home //模块名称（首页）
-├── components //子组件文件夹
-├── BannerCom //banner 组件
-├── index.tsx //banner 内容
-├── index.less //banner 样式
-├── SelfAppCom //我的应用 组件
-├── index.tsx //我的应用 内容
-├── index.less //我的应用 样式
-|── ......
-├── index.tsx //模块容器
-├── index.less //模块样式
-├── Chat //模块名称（消息）
+└── src                   //源码目录
+├── Home                  //模块名称（首页）
+  ├── components          //子组件文件夹
+    ├── BannerCom         //banner 组件
+      ├── index.tsx       //banner 内容
+      ├── index.less      //banner 样式
+    ├── SelfAppCom        //我的应用 组件
+      ├── index.tsx       //我的应用 内容
+      ├── index.less      //我的应用 样式
+    |── ......
+  ├── index.tsx           //模块容器
+  ├── index.less          //模块样式
+├── Chat                  //模块名称（消息）
 ......
 ```
 
 ## git commit 规范
+
 ```
 <类型>[可选的作用域]: <描述>
 
@@ -78,3 +83,6 @@ personal/个人分支名称
 
 ## CSS 使用规范
 
+css文件命名 名称.module.less
+
+使用 import cls  from 'less文件地址'

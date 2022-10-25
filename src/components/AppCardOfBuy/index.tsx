@@ -8,6 +8,8 @@ interface indexType {
   className?: string;
   showBtn?: boolean; //是否展示按钮
   shouOperation?: boolean; //是否展示 右上角操作按钮
+  // eslint-disable-next-line no-unused-vars
+  onClick?: (e?: Event) => void; //卡片点击事件
 }
 
 const menu = (
@@ -29,7 +31,7 @@ const menu = (
   />
 );
 const Index: React.FC<indexType> = (props) => {
-  const { className, showBtn = true, shouOperation = false } = props;
+  const { className, showBtn = true, shouOperation = false, onClick } = props;
   console.log('打印index', props, shouOperation);
 
   function renderName() {
@@ -81,9 +83,7 @@ const Index: React.FC<indexType> = (props) => {
         title={renderName()}
         className={`${cls.buyCard} ${className}`}
         description={renderDesc()}
-        onClick={() => {
-          console.log('clicked');
-        }}></CheckCard>
+        onClick={onClick}></CheckCard>
     </>
   );
 };
