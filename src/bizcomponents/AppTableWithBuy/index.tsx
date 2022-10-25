@@ -26,26 +26,30 @@ const AppShowComp: React.FC<AppShowCompType> = ({ apiName, defalutKeys }) => {
    * @param {boolean} isGofirst 是否返回第一页
    * @return {*}
    */
-  const getTableList = async (searchKey = '', isGofirst = false) => {
-    if (isGofirst) {
-      setPage(1);
-    }
+  const getTableList = async (req = {}, searchKey = '', isGofirst = false) => {
+    isGofirst && setPage(1);
+
     const params = {
       page: isGofirst ? 1 : page,
       pageSize: 10,
       filter: searchKey,
     };
-    await MarketService[apiName](params);
+    await MarketService[apiName]({ ...params, ...req });
 
     setList([...MarketService[defalutKeys.listKey]]);
     setTotal(MarketService[defalutKeys.totalKey]);
   };
 
   /**
-   * handlePageChage
+   * @desc: 页码切换函数
+   * @param {number} page
+   * @param {number} pageSize
+   * @return {*}
    */
   const handlePageChange = (page: number, pageSize: number) => {
     console.log('搜索', page, pageSize);
+    setPage(page);
+    getTableList({ page, pageSize });
   };
 
   /**
