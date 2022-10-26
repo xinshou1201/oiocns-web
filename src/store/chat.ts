@@ -298,10 +298,14 @@ const useChatStore = create((set, get: any) => ({
       }, 1000);
       return;
     }
-    set({ curMsgs: [...get().curMsgs, data] });
+
     if (data.msgType === 'recall') {
       data = get()._recallMsg(data);
+      set({ curMsgs: [...data] });
+    } else {
+      set({ curMsgs: [...get().curMsgs, data] });
     }
+
     // get().chats.forEach((item: ImMsgType) => {
     //   let newChats: ImMsgChildType[] = [];
     //   item.chats.forEach((chat: ImMsgChildType) => {
@@ -370,7 +374,7 @@ const useChatStore = create((set, get: any) => ({
   },
   _recallMsg: async (data: any) => {
     data.showTxt = '撤回了一条消息';
-    get().curMsgs.forEach((item: any) => {
+    return get().curMsgs.map((item: any) => {
       if (item.id === data.id) {
         item.showTxt = data.showTxt;
         item.msgBody = data.msgBody;
@@ -381,9 +385,9 @@ const useChatStore = create((set, get: any) => ({
         } else {
           delete item.allowEdit;
         }
+        return item;
       }
     });
-    return data;
   },
   _loadChats: async (data: any) => {
     if (!data) return;

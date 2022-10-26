@@ -229,19 +229,23 @@ const GroupContent = (props: Iprops) => {
                         )}
                       </>
                     }>
-                    <div
-                      className={contentStyle.con_body}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectId(item.chatId);
-                      }}>
-                      <div className={contentStyle.con_content}>
-                        <div
-                          className={`${contentStyle.con_content} ${contentStyle.txt}`}
-                          dangerouslySetInnerHTML={{ __html: item.msgBody }}></div>
+                    {item.msgType === 'recall' ? (
+                      ''
+                    ) : (
+                      <div
+                        className={contentStyle.con_body}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectId(item.chatId);
+                        }}>
+                        <div className={contentStyle.con_content}>
+                          <div
+                            className={`${contentStyle.con_content} ${contentStyle.txt}`}
+                            dangerouslySetInnerHTML={{ __html: item.msgBody }}></div>
+                        </div>
+                        <HeadImg name={chat.getName(item.fromId)} />
                       </div>
-                      <HeadImg name={chat.getName(item.fromId)} />
-                    </div>
+                    )}
                   </Popover>
                 </div>
               </>
