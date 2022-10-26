@@ -169,44 +169,50 @@ const GroupSideBar = () => {
                           })}
                         </>
                       ) : (
-                        ''
+                        <>
+                          {/* 如果该分组没有被打开 但是有未读消息 则把未读消息会话显示出来 */}
+                          {item.chats
+                            .filter((v: any) => v.noRead > 0)
+                            .map((child: any) => {
+                              return (
+                                <div key={child.id + child.name}>
+                                  <HeadImg name={child.name} label={child.label} />
+                                  {child.noRead > 0 ? (
+                                    <>
+                                      <div
+                                        className={`${sideStyle.group_con} ${sideStyle.dot}`}>
+                                        <span>{child.noRead}</span>
+                                      </div>
+                                      <div
+                                        className={`${sideStyle.group_con_show}`}
+                                        onClick={() => {
+                                          openChangeds(child);
+                                        }}>
+                                        <div
+                                          className={`${sideStyle.group_con_show} ${sideStyle.name}`}>
+                                          <div
+                                            className={`${sideStyle.group_con_show} ${sideStyle.name} ${sideStyle.label}`}>
+                                            {child.name}
+                                          </div>
+                                          <div
+                                            className={`${sideStyle.group_con_show} ${sideStyle.name} ${sideStyle.time}`}>
+                                            {handleFormatDate(child.msgTime)}
+                                          </div>
+                                        </div>
+                                        <div
+                                          className={`${sideStyle.group_con_show} ${sideStyle.msg}`}>
+                                          {child.showTxt}
+                                        </div>
+                                      </div>
+                                    </>
+                                  ) : (
+                                    ''
+                                  )}
+                                </div>
+                              );
+                            })}
+                        </>
                       )}
-                      {/* 如果该分组没有被打开 但是有未读消息 则把未读消息会话显示出来 */}
-                      {item.chats
-                        .filter((v: any) => v.noRead > 0)
-                        .map((child: any) => {
-                          return (
-                            <div key={child.id + child.name}>
-                              <HeadImg name={child.name} label={child.label} />
-                              {child.noRead > 0 ? (
-                                <div
-                                  className={`${sideStyle.group_con} ${sideStyle.dot}`}>
-                                  <span>{child.noRead}</span>
-                                </div>
-                              ) : (
-                                <div className={`${sideStyle.group_con_show}`}>
-                                  <div>
-                                    <div
-                                      className={`${sideStyle.group_con_show} ${sideStyle.name}`}>
-                                      <div
-                                        className={`${sideStyle.group_con_show} ${sideStyle.label}`}>
-                                        {child.name}
-                                      </div>
-                                      <div
-                                        className={`${sideStyle.group_con_show} ${sideStyle.time}`}>
-                                        {handleFormatDate(child.msgTime)}
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div
-                                    className={`${sideStyle.group_con_show} ${sideStyle.msg}`}>
-                                    {child.showTxt}
-                                  </div>
-                                </div>
-                              )}
-                            </div>
-                          );
-                        })}
                     </div>
                   ) : (
                     ''

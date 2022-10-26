@@ -11,10 +11,11 @@ import contentStyle from './groupContent.module.less';
 
 interface Iprops {
   goPageEnds: Function;
+  handleReWrites: Function;
 }
 
 const GroupContent = (props: Iprops) => {
-  const { goPageEnds } = props;
+  const { goPageEnds, handleReWrites } = props;
   const ChatStore: any = useChatStore();
   const messageNodeRef = useRef<HTMLDivElement>(null); // dom节点
   const [selectId, setSelectId] = useState<string>('');
@@ -27,6 +28,7 @@ const GroupContent = (props: Iprops) => {
       ) > 3
     );
   };
+  // 滚动到底部
   const scrollEvent = () => {
     if (messageNodeRef.current) {
       messageNodeRef.current.scrollIntoView({
@@ -40,7 +42,7 @@ const GroupContent = (props: Iprops) => {
     scrollEvent();
   }, [ChatStore.curMsgs, ChatStore.setCurrent]);
 
-  // 显示聊天间隔时间
+  // 聊天间隔时间
   const showChatTime = (chatDate: moment.MomentInput) => {
     const cdate = moment(chatDate);
     const days = moment().diff(cdate, 'day');
@@ -59,12 +61,11 @@ const GroupContent = (props: Iprops) => {
     return cdate.format('yy年 M月D日 H:mm');
   };
 
-  // 重新编辑功能
+  // 重新编辑
   const handleReWrite = (txt: string) => {
-    console.log('重新编辑功能', txt);
-    // info.value = txt;
-    // emit('handleReWrite', txt);
+    handleReWrites(txt);
   };
+  // 删除消息
   const deleteMsg = (item: any) => {
     item.edit = false;
     ChatStore.deleteMsg(item);
@@ -75,6 +76,7 @@ const GroupContent = (props: Iprops) => {
     }
     return item.spaceId === chat.userId;
   };
+  // 消息撤回
   const recallMsg = (item: any) => {
     item.edit = false;
     if (item.chatId) {

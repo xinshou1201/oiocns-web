@@ -12,6 +12,7 @@ import GroupSideBar from './components/groupSideBar/groupSideBar';
 import charsStyle from './index.module.less';
 const Chat = () => {
   const [isShowDetail, setIsShowDetail] = useState<boolean>(false);
+  const [writeContent, setWriteContent] = useState<any>(null);
   const ChatStore: any = useChatStore();
   // 展示详情页
   const handleViewDetail = () => {
@@ -23,6 +24,10 @@ const Chat = () => {
       // contentWrapRef.value.
     });
   }, []);
+  // 重新编辑
+  const handleReWrites = (val: any) => {
+    setWriteContent(val);
+  };
 
   return (
     <div className={charsStyle.cohort_wrap}>
@@ -37,11 +42,11 @@ const Chat = () => {
             <GroupHeader handleViewDetail={handleViewDetail} />
             {/* 聊天区域 */}
             <div className={charsStyle.chart_content}>
-              <GroupContent goPageEnds={goPageEnds} />
+              <GroupContent goPageEnds={goPageEnds} handleReWrites={handleReWrites} />
             </div>
             {/* 输入区域 */}
             <div className={charsStyle.chart_input}>
-              <GroupInputBox />
+              <GroupInputBox writeContent={writeContent} />
             </div>
           </>
         ) : (

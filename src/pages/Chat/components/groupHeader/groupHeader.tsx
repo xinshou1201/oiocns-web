@@ -17,9 +17,7 @@ const Groupheader = (props: Iprops) => {
   const { handleViewDetail } = props;
   const ChatStore: any = useChatStore();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // 邀请好友
-  // const [];
   const handleAddFun = () => {
-    // emit('addUserOrCohort')
     setIsModalOpen(true);
   };
   const handleMoreFun = () => {

@@ -5,8 +5,12 @@ import React, { useEffect, useState } from 'react';
 import useChatStore from '@/store/chat';
 
 import inputboxStyle from './groupinputbox.module.less';
+interface Iprops {
+  writeContent: any;
+}
 
-const Groupinputbox = () => {
+const Groupinputbox = (props: Iprops) => {
+  const { writeContent } = props;
   const [imgUrls, setImgUrls] = useState<Array<string>>([]);
   const ChatStore: any = useChatStore();
   // 提交聊天内容
@@ -50,7 +54,7 @@ const Groupinputbox = () => {
   const handleImgChoosed = (url: string) => {
     const img = document.createElement('img');
     img.src = url;
-    img.className = `${inputboxStyle.emoji}`;
+    img.className = `emoji`;
     document.getElementById('insterHtml').append(img);
   };
   useEffect(() => {
@@ -62,6 +66,11 @@ const Groupinputbox = () => {
     }
     setImgUrls(imgUrlss);
   }, []);
+  useEffect(() => {
+    if (writeContent !== null) {
+      document.getElementById('insterHtml').innerHTML = writeContent;
+    }
+  }, [writeContent]);
   // 输入框 键盘指令
   const keyDown = (e: any) => {
     if (e.ctrlKey && e.keyCode == 13) {
