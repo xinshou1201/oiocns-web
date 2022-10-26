@@ -1,4 +1,5 @@
-.container{
+@import '~antd/es/style/themes/variable';
+.container {
   padding-left: 18px;
   padding-right: 6px;
 }
@@ -11,7 +12,14 @@
 }
 
 .sub-title {
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 12px;
+  padding: @padding-xs 0;
+  color: @text-color-secondary;
+  clear: both;
+  .add-icon {
+    color: @text-color-secondary;
+    float: right;
+    margin-right: @margin-xs;
+    font-size: 16px;
+  }
 }
-

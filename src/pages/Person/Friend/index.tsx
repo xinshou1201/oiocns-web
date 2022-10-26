@@ -80,7 +80,6 @@ const PersonFriend: React.FC = () => {
   };
 
   const showModal = () => {
-    message.error('data.msg');
     setIsModalOpen(true);
   };
 

@@ -27,7 +27,7 @@ const PersonInfo: React.FC = () => {
   );
   // 信息内容
   const content = (
-    <div className={cls['person-info-content']}>
+    <div className={cls['person-info-info']}>
       <Card bordered={false}>
         <Descriptions title={title} column={2}>
           <Descriptions.Item label="姓名">Zhou Maomao</Descriptions.Item>
@@ -43,9 +43,11 @@ const PersonInfo: React.FC = () => {
   );
   // TODO 1、个人空间显示加入的公司；2、单位空间显示所在的部门、工作组、岗位
   return (
-    <div>
+    <div className={cls['person-info-container']}>
       {content}
-      <PersonInfoCompany></PersonInfoCompany>
+      <div className={cls['person-info-company']}>
+        <PersonInfoCompany></PersonInfoCompany>
+      </div>
     </div>
   );
 };

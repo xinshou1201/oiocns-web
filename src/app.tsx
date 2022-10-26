@@ -1,6 +1,6 @@
 import './global.less';
 
-import { ConfigProvider, Spin } from 'antd';
+import { ConfigProvider, Spin, message, notification } from 'antd';
 import React, { Suspense, useState } from 'react';
 import { renderRoutes } from 'react-router-config';
 import { BrowserRouter } from 'react-router-dom';
@@ -26,6 +26,14 @@ const queryClient = new QueryClient({
       refetchOnMount: false,
     },
   },
+});
+
+message.config({
+  prefixCls: 'ogo-message',
+});
+
+notification.config({
+  prefixCls: 'ogo-notification',
 });
 
 const App = () => {

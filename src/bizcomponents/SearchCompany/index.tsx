@@ -43,7 +43,7 @@ const CompanySearchList: React.FC<CompanySearchTableProps> = () => {
       page: 1,
       pageSize: 10,
     });
-    return setDataSource(data);
+    setDataSource(data);
   };
 
   return (
@@ -54,7 +54,11 @@ const CompanySearchList: React.FC<CompanySearchTableProps> = () => {
         // extra={`找到${dataSource?.length}家单位`}
         onChange={(event) => {
           setSearchKey(event.target.value);
-          getList(event.target.value);
+          if (event.target.value) {
+            getList(event.target.value);
+          } else {
+            setDataSource([]);
+          }
         }}
       />
       {dataSource.length > 0 && companyCardList(dataSource)}

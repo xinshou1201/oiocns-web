@@ -1,4 +1,4 @@
-import { Button, Card, Modal, Table } from 'antd';
+import { Button, Modal, Table } from 'antd';
 import { ColumnsType } from 'antd/lib/table';
 import Title from 'antd/lib/typography/Title';
 import React, { useState } from 'react';
@@ -53,7 +53,7 @@ const PersonInfoCompany: React.FC = () => {
   ];
 
   return (
-    <Card>
+    <div className={cls['person-info-content-container']}>
       <div className={cls['person-info-content-header']}>
         <Title level={4}>
           <strong>我的单位</strong>
@@ -75,7 +75,7 @@ const PersonInfoCompany: React.FC = () => {
           <SearchCompany></SearchCompany>
         </div>
       </Modal>
-    </Card>
+    </div>
   );
 };
 
