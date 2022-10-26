@@ -153,27 +153,31 @@ const GroupContent = (props: Iprops) => {
                       ''
                     )
                   }>
-                  <div
-                    className={contentStyle.con_body}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectId(item.id);
-                    }}>
-                    <HeadImg name={chat.getName(item.fromId)} label={''} />
-                    <div className={`${contentStyle.con_content}`}>
-                      {ChatStore?.curChat?.typeName !== '人员' ? (
+                  {item.msgType === 'recall' ? (
+                    ''
+                  ) : (
+                    <div
+                      className={contentStyle.con_body}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectId(item.id);
+                      }}>
+                      <HeadImg name={chat.getName(item.fromId)} label={''} />
+                      <div className={`${contentStyle.con_content}`}>
+                        {ChatStore?.curChat?.typeName !== '人员' ? (
+                          <div
+                            className={`${contentStyle.con_content} ${contentStyle.name}`}>
+                            {ChatStore.getName(item.fromId) || ''}
+                          </div>
+                        ) : (
+                          ''
+                        )}
                         <div
-                          className={`${contentStyle.con_content} ${contentStyle.name}`}>
-                          {ChatStore.getName(item.fromId) || ''}
-                        </div>
-                      ) : (
-                        ''
-                      )}
-                      <div
-                        className={`${contentStyle.con_content} ${contentStyle.txt}`}
-                        dangerouslySetInnerHTML={{ __html: item.msgBody }}></div>
+                          className={`${contentStyle.con_content} ${contentStyle.txt}`}
+                          dangerouslySetInnerHTML={{ __html: item.msgBody }}></div>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </Popover>
               </div>
             ) : (
