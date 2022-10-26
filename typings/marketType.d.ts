@@ -53,6 +53,20 @@ export namespace MarketTypes {
   }
 }
 
-export namespace AppTypes{
-  
+export namespace AppTypes {
+  interface goodType {
+    caption: string;
+    createTime: string;
+    createUser: string;
+    id: string;
+    marketId: string;
+    product: MarketTypes.ProductType;
+
+    productId: string;
+    sellAuth: string;
+    status: number;
+    updateTime: string;
+    updateUser: string;
+    version: string;
+  }
 }

@@ -85,7 +85,7 @@ const Index: React.FC<PageType> = ({
         columns={hideOperation ? columns : resetColumns}
         bordered
         dataSource={dataSource}
-        // scroll={{ x: 1300 }}
+        scroll={{ x: 1000 }}
         options={false}
         search={false}
         rowKey={rowKey || 'key'}

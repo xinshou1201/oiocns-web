@@ -1,7 +1,7 @@
 import { IdPageReq } from './../index';
 // 市场业务
 import API from '@/services';
-import { MarketTypes } from 'typings/marketType';
+import { AppTypes, MarketTypes } from 'typings/marketType';
 import { PageReq } from '../index';
 
 import { IdPage, Page } from '../typings';
@@ -401,16 +401,25 @@ class MarketServices {
    */
   public async merchandise(params: IdPage) {
     params = { ...params, id: this.PUBLIC_STORE.id };
+    console.log('请求信息', this.PUBLIC_STORE.id);
+
     const { success, data } = await API.appstore.merchandise({
       data: new IdPageReq(params),
     });
-    console.log('请求信息', params, new IdPageReq(params));
 
     if (!success) {
       return;
     }
     const { result = [], total = 0 } = data;
-    this.publicStoreList = result;
+    console.log('请求信息', result);
+
+    this.publicStoreList = result.map((item: AppTypes.goodType) => {
+      // 获取展示信息 把所需内部展示数据暴露出来
+      const { product, ...rest } = item;
+      const { remark, typeName } = product;
+
+      return { ...rest, remark, typeName };
+    });
     this.publicStoreTotal = total;
   }
 

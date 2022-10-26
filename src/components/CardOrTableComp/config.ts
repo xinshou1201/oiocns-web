@@ -68,10 +68,10 @@ export const columns: ColumnsType<any> = [
     title: '来源',
     dataIndex: 'marketId',
   },
-  // {
-  //   title: '应用类型',
-  //   dataIndex: 'creatTime',
-  // },
+  {
+    title: '应用类型',
+    dataIndex: 'typeName',
+  },
   {
     title: '售卖权限',
     dataIndex: 'sellAuth',
@@ -84,5 +84,11 @@ export const columns: ColumnsType<any> = [
   {
     title: '创建时间',
     dataIndex: 'createTime',
+  },
+
+  {
+    title: '备注',
+    ellipsis: true,
+    dataIndex: 'remark',
   },
 ];
