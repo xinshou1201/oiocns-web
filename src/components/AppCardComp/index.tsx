@@ -22,11 +22,12 @@ interface AppCardType {
   operation?: (_item: MarketTypes.ProductType) => MarketTypes.OperationType[]; //操作区域数据
 }
 const defaultObj = {
-  name: 'name',
-  size: 'size',
-  type: 'type',
-  desc: 'desc',
-  creatTime: 'creatTime',
+  name: 'name', //名称
+  size: 'size', //大小
+  type: 'type', //是否免费
+  desc: 'desc', //描述
+  typeName: 'typeName', //应用类型
+  creatTime: 'creatTime', //上架时间
 };
 
 const AppCardComp: React.FC<AppCardType> = ({
@@ -41,6 +42,7 @@ const AppCardComp: React.FC<AppCardType> = ({
     size = 'size',
     type = 'type',
     desc = 'desc',
+    typeName = 'typeName',
     creatTime = 'creatTime',
   } = { ...defaultObj, ...defaultKey };
   /**
@@ -58,10 +60,10 @@ const AppCardComp: React.FC<AppCardType> = ({
           <Avatar className="card-title-left-logo" size={50} src={AppLogo} />
           <div className="card-title-left-info">
             <div className="app-name">
-              <span className="app-name-label">{data[name]}</span>
+              <span className="app-name-label">{data[name] || '--'}</span>
               <Tag color="success">{data[type] || '暂无'}</Tag>
             </div>
-            <span className="app-size">{data[size]}MB</span>
+            <span className="app-size">{data[size] || '--'}MB</span>
           </div>
         </div>
         <Dropdown className="card-title-extra" overlay={menu} placement="bottom">
@@ -75,14 +77,11 @@ const AppCardComp: React.FC<AppCardType> = ({
     <div className={`customCardWrap ${className}`}>
       <Title />
       <ul className="card-content">
-        <li className="card-content-desc con">
-          {data[desc]}
-          测试描述文字测试描述文字测试描述文字测试描述文字测试描述文字
-        </li>
+        <li className="card-content-desc con">{data[desc] || '暂无描述'}</li>
         <li className="card-content-type con">
-          <Tag>测试</Tag>
+          {data[typeName] ? <Tag>{data[typeName]}</Tag> : ''}
         </li>
-        <li className="card-content-date">创建于 {data[creatTime]}</li>
+        <li className="card-content-date">创建于 {data[creatTime] || '--'}</li>
       </ul>
     </div>
   );
