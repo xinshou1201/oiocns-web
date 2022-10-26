@@ -35,7 +35,6 @@ const AppShowComp: React.FC<AppShowCompType> = ({ apiName, defalutKeys }) => {
       pageSize: 10,
       filter: searchKey,
     };
-    console.log('哈哈哈哈', params);
     await MarketService[apiName]({ ...params, ...req });
 
     setList([...MarketService[defalutKeys.listKey]]);
@@ -46,9 +45,8 @@ const AppShowComp: React.FC<AppShowCompType> = ({ apiName, defalutKeys }) => {
    * handlePageChage
    */
   const handlePageChange = (page: number, pageSize: number) => {
-    console.log('搜索', page, pageSize);
     setPage(page);
-    getTableList({ page });
+    getTableList({ page, pageSize });
   };
   // 操作内容渲染函数
   const renderOperation = (
@@ -89,7 +87,19 @@ const AppShowComp: React.FC<AppShowCompType> = ({ apiName, defalutKeys }) => {
   const renderCardFun = (dataArr: MarketTypes.ProductType[]): React.ReactNode[] => {
     return dataArr.map((item: MarketTypes.ProductType) => {
       return (
-        <AppCard className="card" data={item} key={item.id} operation={renderOperation} />
+        <AppCard
+          className="card"
+          data={item}
+          key={item.id}
+          defaultKey={{
+            name: 'caption',
+            size: 'price',
+            type: 'sellAuth',
+            desc: 'remark',
+            creatTime: 'createTime',
+          }}
+          operation={renderOperation}
+        />
       );
     });
   };

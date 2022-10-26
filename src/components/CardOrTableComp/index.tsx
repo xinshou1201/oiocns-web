@@ -11,7 +11,7 @@ import { EllipsisOutlined } from '@ant-design/icons';
 import { MarketTypes } from 'typings/marketType';
 
 interface PageType {
-  dataSource: MarketTypes.ProductType[]; // 展示数据源
+  dataSource: MarketTypes.ProductType[] | any[]; // 展示数据源
   rowKey: string; //唯一key
   defaultPageType?: PageShowType; //当前展示类型 card: 卡片; list: 列表
   showChangeBtn?: boolean; //是否展示 图列切换按钮

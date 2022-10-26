@@ -15,7 +15,7 @@ interface defaultObjType {
 interface AppCardType {
   data: any; //props
   className?: string;
-  cusProps?: defaultObjType; // 卡片字段 对应数据字段
+  defaultKey?: defaultObjType; // 卡片字段 对应数据字段
   // eslint-disable-next-line no-unused-vars
   onClick?: (event?: any) => void;
   // eslint-disable-next-line no-unused-vars
@@ -32,7 +32,7 @@ const defaultObj = {
 const AppCardComp: React.FC<AppCardType> = ({
   className,
   data,
-  cusProps,
+  defaultKey,
   onClick,
   operation,
 }) => {
@@ -42,7 +42,7 @@ const AppCardComp: React.FC<AppCardType> = ({
     type = 'type',
     desc = 'desc',
     creatTime = 'creatTime',
-  } = { ...defaultObj, ...cusProps };
+  } = { ...defaultObj, ...defaultKey };
   /**
    * @desc: 操作按钮区域
    * @param {any} item - 表格单条数据 data

@@ -1,6 +1,6 @@
 import API from '../../services';
-import { IdPage, Page, PageResponse, TableResponse } from '../typings';
-import { IdPageReq, PageReq } from './../index';
+import { IdPage, Page, PageData, PageResponse } from '../typings';
+import { IdPageReq, PageReq, toArrayData, toPageData } from './../index';
 import { Company } from '.';
 
 import useUserStore from '@/store/user';
@@ -12,11 +12,12 @@ class CompanyService {
   /**
    * 获取用户已加入的单位组织
    */
-  public getJoinedCompany(req: Page): Promise<Company[]> {
-    return API.company.getJoinedCompany({ data: new PageReq(req) }).then(
-      (res: PageResponse<Company>) => {
+  public getJoinedCompany(page: Page): Promise<Company[]> {
+    return API.company.getJoinedCompany({ data: new PageReq(page) }).then(
+      (res: PageResponse<Company>): Company[] => {
         if (res.success) {
           const joinedCompanies = res.data?.result || [];
+          // 设置状态存储
           const { setJoinedCompanies } = useUserStore.getState();
           setJoinedCompanies(joinedCompanies);
           return joinedCompanies;
@@ -35,16 +36,9 @@ class CompanyService {
    * 获取集团下的单位
    * @returns 单位、公司列表
    */
-  public getGroupCompanies(req: IdPage): Promise<Company[]> {
-    return API.company.getGroupCompanies({ data: new IdPageReq(req) }).then(
-      (res: PageResponse) => {
-        if (res.success) {
-          return res.data;
-        } else {
-          console.error(res.msg);
-          return [];
-        }
-      },
+  public getGroupCompanies(idpage: IdPage): Promise<Company[]> {
+    return API.company.getGroupCompanies({ data: new IdPageReq(idpage) }).then(
+      (res: PageResponse<Company>): Company[] => toArrayData(res),
       (error: any) => {
         throw error;
       },
@@ -54,18 +48,9 @@ class CompanyService {
    * 搜索单位(公司)
    * @returns 根据编码搜索单位, 单位、公司表格需要的数据格式
    */
-  public searchCompany(req: Page): Promise<TableResponse<Company[]>> {
-    return API.company.searchCompany({ data: new PageReq(req) }).then(
-      (res: PageResponse<Company>) => {
-        const {
-          data: { result = [], total = 0 },
-          success,
-        } = res;
-        if (!success) {
-          console.error(res.msg);
-        }
-        return { data: result, total, success }; //表格数据
-      },
+  public searchCompany(page: Page): Promise<PageData<Company>> {
+    return API.company.searchCompany({ data: new PageReq(page) }).then(
+      (res: PageResponse<Company>): PageData<Company> => toPageData(res),
       (error: any) => {
         console.error(error);
       },
