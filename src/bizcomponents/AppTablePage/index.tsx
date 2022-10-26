@@ -7,8 +7,8 @@ import { columns } from '@/components/CardOrTableComp/config';
 import MarketService from '@/module/appstore/market';
 import { MarketTypes } from 'typings/marketType';
 interface AppShowCompType {
-  apiName: string;
-  defalutKeys: { listKey: string; totalKey: string };
+  apiName: string; // 请求名称--与service文件绑定
+  defalutKeys: { listKey: string; totalKey: string }; //读取数据源的字段--与service文件绑定
 }
 const AppShowComp: React.FC<AppShowCompType> = ({ apiName, defalutKeys }) => {
   const [list, setList] = useState<MarketTypes.ProductType[]>([]);

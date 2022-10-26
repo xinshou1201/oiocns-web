@@ -31,6 +31,8 @@ const useChatStore = create((set, get: any) => ({
   // 接收消息
   RecvMsg: () => {
     chat.connection.on('RecvMsg', (data: any) => {
+      console.log('接受消息新', data.msgBody);
+
       get()._recvMsg(data);
     });
   },
@@ -64,7 +66,9 @@ const useChatStore = create((set, get: any) => ({
   // 发送消息
   sendMsg: async (data: any) => {
     if (get().authed && data) {
-      data.msgBody = StringPako.deflate(data.msgBody);
+      // data.msgBody = StringPako.deflate(data.msgBody);
+
+      // TODO: 临时去除加密,用于开发测试数据接受情况
       return await get().connection.invoke('SendMsg', data);
     }
     return BadRequst;
@@ -266,7 +270,9 @@ const useChatStore = create((set, get: any) => ({
             return new Date(b.msgTime).getTime() - new Date(a.msgTime).getTime();
           });
         });
-        get().chats = [...groups];
+        console.log('打印会话列表');
+        set({ chats: [...groups] });
+        // get().chats = [...groups];
         get()._cacheChats();
       }
       return res;
@@ -283,77 +289,82 @@ const useChatStore = create((set, get: any) => ({
     }
   },
   _handlerMsg(data: any) {
+    console.log('_handlerMsg', data, get().chats, get().curMsgs);
+
     if (get().chats.length < 1) {
       setTimeout(() => {
+        set({ chats: chat.chats[0].chats });
         get()._handlerMsg(data);
       }, 1000);
+      return;
     }
+    set({ curMsgs: [...get().curMsgs, data] });
     if (data.msgType === 'recall') {
       data = get()._recallMsg(data);
     }
-    get().chats.forEach((item: ImMsgType) => {
-      let newChats: ImMsgChildType[] = [];
-      item.chats.forEach((chat: ImMsgChildType) => {
-        let sessionId = data.toId;
-        if (data.toId === chat?.userId) {
-          sessionId = data.fromId;
-        }
-        let isMatch = sessionId == chat.id;
-        if (chat.typeName == TargetType.Person && isMatch) {
-          isMatch = data.spaceId == chat.spaceId;
-        }
-        if (isMatch) {
-          if (data.msgType === 'toping') {
-            chat.isTop = data.msgBody;
-          } else {
-            let msgBody = StringPako.inflate(data.msgBody);
-            if (chat.spaceId === chat?.userId) {
-              get()._cacheMsg(sessionId, data);
-            }
-            chat.msgBody = data.msgBody;
-            chat.msgType = data.msgType;
-            chat.msgTime = data.createTime;
-            if (chat.msgType != 'recall') {
-              chat.showTxt = msgBody?.includes('img') ? '[图片]' : msgBody;
-            } else {
-              chat.showTxt = data.showTxt;
-            }
-            if (chat.typeName !== TargetType.Person) {
-              chat.showTxt = get().nameMap[data.fromId] + ': ' + chat.showTxt;
-            }
-            data.showTxt = chat.showTxt;
-            if (
-              get().curChat &&
-              get().curChat.id === chat.id &&
-              get().curChat.spaceId === chat.spaceId
-            ) {
-              let arr: any = [];
-              if (data.msgType !== 'recall') {
-                arr.push({
-                  ...data,
-                  msgBody: msgBody,
-                });
-                set({ curMsgs: arr });
-              }
-            } else {
-              if (
-                get().openChats.findIndex(
-                  (i: any) => i.id === chat.id && i.spaceId === chat.spaceId,
-                ) < 0
-              ) {
-                notify.player();
-                chat.noRead = (chat.noRead || 0) + 1;
-              }
-            }
-            get().lastMsg = { data: data, chat: chat };
-          }
-          newChats.unshift(chat);
-        } else {
-          newChats.push(chat);
-        }
-      });
-      item.chats = newChats;
-    });
+    // get().chats.forEach((item: ImMsgType) => {
+    //   let newChats: ImMsgChildType[] = [];
+    //   item.chats.forEach((chat: ImMsgChildType) => {
+    //     let sessionId = data.toId;
+    //     if (data.toId === chat?.userId) {
+    //       sessionId = data.fromId;
+    //     }
+    //     let isMatch = sessionId == chat.id;
+    //     if (chat.typeName == TargetType.Person && isMatch) {
+    //       isMatch = data.spaceId == chat.spaceId;
+    //     }
+    //     if (isMatch) {
+    //       if (data.msgType === 'toping') {
+    //         chat.isTop = data.msgBody;
+    //       } else {
+    //         let msgBody = StringPako.inflate(data.msgBody);
+    //         if (chat.spaceId === chat?.userId) {
+    //           get()._cacheMsg(sessionId, data);
+    //         }
+    //         chat.msgBody = data.msgBody;
+    //         chat.msgType = data.msgType;
+    //         chat.msgTime = data.createTime;
+    //         if (chat.msgType != 'recall') {
+    //           chat.showTxt = msgBody?.includes('img') ? '[图片]' : msgBody;
+    //         } else {
+    //           chat.showTxt = data.showTxt;
+    //         }
+    //         if (chat.typeName !== TargetType.Person) {
+    //           chat.showTxt = get().nameMap[data.fromId] + ': ' + chat.showTxt;
+    //         }
+    //         data.showTxt = chat.showTxt;
+    //         if (
+    //           get().curChat &&
+    //           get().curChat.id === chat.id &&
+    //           get().curChat.spaceId === chat.spaceId
+    //         ) {
+    //           let arr: any = [];
+    //           if (data.msgType !== 'recall') {
+    //             arr.push({
+    //               ...data,
+    //               msgBody: msgBody,
+    //             });
+    //             set({ curMsgs: arr });
+    //           }
+    //         } else {
+    //           if (
+    //             get().openChats.findIndex(
+    //               (i: any) => i.id === chat.id && i.spaceId === chat.spaceId,
+    //             ) < 0
+    //           ) {
+    //             notify.player();
+    //             chat.noRead = (chat.noRead || 0) + 1;
+    //           }
+    //         }
+    //         get().lastMsg = { data: data, chat: chat };
+    //       }
+    //       newChats.unshift(chat);
+    //     } else {
+    //       newChats.push(chat);
+    //     }
+    //   });
+    //   item.chats = newChats;
+    // });
     get()._cacheChats();
     return data;
   },
@@ -417,20 +428,21 @@ const useChatStore = create((set, get: any) => ({
     }
   },
   _cacheChats: () => {
-    get().anyStore.set(
-      'orgChat',
-      {
-        operation: 'replaceAll',
-        data: {
-          name: '我的消息',
-          chats: chat.chats,
-          nameMap: chat.nameMap,
-          openChats: chat.openChats,
-          lastMsg: chat.lastMsg,
-        },
-      },
-      'user',
-    );
+    // TODO:
+    // get().anyStore.set(
+    //   'orgChat',
+    //   {
+    //     operation: 'replaceAll',
+    //     data: {
+    //       name: '我的消息',
+    //       chats: chat.chats,
+    //       nameMap: chat.nameMap,
+    //       openChats: chat.openChats,
+    //       lastMsg: chat.lastMsg,
+    //     },
+    //   },
+    //   'user',
+    // );
   },
   _cacheMsg: (sessionId: string, data: any) => {
     if (data.msgType === 'recall') {

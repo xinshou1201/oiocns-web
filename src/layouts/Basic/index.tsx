@@ -20,7 +20,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
 
   const { route, history } = props;
   const { getUserInfo } = useStore((state) => ({ ...state }));
-  const { RecvMsg }: any = useChatStore();
+  const { RecvMsg, getChats }: any = useChatStore();
   useEffect(() => {
     if (!token) {
       history.push('/passport/login');
@@ -29,6 +29,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     }
     if (token) {
       RecvMsg();
+      getChats();
     }
   }, []);
   chat.start(token);
