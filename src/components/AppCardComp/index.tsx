@@ -3,6 +3,7 @@ import { Avatar, Tag, Dropdown, Menu } from 'antd';
 import React from 'react';
 import './index.less';
 import AppLogo from '@/assets/img/appLogo.png';
+import { MarketTypes } from 'typings/marketType';
 interface defaultObjType {
   name: string;
   size: number | string;
@@ -14,9 +15,11 @@ interface defaultObjType {
 interface AppCardType {
   data: any; //props
   className?: string;
-  cusProps?: defaultObjType; // 卡片字段 对应数据字段
+  defaultKey?: defaultObjType; // 卡片字段 对应数据字段
   // eslint-disable-next-line no-unused-vars
   onClick?: (event?: any) => void;
+  // eslint-disable-next-line no-unused-vars
+  operation?: (_item: MarketTypes.ProductType) => MarketTypes.OperationType[]; //操作区域数据
 }
 const defaultObj = {
   name: 'name',
@@ -25,32 +28,29 @@ const defaultObj = {
   desc: 'desc',
   creatTime: 'creatTime',
 };
-const menu = (
-  <Menu
-    items={[
-      {
-        key: '1',
-        label: '按钮1',
-      },
-      {
-        key: '2',
-        label: '按钮2',
-      },
-      {
-        key: '3',
-        label: '按钮3',
-      },
-    ]}
-  />
-);
-const AppCardComp: React.FC<AppCardType> = ({ className, data, cusProps, onClick }) => {
+
+const AppCardComp: React.FC<AppCardType> = ({
+  className,
+  data,
+  defaultKey,
+  onClick,
+  operation,
+}) => {
   const {
     name = 'name',
     size = 'size',
     type = 'type',
     desc = 'desc',
     creatTime = 'creatTime',
-  } = { ...defaultObj, ...cusProps };
+  } = { ...defaultObj, ...defaultKey };
+  /**
+   * @desc: 操作按钮区域
+   * @param {any} item - 表格单条数据 data
+   * @return {Menu} - 渲染 按钮组
+   */
+  const menu = () => {
+    return <Menu items={operation && operation(data)} />;
+  };
   const Title = () => {
     return (
       <div className="card-title flex" onClick={onClick}>

@@ -44,16 +44,15 @@ class CompanyService {
       },
     );
   }
-
   /**
    * 搜索单位(公司)
-   * @returns 单位、公司列表
+   * @returns 根据编码搜索单位, 单位、公司表格需要的数据格式
    */
   public searchCompany(page: Page): Promise<PageData<Company>> {
     return API.company.searchCompany({ data: new PageReq(page) }).then(
       (res: PageResponse<Company>): PageData<Company> => toPageData(res),
       (error: any) => {
-        throw error;
+        console.error(error);
       },
     );
   }

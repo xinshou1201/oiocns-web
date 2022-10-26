@@ -1,5 +1,5 @@
 import { Layout, Space } from 'antd';
-import React, { ReactNode } from 'react';
+import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import { businessRouteList } from '@/routes/utils';
@@ -14,11 +14,11 @@ type ContentMenuProps = {
 };
 
 // 根据数据类型渲染icon
-const createIcon = (icon?: string | React.Component | ReactNode) => {
+const createIcon = (icon?: string | React.Component | React.ReactNode) => {
   return typeof icon == 'string' ? (
     <IconFont type={(icon as string) || ''} className={cls['icon']} />
   ) : (
-    <span className={cls['icon']}>{icon as ReactNode}</span> || ''
+    <span className={cls['icon']}>{icon as React.ReactNode}</span> || ''
   );
 };
 

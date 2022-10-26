@@ -83,10 +83,15 @@ export class PageReq {
  */
 export function toPageData<T>(res: PageResponse<T>): PageData<T> {
   if (res.success) {
-    return { success: true, data: res.data?.result || [], total: res.data.total || 0 };
+    return {
+      success: true,
+      data: res.data?.result || [],
+      total: res.data.total || 0,
+      msg: res.msg,
+    };
   } else {
     console.error(res.msg);
-    return { success: false, data: [], total: 0 };
+    return { success: false, data: [], total: 0, msg: res.msg };
   }
 }
 

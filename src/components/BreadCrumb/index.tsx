@@ -36,6 +36,7 @@ const createIcon = (icon?: string | React.Component | ReactNode) => {
  */
 const BreadCrumb: React.FC = () => {
   initMap(routes);
+
   const location = useLocation();
   const pathSnippets = location.pathname.split('/').filter((i) => i);
 

@@ -1,46 +1,20 @@
-import React, { useEffect, useState } from 'react';
 import './index.less';
 
-import CardOrTable from '@/components/CardOrTableComp';
-import AppCard from '@/components/AppCardComp';
-import { columns } from '@/components/CardOrTableComp/config';
-import MarketService from '@/module/appstore/market';
+import React from 'react';
 
-const MarketApp = () => {
-  const [list, setList] = useState<any[]>([]);
-
-  useEffect(() => {
-    getList();
-  }, []);
-
-  async function getList() {
-    const params = {
-      offset: 0,
-      limit: 10,
-      filter: '',
-    };
-    await MarketService.getMarketList(params);
-
-    setList([...MarketService.marketList]);
-  }
-  const renderCardFun = (dataArr: any) => {
-    return dataArr.map((item: any) => {
-      return <AppCard className="card" data={item} key={item.id} />;
-    });
-  };
-  console.log('6666', list);
-
+import AppShowComp from '@/bizcomponents/AppTablePage';
+const Index: React.FC = () => {
   return (
-    <div className="app-wrap">
-      <CardOrTable
-        dataSource={list}
-        total={50}
-        renderCardContent={renderCardFun}
-        columns={columns as any}
-        rowKey={'id'}
+    <>
+      <AppShowComp
+        apiName={'merchandise'}
+        defalutKeys={{
+          listKey: 'publicStoreList',
+          totalKey: 'publicStoreTotal',
+        }}
       />
-    </div>
+    </>
   );
 };
 
-export default MarketApp;
+export default Index;
