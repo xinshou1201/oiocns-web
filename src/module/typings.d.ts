@@ -10,9 +10,18 @@ export type CommonResponse = {
 };
 
 /**
- * 分页查询返回的数据
+ * 前端业务分页结果的数据类型
  */
 export type PageData<P = {}> = {
+  success: boolean;
+	total: number;
+	data: P[];
+}
+
+/**
+ * 后台分页查询返回的数据
+ */
+export type PageResponseData<P = {}> = {
   limit: number;
 	total: number;
 	result: P[];
@@ -24,7 +33,7 @@ export type PageData<P = {}> = {
  */
  export type PageResponse<P = {}> = {
   code: number;
-  data: PageData<P>;
+  data: PageResponseData<P>;
   msg: string;
   success: boolean;
 };
