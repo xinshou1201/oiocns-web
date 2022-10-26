@@ -2,19 +2,21 @@
   display: flex;
   flex-direction: column;
   flex: 1;
-
+  height: 100%;
   .operation-btn {
     display: flex;
     align-items: center;
     height: 20px;
     padding: 4px 10px;
-    background-color: @primary-color;
-    color: @white-color;
+    cursor: pointer;
     border-radius: 12px;
     font-size: 18px;
     overflow: hidden;
+    &:hover {
+      background-color: @primary-color;
+      color: @white-color;
+    }
   }
-
 }
 
 .ogo-pro {
@@ -30,7 +32,6 @@
     padding-inline: 0;
     padding-block: 6px;
   }
-
 
   .ogo-table-thead th {
     background-color: @table-header-background;
@@ -72,7 +73,6 @@
       }
     }
   }
-
 }
 
 .stripe {
