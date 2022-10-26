@@ -130,7 +130,6 @@ const GroupContent = (props: Iprops) => {
             {/* 左侧聊天内容显示 */}
             {item.fromId !== chat.userId ? (
               <div className={`${contentStyle.group_content_left} ${contentStyle.con}`}>
-                {console.log('5555555555', item)}
                 <Popover
                   trigger="hover"
                   overlayClassName={contentStyle.targerBoxClass}
@@ -182,7 +181,6 @@ const GroupContent = (props: Iprops) => {
                 {/* 右侧聊天内容显示 */}
                 <div
                   className={`${contentStyle.group_content_right} ${contentStyle.con}`}>
-                  {console.log('5555555555', item)}
                   <Popover
                     trigger="hover"
                     overlayClassName={contentStyle.targerBoxClass}
