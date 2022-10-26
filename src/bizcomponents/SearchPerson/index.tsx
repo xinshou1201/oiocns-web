@@ -9,7 +9,7 @@ import cls from './index.module.less';
 
 type SearchPersonProps = {
   // eslint-disable-next-line no-unused-vars
-  confirm: (person: Person) => void;
+  searchCallback: (person: Person) => void;
 };
 
 /**
@@ -31,7 +31,7 @@ const personInfoList: React.FC<Person[]> = (persons) => (
  * 搜索人员
  * @returns
  */
-const SearchPerson: React.FC<SearchPersonProps> = ({ confirm }) => {
+const SearchPerson: React.FC<SearchPersonProps> = ({ searchCallback }) => {
   const [value, setValue] = useState<string>();
   const [persons, setPersons] = useState<Person[]>([]);
   const keyWordChange = async (e: any) => {
@@ -39,7 +39,7 @@ const SearchPerson: React.FC<SearchPersonProps> = ({ confirm }) => {
     if (e.target.value) {
       const res = await personService.searchPerson(e.target.value);
       setPersons(res);
-      confirm(res[0]);
+      searchCallback(res[0]);
     }
   };
 

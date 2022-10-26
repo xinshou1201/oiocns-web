@@ -1,6 +1,6 @@
 import API from '../../services';
-import { PageResponse } from '../typings';
-import { PageReq } from './../index';
+import { CommonResponse, Page, PageData, PageResponse } from '../typings';
+import { PageReq, toPageData } from './../index';
 import { Person } from '.';
 
 /**
@@ -9,6 +9,7 @@ import { Person } from '.';
 class PersonService {
   /**
    * 搜索人员
+   * @params 查询参数：过滤条件或分页请求
    * @returns 单位、公司列表
    */
   public searchPerson(params: string | PageReq): Promise<Person[]> {
@@ -19,7 +20,7 @@ class PersonService {
       body = params;
     }
     return API.person.searchPersons({ data: body }).then(
-      (res: PageResponse<Person>) => {
+      (res: PageResponse<Person>): Person[] => {
         if (res.success) {
           return res.data.result || [];
         } else {
@@ -32,7 +33,36 @@ class PersonService {
       },
     );
   }
+
+  /**
+   * 获取好友列表
+   * @param page Antd分页信息
+   * @returns 好友列表
+   */
+  public getFriends(page: Page): Promise<PageData<Person>> {
+    return API.person.getFriends({ data: new PageReq(page) }).then(
+      (res: PageResponse<Person>): PageData<Person> => toPageData(res),
+      (error: any) => {
+        throw error;
+      },
+    );
+  }
+
+  /**
+   * 申请加好友
+   * @param id 人员ID
+   * @returns
+   */
+  public applyJoin(id: string): Promise<CommonResponse> {
+    return API.person.applyJoin({ data: { id } }).then(
+      (res: CommonResponse) => res,
+      (error: any) => {
+        throw error;
+      },
+    );
+  }
 }
+
 const personService = new PersonService();
 
 export default personService;
