@@ -84,11 +84,12 @@ const GroupContent = (props: Iprops) => {
       delete item.chatId;
       delete item.sessionId;
     }
-    ChatStore.recallMsgs(item).then((res: ResultType) => {
-      if (res.data != 1) {
-        message.warning('只能撤回2分钟内发送的消息');
-      }
-    });
+    ChatStore.recallMsgs(item);
+    // ChatStore.recallMsgs(item).then((res: ResultType) => {
+    //   if (res.data != 1) {
+    //     message.warning('只能撤回2分钟内发送的消息');
+    //   }
+    // });
   };
 
   goPageEnds();
@@ -129,10 +130,11 @@ const GroupContent = (props: Iprops) => {
             {/* 左侧聊天内容显示 */}
             {item.fromId !== chat.userId ? (
               <div className={`${contentStyle.group_content_left} ${contentStyle.con}`}>
+                {console.log('5555555555', item)}
                 <Popover
                   trigger="hover"
                   overlayClassName={contentStyle.targerBoxClass}
-                  open={selectId == item.chatId}
+                  open={selectId == item.id}
                   key={item.chatId}
                   placement="bottom"
                   onOpenChange={() => {
@@ -156,7 +158,7 @@ const GroupContent = (props: Iprops) => {
                     className={contentStyle.con_body}
                     onClick={(e) => {
                       e.stopPropagation();
-                      setSelectId(item.chatId);
+                      setSelectId(item.id);
                     }}>
                     <HeadImg name={chat.getName(item.fromId)} label={''} />
                     <div className={`${contentStyle.con_content}`}>
@@ -180,11 +182,12 @@ const GroupContent = (props: Iprops) => {
                 {/* 右侧聊天内容显示 */}
                 <div
                   className={`${contentStyle.group_content_right} ${contentStyle.con}`}>
+                  {console.log('5555555555', item)}
                   <Popover
                     trigger="hover"
                     overlayClassName={contentStyle.targerBoxClass}
-                    open={selectId == item.chatId}
-                    key={item.chatId}
+                    open={selectId == item.id}
+                    key={item.id}
                     placement="bottom"
                     onOpenChange={() => {
                       setSelectId('');
@@ -236,7 +239,7 @@ const GroupContent = (props: Iprops) => {
                         className={contentStyle.con_body}
                         onClick={(e) => {
                           e.stopPropagation();
-                          setSelectId(item.chatId);
+                          setSelectId(item.id);
                         }}>
                         <div className={contentStyle.con_content}>
                           <div
