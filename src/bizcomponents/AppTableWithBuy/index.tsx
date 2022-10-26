@@ -96,7 +96,12 @@ const AppShowComp: React.FC<AppShowCompType> = ({ apiName, defalutKeys }) => {
       },
     ];
   };
-  // 卡片内容渲染函数
+
+  /**
+   * @desc:卡片内容渲染函数
+   * @param {MarketTypes.ProductType[]} dataArr
+   * @return {*}
+   */
   const renderCardFun = (dataArr: MarketTypes.ProductType[]): React.ReactNode[] => {
     return dataArr.map((item: any) => {
       return (
