@@ -1,5 +1,6 @@
 import { Card, Tabs } from 'antd';
 import React from 'react';
+import AppShowComp from '@/bizcomponents/AppTablePage';
 
 import StoreRecent from './../Recent';
 
@@ -35,7 +36,15 @@ const StoreApp: React.FC = () => {
             {
               label: `共享的`,
               key: '4',
-              children: `Content of Tab Pane 3`,
+              children: (
+                <AppShowComp
+                  apiName={'merchandise'}
+                  defalutKeys={{
+                    listKey: 'publicStoreList',
+                    totalKey: 'publicStoreTotal',
+                  }}
+                />
+              ),
             },
             {
               label: `分配的`,

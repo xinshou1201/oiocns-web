@@ -3,6 +3,7 @@ import './index.less';
 import React from 'react';
 
 import AppShowComp from '@/bizcomponents/AppTablePage';
+
 const Index: React.FC = () => {
   return (
     <>
