@@ -61,19 +61,34 @@ export const columns: ColumnsType<any> = [
     },
   },
   {
-    title: '名称',
-    dataIndex: 'name',
+    title: '应用名称',
+    dataIndex: 'caption',
   },
   {
-    title: '年龄',
-    dataIndex: 'size',
+    title: '来源',
+    dataIndex: 'marketId',
   },
   {
-    title: '描述',
-    dataIndex: 'desc',
+    title: '应用类型',
+    dataIndex: 'typeName',
   },
   {
-    title: '时间',
-    dataIndex: 'creatTime',
+    title: '售卖权限',
+    dataIndex: 'sellAuth',
+  },
+  {
+    title: '价格',
+    dataIndex: 'price',
+  },
+
+  {
+    title: '创建时间',
+    dataIndex: 'createTime',
+  },
+
+  {
+    title: '备注',
+    ellipsis: true,
+    dataIndex: 'remark',
   },
 ];

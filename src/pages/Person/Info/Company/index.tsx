@@ -3,13 +3,12 @@ import { ColumnsType } from 'antd/lib/table';
 import Title from 'antd/lib/typography/Title';
 import React, { useState } from 'react';
 
-import { Company, Person } from '@/module/org';
+import { Company } from '@/module/org';
 import companyService from '@/module/org/company';
 
 import cls from './index.module.less';
 import { useQuery } from '@tanstack/react-query';
-// import SearchCompany from '@/bizcomponents/SearchCompany';
-import SearchPerson from '@/bizcomponents/SearchPerson';
+import SearchCompany from '@/bizcomponents/SearchCompany';
 
 /**
  * 用户信息-加入的单位(公司)
@@ -53,9 +52,6 @@ const PersonInfoCompany: React.FC = () => {
     },
   ];
 
-  const confirm = (person: Person) => {
-    console.log(person);
-  };
   return (
     <Card>
       <div className={cls['person-info-content-header']}>
@@ -70,14 +66,13 @@ const PersonInfoCompany: React.FC = () => {
       </div>
       <Table dataSource={data} columns={columns} rowKey={(r) => r.id} />
       <Modal
-        title="添加好友"
+        title="加入单位"
         open={isModalOpen}
         onOk={handleOk}
         onCancel={handleCancel}
-        width={550}>
+        width={500}>
         <div>
-          {/* <SearchCompany></SearchCompany> */}
-          <SearchPerson confirm={confirm}></SearchPerson>
+          <SearchCompany></SearchCompany>
         </div>
       </Modal>
     </Card>
