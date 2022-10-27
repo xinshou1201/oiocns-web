@@ -1,50 +1,59 @@
 import { Card, Tabs } from 'antd';
-import React from 'react';
+import React, { useMemo, useState } from 'react';
+import AppShowComp from '@/bizcomponents/AppTablePage';
+import MarketService from '@/module/appstore/market';
 
-import StoreRecent from './../Recent';
+const service = new MarketService({
+  spaceName: 'publicStore',
+  searchApi: 'appstore.merchandise',
+  createApi: 'appstore.create',
+  deleteApi: 'appstore.marketDel',
+  updateApi: 'appstore.updateMarket',
+});
 
-const onChange = (key: string) => {
-  console.log(key);
-};
+import StoreRecent from '../Recent';
 
 const StoreApp: React.FC = () => {
+  const [apiName, setApiName] = useState('merchandise');
   const recent = <StoreRecent></StoreRecent>;
+
+  const renderTable = useMemo(() => {
+    return <AppShowComp service={service} />;
+  }, [apiName]);
   return (
     <div>
       <div>{recent}</div>
       <Card>
         <Tabs
           defaultActiveKey="1"
-          onChange={onChange}
+          onChange={(key: string) => {
+            setApiName(key);
+          }}
           items={[
             {
               label: `全部`,
               key: '1',
-              children: `Content of Tab Pane 1`,
             },
             {
               label: `创建的`,
               key: '2',
-              children: `Content of Tab Pane 2`,
             },
             {
               label: `购买的`,
               key: '3',
-              children: `Content of Tab Pane 3`,
             },
             {
               label: `共享的`,
               key: '4',
-              children: `Content of Tab Pane 3`,
             },
             {
               label: `分配的`,
               key: '5',
-              children: `Content of Tab Pane 3`,
             },
           ]}
         />
       </Card>
+      <div className="page-content-table">{renderTable}</div>
     </div>
   );
 };
