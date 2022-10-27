@@ -10,8 +10,8 @@ import { IconFont } from '@/components/IconFont';
 import { EllipsisOutlined } from '@ant-design/icons';
 import { MarketTypes } from 'typings/marketType';
 
-interface PageType {
-  dataSource: MarketTypes.ProductType[] | any[]; // 展示数据源
+interface PageType<T> {
+  dataSource: T[]; // 展示数据源
   rowKey: string; //唯一key
   defaultPageType?: PageShowType; //当前展示类型 card: 卡片; list: 列表
   showChangeBtn?: boolean; //是否展示 图列切换按钮
@@ -22,14 +22,14 @@ interface PageType {
   stripe?: boolean; // 斑马纹
   style?: React.CSSProperties; // wrap样式加载 对表格外部margin pading 等定制展示
   onChange?: (page: number, pageSize: number) => void; // 弹出切换页码事件
-  operation?: (item: MarketTypes.ProductType) => MarketTypes.OperationType[]; //操作区域数据
+  operation?: (item: T) => MarketTypes.OperationType[]; //操作区域数据
   renderCardContent?: (
-    dataArr: MarketTypes.ProductType[], //渲染卡片样式 Data保持与dataSource 类型一致;或者直接传进展示组件
+    dataArr: T[], //渲染卡片样式 Data保持与dataSource 类型一致;或者直接传进展示组件
   ) => React.ReactNode | React.ReactNode[];
   [key: string]: any; // 其他属性方法
 }
 
-const Index: React.FC<PageType> = ({
+const Index: React.FC<PageType<any>> = ({
   defaultPageType,
   showChangeBtn = true,
   dataSource = [],
@@ -58,7 +58,7 @@ const Index: React.FC<PageType> = ({
 
   /**
    * @desc: 渲染表格主体
-   * @return {表格主体}
+   * @return {表格主体头部数组}
    */
   const resetColumns: ProColumns<any>[] = useMemo(() => {
     return [
