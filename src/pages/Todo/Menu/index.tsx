@@ -4,13 +4,14 @@ import {
   FileTextOutlined,
   FundOutlined,
   HomeOutlined,
+  PlusOutlined,
   ShopOutlined,
   UnorderedListOutlined,
   UserOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
-import React from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useState } from 'react';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
 import cls from './index.module.less';
 
@@ -18,9 +19,11 @@ import cls from './index.module.less';
  * 待办页面菜单
  * @returns
  */
-const TodoMenu: React.FC = () => {
-  const history = useHistory();
-
+const TodoMenu: React.FC<RouteComponentProps> = (props) => {
+  const { location, history } = props;
+  const currentKey = location.pathname.split('/')[2];
+  console.log(currentKey);
+  const [menukeys, setMenuKeys] = useState<string[]>([currentKey || 'friend']);
   /* 待办页面菜单 */
   const items = [
     { label: '好友申请', key: 'friend', icon: <UserOutlined /> },
@@ -39,28 +42,33 @@ const TodoMenu: React.FC = () => {
   ];
 
   // 菜单跳转
-  const to = (e: any) => {
+  const toNext = (e: any) => {
+    setMenuKeys(e.keyPath);
     history.push(`/todo/${e.key}`);
+    console.log(menukeys);
   };
-
+  const handleClickMenu = (e: any) => {
+    setMenuKeys(e.keyPath);
+  };
   return (
     <div className={cls.container}>
-      {/* <div className={cls.top}>
-        <div className={cls.title}>
-          <HomeOutlined />
-          <strong>办事</strong>
-        </div>
-      </div> */}
       <div>
-        <div className={cls.subTitle}>平台待办</div>
-        <Menu items={items} onClick={to} />
+        <div className={cls[`sub-title`]}>平台待办</div>
+        <Menu
+          items={items}
+          onClick={toNext}
+          selectedKeys={menukeys}
+          defaultSelectedKeys={menukeys}
+        />
       </div>
       <div>
-        <div className={cls.subTitle}>应用待办</div>
-        <Menu items={apps} />
+        <div className={cls[`sub-title`]}>
+          应用待办 <PlusOutlined className={cls[`add-icon`]} />
+        </div>
+        <Menu items={apps} selectedKeys={menukeys} onClick={handleClickMenu} />
       </div>
     </div>
   );
 };
 
-export default TodoMenu;
+export default withRouter(TodoMenu);

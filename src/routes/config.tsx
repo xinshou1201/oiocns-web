@@ -131,6 +131,11 @@ const TodoRouter: IRouteConfig[] = [
         icon: <UnorderedListOutlined />,
         component: React.lazy(() => import('@/pages/Todo/Order')),
       },
+      {
+        path: '/todo',
+        title: '办事',
+        render: () => <RouterRedirect to="/todo/friend" />,
+      },
     ],
   },
 ];
