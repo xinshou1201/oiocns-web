@@ -25,7 +25,7 @@ interface PageType<T> {
   operation?: (item: T) => MarketTypes.OperationType[]; //操作区域数据
   renderCardContent?: (
     dataArr: T[], //渲染卡片样式 Data保持与dataSource 类型一致;或者直接传进展示组件
-  ) => React.ReactNode | React.ReactNode[];
+  ) => React.ReactNode | React.ReactNode[] | React.ReactElement;
   [key: string]: any; // 其他属性方法
 }
 
