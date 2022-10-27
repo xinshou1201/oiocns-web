@@ -1,0 +1,144 @@
+// 市场业务
+import API from '@/services';
+
+export default class CommonClass {
+  protected spaceName: string; //命名空间--用于区分功能
+  // 接口注册
+  protected searchApi: Function; // 查 数据
+  protected createApi: Function; // 增 数据
+  protected deleteApi: Function; // 删 数据
+  protected updateApi: Function; // 改 数据
+  protected joinTargetApi?: Function; // 向...加入
+  protected quitTargetApi?: Function; // 从...退出
+  // 功能数据
+  public List: any[] = []; //列表数据
+  public Total: number = 0; //列表 总数
+  public QueryParams: any = {}; //记录历史请求参数
+  constructor(data: {
+    spaceName: string; //命名空间--用于区分功能
+    searchApi?: string; // 查 数据
+    createApi?: string; // 增 数据
+    deleteApi?: string; // 删 数据
+    updateApi?: string; // 改 数据
+    joinTargetApi?: string; // 向...加入
+    quitTargetApi?: string; // 从...退出
+  }) {
+    this.spaceName = data.spaceName;
+    // this[`${data.spaceName}List`] = []; //列表 数据
+    // this[`${data.spaceName}Total`] = 0; //列表 总数
+    // 接口注册
+    this.searchApi = this._handleApi(data.searchApi);
+    this.createApi = this._handleApi(data.createApi);
+    this.deleteApi = this._handleApi(data.deleteApi);
+    this.updateApi = this._handleApi(data.updateApi);
+    this.joinTargetApi = this._handleApi(data.joinTargetApi);
+    this.quitTargetApi = this._handleApi(data.quitTargetApi);
+  }
+  protected _handleApi = (apiName?: string) => {
+    if (!apiName) {
+      return null;
+    }
+    let arr = apiName?.split('.');
+    return API[arr[0]][arr[1]];
+  };
+  protected _resetParams = <T extends { page: number; pageSize: number }>(params: T) => {
+    const { page, pageSize, ...rest } = params;
+
+    return {
+      offset: (page - 1) * pageSize || 0,
+      limit: pageSize || 20,
+      ...rest,
+    };
+  };
+
+  // 获取列表
+  public async getList<T extends { page: number; pageSize: number }>(
+    params: T,
+  ): Promise<void> {
+    const { data, success } = await this.searchApi({
+      data: this._resetParams<T>(params),
+    });
+    if (success) {
+      const { result = [], total = 0 } = data;
+      this.List = result;
+      this.Total = total;
+      //记录搜索条件
+      this.QueryParams = params;
+    }
+  }
+
+  /**
+   * @desc: 创建
+   * @param {T} params
+   * @return {*}
+   */
+  public async creatItem<T>(params: T): Promise<void> {
+    const { success } = await this.createApi({
+      data: params,
+    });
+    if (success) {
+      await this.getList(this.QueryParams);
+    }
+  }
+
+  /**
+   * @desc: 更新
+   * @param {T} params
+   * @return {*}
+   */
+  public async updateItem<T>(params: T) {
+    const { success } = await this.updateApi({
+      data: params,
+    });
+    if (success) {
+      await this.getList(this.QueryParams);
+    }
+  }
+
+  /**
+   * @desc: 删除
+   * @param {string} id
+   * @return {*}
+   */
+  public async deleteItem(id: string) {
+    const { success } = await this.deleteApi({
+      data: { id },
+    });
+    if (success) {
+      await this.getList(this.QueryParams);
+    }
+  }
+
+  /**
+   * @desc: 从...中退出
+   * @param {string} targetId 目标Id
+   * @return {*}
+   */
+  public async quitTarget(targetId: string | number) {
+    if (!this.quitTargetApi) {
+      return console.log('未注册 退出功能');
+    }
+    const { success } = await this.quitTargetApi({
+      data: { id: targetId },
+    });
+    if (success) {
+      await this.getList(this.QueryParams);
+    }
+  }
+  /**
+   * @desc: 向...中加入
+   * @param {string} targetId 目标Id
+   * @return {*}
+   */
+  public async joinTarget(targetId: string | number) {
+    if (!this.joinTargetApi) {
+      return console.log('未注册 加入功能');
+    }
+    const { success } = await this.joinTargetApi({
+      data: { id: targetId },
+    });
+    if (success) {
+      await this.getList(this.QueryParams);
+    }
+  }
+}

@@ -4,13 +4,14 @@ import './index.less';
 import CardOrTable from '@/components/CardOrTableComp';
 import AppCard from '@/components/AppCardComp';
 import { columns } from '@/components/CardOrTableComp/config';
-import MarketService from '@/module/appstore/market';
 import { MarketTypes } from 'typings/marketType';
+import { IdPage } from '@/module/typings';
+import { MarketServiceType } from '@/module/appstore/market';
 interface AppShowCompType {
-  apiName: string; // 请求名称--与service文件绑定
-  defalutKeys: { listKey: string; totalKey: string }; //读取数据源的字段--与service文件绑定
+  service: MarketServiceType;
 }
-const AppShowComp: React.FC<AppShowCompType> = ({ apiName, defalutKeys }) => {
+
+const AppShowComp: React.FC<AppShowCompType> = ({ service }) => {
   const [list, setList] = useState<MarketTypes.ProductType[]>([]);
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
@@ -29,16 +30,19 @@ const AppShowComp: React.FC<AppShowCompType> = ({ apiName, defalutKeys }) => {
     if (isGofirst) {
       setPage(1);
     }
+    console.log('是是是', service);
 
     const params = {
+      id: service.PUBLIC_STORE.id,
       page: isGofirst ? 1 : page,
       pageSize: 10,
       filter: searchKey,
     };
-    await MarketService[apiName]({ ...params, ...req });
+    console.log('jejejej', params);
 
-    setList([...MarketService[defalutKeys.listKey]]);
-    setTotal(MarketService[defalutKeys.totalKey]);
+    await service.getList<IdPage>({ ...params, ...req });
+    setList([...service.List]);
+    setTotal(service.Total);
   };
 
   /**

@@ -45,5 +45,6 @@ module.exports = {
     //解决导出类型时，no-undef报错问题
     'no-undef': 'off',
     'import/prefer-default-export': 'off',
+    'no-import-assign': 'off',
   },
 };

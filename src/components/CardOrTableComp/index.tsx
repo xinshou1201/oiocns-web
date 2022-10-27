@@ -29,7 +29,7 @@ interface PageType<T> {
   [key: string]: any; // 其他属性方法
 }
 
-const Index: <T extends object>(props: PageType<T>) => React.ReactElement = ({
+const Index: <T extends unknown>(props: PageType<T>) => React.ReactElement = ({
   defaultPageType,
   showChangeBtn = true,
   dataSource = [],
