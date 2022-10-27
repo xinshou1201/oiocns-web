@@ -28,6 +28,8 @@ const Groupinputbox = (props: Iprops) => {
         msgType: 'text',
         msgBody: massage,
       });
+      ChatStore.addSessionList();
+      ChatStore._cacheSession();
     }
     document.getElementById('insterHtml').innerHTML = '';
   };

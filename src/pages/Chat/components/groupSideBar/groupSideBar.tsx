@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { RedoOutlined, ZoomInOutlined } from '@ant-design/icons';
+import { SearchOutlined } from '@ant-design/icons';
 import { Input, Tabs } from 'antd';
 import React, { useEffect, useState } from 'react';
 
@@ -111,115 +111,49 @@ const GroupSideBar = () => {
       <div className={sideStyle.group_side_bar_search}>
         <Input
           placeholder="搜索"
-          prefix={<ZoomInOutlined />}
+          prefix={<SearchOutlined />}
           onChange={(e) => {
             onChange(e.target.value);
           }}
         />
-        {/* <span className={sideStyle.out_lined}>
-          <RedoOutlined />
-        </span> */}
       </div>
       <Tabs defaultActiveKey="1">
         <Tabs.TabPane tab="会话" key="1">
           <div className={sideStyle.group_side_bar_wrap}>
-            {chat.chats.map((item: any) => {
-              return (
-                <div key={item.id}>
-                  {item?.name === '我的会话' ? (
-                    <div className={`${sideStyle.group_con} ${sideStyle.item}`}>
-                      {/* 展开的分组下的人员 */}
-                      {openIdArr?.includes(item.id) ? (
-                        <>
-                          {item.chats.map((child: any) => {
-                            return (
-                              <div className={sideStyle.con_body} key={child.id}>
-                                <HeadImg name={child.name} label={child.label} />
-                                {child.noRead > 0 ? (
-                                  <div
-                                    className={`${sideStyle.group_con} ${sideStyle.dot}`}>
-                                    <span>{child.noRead}</span>
-                                  </div>
-                                ) : (
-                                  ''
-                                )}
-                                <div
-                                  className={sideStyle.group_con_show}
-                                  onClick={() => {
-                                    openChangeds(child);
-                                  }}>
-                                  <div
-                                    className={`${sideStyle.group_con_show} ${sideStyle.name}`}>
-                                    <div
-                                      className={`${sideStyle.group_con_show} ${sideStyle.name} ${sideStyle.label}`}>
-                                      {child.name}
-                                    </div>
-                                    <div
-                                      className={`${sideStyle.group_con_show} ${sideStyle.name} ${sideStyle.time}`}>
-                                      {handleFormatDate(child.msgTime)}
-                                    </div>
-                                  </div>
-                                  <div
-                                    className={`${sideStyle.group_con_show} ${sideStyle.msg}`}>
-                                    {child.showTxt}
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </>
-                      ) : (
-                        <>
-                          {/* 如果该分组没有被打开 但是有未读消息 则把未读消息会话显示出来 */}
-                          {item.chats
-                            .filter((v: any) => v.noRead > 0)
-                            .map((child: any) => {
-                              return (
-                                <div key={child.id + child.name}>
-                                  <HeadImg name={child.name} label={child.label} />
-                                  {child.noRead > 0 ? (
-                                    <>
-                                      <div
-                                        className={`${sideStyle.group_con} ${sideStyle.dot}`}>
-                                        <span>{child.noRead}</span>
-                                      </div>
-                                      <div
-                                        className={`${sideStyle.group_con_show}`}
-                                        onClick={() => {
-                                          openChangeds(child);
-                                        }}>
-                                        <div
-                                          className={`${sideStyle.group_con_show} ${sideStyle.name}`}>
-                                          <div
-                                            className={`${sideStyle.group_con_show} ${sideStyle.name} ${sideStyle.label}`}>
-                                            {child.name}
-                                          </div>
-                                          <div
-                                            className={`${sideStyle.group_con_show} ${sideStyle.name} ${sideStyle.time}`}>
-                                            {handleFormatDate(child.msgTime)}
-                                          </div>
-                                        </div>
-                                        <div
-                                          className={`${sideStyle.group_con_show} ${sideStyle.msg}`}>
-                                          {child.showTxt}
-                                        </div>
-                                      </div>
-                                    </>
-                                  ) : (
-                                    ''
-                                  )}
-                                </div>
-                              );
-                            })}
-                        </>
-                      )}
+            {ChatStore.sessionChats &&
+              ChatStore.sessionChats?.map((child: any) => {
+                return (
+                  <div className={sideStyle.con_body_session} key={child.id}>
+                    <HeadImg name={child.name} label={child.label} />
+                    {child.noRead > 0 ? (
+                      <div className={`${sideStyle.group_con} ${sideStyle.dot}`}>
+                        <span>{child.noRead}</span>
+                      </div>
+                    ) : (
+                      ''
+                    )}
+                    <div
+                      className={sideStyle.group_con_show}
+                      onClick={() => {
+                        openChangeds(child);
+                      }}>
+                      <div className={`${sideStyle.group_con_show} ${sideStyle.name}`}>
+                        <div
+                          className={`${sideStyle.group_con_show} ${sideStyle.name} ${sideStyle.label}`}>
+                          {child.name}
+                        </div>
+                        <div
+                          className={`${sideStyle.group_con_show} ${sideStyle.name} ${sideStyle.time}`}>
+                          {handleFormatDate(child.msgTime)}
+                        </div>
+                      </div>
+                      <div className={`${sideStyle.group_con_show} ${sideStyle.msg}`}>
+                        {child.showTxt}
+                      </div>
                     </div>
-                  ) : (
-                    ''
-                  )}
-                </div>
-              );
-            })}
+                  </div>
+                );
+              })}
           </div>
         </Tabs.TabPane>
         <Tabs.TabPane tab="通讯录" key="2">
@@ -227,69 +161,25 @@ const GroupSideBar = () => {
             {chat.chats.map((item: any) => {
               return (
                 <div key={item.id}>
-                  {item?.name !== '我的会话' ? (
-                    <div className={`${sideStyle.group_con} ${sideStyle.item}`}>
-                      {/* 分组标题 */}
-                      <div
-                        className={`${sideStyle.con_title} ${sideStyle.flex} ${
-                          openIdArr.includes(item.id) ? sideStyle.active : ''
-                        }`}
-                        onClick={() => {
-                          handleOpenSpace(item.id);
-                        }}>
-                        <span>
-                          {item.name}({item?.chats?.length ?? 0})
-                        </span>
-                      </div>
-                      {/* 展开的分组下的人员 */}
-                      {openIdArr?.includes(item.id) ? (
-                        <>
-                          {item.chats.map((child: any) => {
-                            return (
-                              <div className={sideStyle.con_body} key={child.id}>
-                                <HeadImg name={child.name} label={child.label} />
-                                {child.noRead > 0 ? (
-                                  <div
-                                    className={`${sideStyle.group_con} ${sideStyle.dot}`}>
-                                    <span>{child.noRead}</span>
-                                  </div>
-                                ) : (
-                                  ''
-                                )}
-                                <div
-                                  className={sideStyle.group_con_show}
-                                  onClick={() => {
-                                    openChangeds(child);
-                                  }}>
-                                  <div
-                                    className={`${sideStyle.group_con_show} ${sideStyle.name}`}>
-                                    <div
-                                      className={`${sideStyle.group_con_show} ${sideStyle.name} ${sideStyle.label}`}>
-                                      {child.name}
-                                    </div>
-                                    <div
-                                      className={`${sideStyle.group_con_show} ${sideStyle.name} ${sideStyle.time}`}>
-                                      {handleFormatDate(child.msgTime)}
-                                    </div>
-                                  </div>
-                                  <div
-                                    className={`${sideStyle.group_con_show} ${sideStyle.msg}`}>
-                                    {child.showTxt}
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </>
-                      ) : (
-                        ''
-                      )}
-                      {/* 如果该分组没有被打开 但是有未读消息 则把未读消息会话显示出来 */}
-                      {item.chats
-                        .filter((v: any) => v.noRead > 0)
-                        .map((child: any) => {
+                  <div className={`${sideStyle.group_con} ${sideStyle.item}`}>
+                    {/* 分组标题 */}
+                    <div
+                      className={`${sideStyle.con_title} ${sideStyle.flex} ${
+                        openIdArr.includes(item.id) ? sideStyle.active : ''
+                      }`}
+                      onClick={() => {
+                        handleOpenSpace(item.id);
+                      }}>
+                      <span>
+                        {item.name}({item?.chats?.length ?? 0})
+                      </span>
+                    </div>
+                    {/* 展开的分组下的人员 */}
+                    {openIdArr?.includes(item.id) ? (
+                      <>
+                        {item.chats.map((child: any) => {
                           return (
-                            <div key={child.id + child.name}>
+                            <div className={sideStyle.con_body} key={child.id}>
                               <HeadImg name={child.name} label={child.label} />
                               {child.noRead > 0 ? (
                                 <div
@@ -297,33 +187,86 @@ const GroupSideBar = () => {
                                   <span>{child.noRead}</span>
                                 </div>
                               ) : (
-                                <div className={`${sideStyle.group_con_show}`}>
-                                  <div>
-                                    <div
-                                      className={`${sideStyle.group_con_show} ${sideStyle.name}`}>
-                                      <div
-                                        className={`${sideStyle.group_con_show} ${sideStyle.label}`}>
-                                        {child.name}
-                                      </div>
-                                      <div
-                                        className={`${sideStyle.group_con_show} ${sideStyle.time}`}>
-                                        {handleFormatDate(child.msgTime)}
-                                      </div>
-                                    </div>
+                                ''
+                              )}
+                              <div
+                                className={sideStyle.group_con_show}
+                                onClick={() => {
+                                  openChangeds(child);
+                                }}>
+                                <div
+                                  className={`${sideStyle.group_con_show} ${sideStyle.name}`}>
+                                  <div
+                                    className={`${sideStyle.group_con_show} ${sideStyle.name} ${sideStyle.label}`}>
+                                    {child.name}
                                   </div>
                                   <div
-                                    className={`${sideStyle.group_con_show} ${sideStyle.msg}`}>
-                                    {child.showTxt}
+                                    className={`${sideStyle.group_con_show} ${sideStyle.name} ${sideStyle.time}`}>
+                                    {handleFormatDate(child.msgTime)}
                                   </div>
                                 </div>
-                              )}
+                                <div
+                                  className={`${sideStyle.group_con_show} ${sideStyle.msg}`}>
+                                  {child.showTxt}
+                                </div>
+                              </div>
                             </div>
                           );
                         })}
-                    </div>
-                  ) : (
-                    ''
-                  )}
+                      </>
+                    ) : (
+                      ''
+                    )}
+                    {/* 如果该分组没有被打开 但是有未读消息 则把未读消息会话显示出来 */}
+                    <>
+                      {!openIdArr?.includes(item.id) ? (
+                        <>
+                          {item.chats
+                            .filter((v: any) => v.noRead > 0)
+                            .map((child: any) => {
+                              return (
+                                <div
+                                  key={child.id + child.name}
+                                  className={`${sideStyle.con_body} ${sideStyle.open_item}`}>
+                                  <HeadImg name={child.name} label={child.label} />
+                                  {child.noRead > 0 ? (
+                                    <div
+                                      className={`${sideStyle.group_con} ${sideStyle.dot}`}>
+                                      <span>{child.noRead}</span>
+                                    </div>
+                                  ) : (
+                                    ''
+                                  )}
+                                  <div
+                                    className={`${sideStyle.group_con_show}`}
+                                    onClick={() => {
+                                      openChangeds(child);
+                                    }}>
+                                    <div
+                                      className={`${sideStyle.group_con_show} ${sideStyle.name}`}>
+                                      <div
+                                        className={`${sideStyle.group_con_show} ${sideStyle.name} ${sideStyle.label}`}>
+                                        {child.name}
+                                      </div>
+                                      <div
+                                        className={`${sideStyle.group_con_show} ${sideStyle.name} ${sideStyle.time}`}>
+                                        {handleFormatDate(child.msgTime)}
+                                      </div>
+                                    </div>
+                                    <div
+                                      className={`${sideStyle.group_con_show} ${sideStyle.msg}`}>
+                                      {child.showTxt}
+                                    </div>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                        </>
+                      ) : (
+                        ''
+                      )}
+                    </>
+                  </div>
                 </div>
               );
             })}

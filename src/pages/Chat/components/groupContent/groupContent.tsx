@@ -1,7 +1,8 @@
 /* eslint-disable no-unused-vars */
-import { Button, message, Popover } from 'antd';
+import { Button, Popover } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useRef, useState } from 'react';
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 
 import HeadImg from '@/components/headImg/headImg';
 import { chat } from '@/module/chat/orgchat';
@@ -141,14 +142,21 @@ const GroupContent = (props: Iprops) => {
                   }}
                   content={
                     canDelete(item) ? (
-                      <Button
-                        type="text"
-                        danger
-                        onClick={() => {
-                          deleteMsg(item);
-                        }}>
-                        删除
-                      </Button>
+                      <>
+                        <CopyToClipboard text={item.msgBody}>
+                          <Button type="text" style={{ color: '#3e5ed8' }}>
+                            复制
+                          </Button>
+                        </CopyToClipboard>
+                        <Button
+                          type="text"
+                          danger
+                          onClick={() => {
+                            deleteMsg(item);
+                          }}>
+                          删除
+                        </Button>
+                      </>
                     ) : (
                       ''
                     )
@@ -196,22 +204,14 @@ const GroupContent = (props: Iprops) => {
                     }}
                     content={
                       <>
-                        {/* <Button
-                          type="text"
-                          style={{ color: '#3e5ed8' }}
-                          onClick={() => {
-                            recallMsg(item);
-                          }}>
-                          复制
-                        </Button>
-                        <Button
-                          type="text"
-                          style={{ color: '#3e5ed8' }}
-                          onClick={() => {
-                            recallMsg(item);
-                          }}>
+                        <CopyToClipboard text={item.msgBody}>
+                          <Button type="text" style={{ color: '#3e5ed8' }}>
+                            复制
+                          </Button>
+                        </CopyToClipboard>
+                        <Button type="text" style={{ color: '#3e5ed8' }}>
                           转发
-                        </Button> */}
+                        </Button>
                         <Button
                           type="text"
                           style={{ color: '#3e5ed8' }}

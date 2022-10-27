@@ -70,21 +70,64 @@
   &::-webkit-scrollbar-thumb:vertical:active {
     background-color: var(--el-primary-color-light-5);
   }
+  .open_item {
+    display: flex;
+  }
+  .con_body_session {
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    &:hover,
+    &.active {
+      color: #3e5ed8;
+      background-color: var(--el-menu-hover-bg-color);
+    }
+    border-bottom: 1px solid #dcdfe6;
+    .group_con_show {
+      width: 100%;
+      &.name {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: nowrap;
+        max-width: 180px;
+        &.label {
+          font-size: 14px;
+          font-weight: bold;
+          max-width: 140px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+        }
+        &.time {
+          color: #a8a8a8;
+          font-size: 12px;
+          display: flex;
+          justify-content: flex-end;
+        }
+      }
+
+      &.msg {
+        max-width: 180px;
+        text-overflow: ellipsis;
+        max-height: 24px;
+        overflow: hidden;
+        white-space: nowrap;
+        font-size: 10px;
+        padding-top: 5px;
+        color: #787878;
+      }
+    }
+  }
 
   .group_con {
-    // // 头像
-    // &-img {
-    //   width: 35px;
-    //   height: 35px;
-    //   margin-right: 10px;
-    // }
+    margin-top: 2px;
     .flex {
       display: flex;
     }
-
     &.item {
       cursor: pointer;
-
       .con_title {
         font-size: 16px;
         font-weight: bold;
@@ -96,42 +139,30 @@
           border-bottom: none;
         }
       }
-
       .con_body {
         position: relative;
         display: flex;
         justify-content: space-between;
         padding: 5px;
-
-        // background-color: var(--el-menu-bg-color);
         &:hover,
         &.active {
-          // border-radius: 6px;
           color: #3e5ed8;
           background-color: var(--el-menu-hover-bg-color);
         }
         border-bottom: 1px solid #dcdfe6;
       }
-
-      .con-body + .con-body {
-        // margin-top: 10px;
-      }
-
       .top-session {
         background-color: var(--el-fill-color);
       }
     }
-
     .group_con_show {
       width: 100%;
-
       &.name {
         display: flex;
         justify-content: space-between;
         align-items: center;
         flex-wrap: nowrap;
         max-width: 180px;
-
         &.label {
           font-size: 14px;
           font-weight: bold;
@@ -140,7 +171,6 @@
           overflow: hidden;
           white-space: nowrap;
         }
-
         &.time {
           color: #a8a8a8;
           font-size: 12px;
