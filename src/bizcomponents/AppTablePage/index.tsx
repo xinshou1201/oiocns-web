@@ -105,7 +105,7 @@ const AppShowComp: React.FC<AppShowCompType> = ({ apiName, defalutKeys }) => {
   };
   return (
     <div className="app-wrap">
-      <CardOrTable
+      <CardOrTable<MarketTypes.ProductType>
         dataSource={list}
         total={total}
         page={page}

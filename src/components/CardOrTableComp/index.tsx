@@ -29,7 +29,7 @@ interface PageType<T> {
   [key: string]: any; // 其他属性方法
 }
 
-const Index: React.FC<PageType<any>> = ({
+const Index: <T extends object>(props: PageType<T>) => React.ReactElement = ({
   defaultPageType,
   showChangeBtn = true,
   dataSource = [],
@@ -80,7 +80,7 @@ const Index: React.FC<PageType<any>> = ({
   // 表格主体 卡片与表格切换功能--增加缓存
   const renderTable = useMemo(() => {
     return pageType === 'table' ? (
-      <ProTable<MarketTypes.ProductType>
+      <ProTable
         className="common-table"
         columns={hideOperation ? columns : resetColumns}
         bordered
