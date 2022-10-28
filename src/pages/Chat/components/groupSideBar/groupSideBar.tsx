@@ -1,13 +1,10 @@
-/* eslint-disable no-unused-vars */
 import { SearchOutlined } from '@ant-design/icons';
 import { Input, Tabs } from 'antd';
 import React, { useEffect, useState } from 'react';
-
 import HeadImg from '@/components/headImg/headImg';
 import { chat } from '@/module/chat/orgchat';
 import useChatStore from '@/store/chat';
 import { formatDate } from '@/utils/index';
-
 import sideStyle from './groupSidebar.module.less';
 
 const GroupSideBar = () => {
@@ -40,7 +37,7 @@ const GroupSideBar = () => {
       let chats = child.chats.filter((item: ImMsgChildType) => {
         let matched =
           !searchValue ||
-          item.name.includes(searchValue) ||
+          item.name?.includes(searchValue) ||
           item.msgBody?.includes(searchValue);
         if (matched && item.isTop) {
           topGroup.chats.push(item);
@@ -179,7 +176,14 @@ const GroupSideBar = () => {
                       <>
                         {item.chats.map((child: any) => {
                           return (
-                            <div className={sideStyle.con_body} key={child.id}>
+                            <div
+                              className={`${sideStyle.con_body} ${
+                                ChatStore.curChat?.spaceId === item.id &&
+                                ChatStore.curChat?.id === child.id
+                                  ? sideStyle.active
+                                  : ''
+                              }`}
+                              key={child.id}>
                               <HeadImg name={child.name} label={child.label} />
                               {child.noRead > 0 ? (
                                 <div

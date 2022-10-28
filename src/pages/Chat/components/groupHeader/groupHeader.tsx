@@ -37,7 +37,7 @@ const Groupheader = (props: Iprops) => {
       <div className={headerStyle.group_header_wrap}>
         <div className={`${headerStyle.user} ${headerStyle.flex}`}>
           <HeadImg name={ChatStore.curChat?.name} label={''} />
-          <div className={headerStyle.user_info}>
+          <div>
             <div className={`${headerStyle.flex} ${headerStyle.user_info_top}`}>
               <div className={`${headerStyle.user_info_top_name}`}>
                 {ChatStore.curChat?.name}

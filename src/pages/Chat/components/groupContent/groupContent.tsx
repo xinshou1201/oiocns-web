@@ -11,12 +11,11 @@ import useChatStore from '@/store/chat';
 import contentStyle from './groupContent.module.less';
 
 interface Iprops {
-  goPageEnds: Function;
   handleReWrites: Function;
 }
 
 const GroupContent = (props: Iprops) => {
-  const { goPageEnds, handleReWrites } = props;
+  const { handleReWrites } = props;
   const ChatStore: any = useChatStore();
   const messageNodeRef = useRef<HTMLDivElement>(null); // dom节点
   const [selectId, setSelectId] = useState<string>('');
@@ -92,8 +91,6 @@ const GroupContent = (props: Iprops) => {
     //   }
     // });
   };
-
-  goPageEnds();
 
   return (
     <div className={contentStyle.group_content_wrap}>

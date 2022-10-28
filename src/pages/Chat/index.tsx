@@ -1,9 +1,5 @@
-/* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from 'react';
-
-import { chat } from '@/module/chat/orgchat';
+import React, { useState } from 'react';
 import useChatStore from '@/store/chat';
-
 import GroupContent from './components/groupContent/groupContent';
 import GroupDetail from './components/groupDetail/groupDetail';
 import GroupHeader from './components/groupHeader/groupHeader';
@@ -14,27 +10,22 @@ const Chat = () => {
   const [isShowDetail, setIsShowDetail] = useState<boolean>(false);
   const [writeContent, setWriteContent] = useState<any>(null);
   const ChatStore: any = useChatStore();
-  // 展示详情页
+  // 展开详情页
   const handleViewDetail = () => {
     setIsShowDetail(!isShowDetail);
   };
-  const goPageEnds = () => {};
-  useEffect(() => {
-    chat.onMessage(() => {
-      // contentWrapRef.value.
-    });
-  }, []);
   // 重新编辑
-  const handleReWrites = (val: any) => {
-    setWriteContent(val);
+  const handleReWrites = (write: string) => {
+    setWriteContent(write);
   };
 
   return (
     <div className={charsStyle.cohort_wrap}>
+      {/* 导航栏 */}
       <div className={charsStyle.custom_group_silder_menu}>
         <GroupSideBar />
       </div>
-      {/* 右侧展示主体 */}
+      {/* 主体 */}
       <div className={charsStyle.chart_page}>
         {ChatStore.curChat !== null ? (
           <>
@@ -42,7 +33,7 @@ const Chat = () => {
             <GroupHeader handleViewDetail={handleViewDetail} />
             {/* 聊天区域 */}
             <div className={charsStyle.chart_content}>
-              <GroupContent goPageEnds={goPageEnds} handleReWrites={handleReWrites} />
+              <GroupContent handleReWrites={handleReWrites} />
             </div>
             {/* 输入区域 */}
             <div className={charsStyle.chart_input}>
