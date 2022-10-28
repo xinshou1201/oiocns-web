@@ -7,8 +7,6 @@ import { columns } from '@/components/CardOrTableComp/config';
 import { MarketTypes } from 'typings/marketType';
 import { IdPage } from '@/module/typings';
 import { MarketServiceType } from '@/module/appstore/market';
-import API from '@/services';
-import usePageApi from '@/hooks/usePageApi';
 interface AppShowCompType {
   service: MarketServiceType;
 }
@@ -17,15 +15,6 @@ const AppShowComp: React.FC<AppShowCompType> = ({ service }) => {
   const [list, setList] = useState<MarketTypes.ProductType[]>([]);
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
-
-  const aa = usePageApi<IdPage, MarketTypes.ProductType>({
-    nameSpace: 'publicStore',
-    searchApi: API.appstore.merchandise,
-    createApi: API.appstore.create,
-    deleteApi: API.appstore.marketDel,
-    updateApi: API.appstore.updateMarket,
-  });
-  console.log('sssss', aa);
 
   useEffect(() => {
     getTableList();
