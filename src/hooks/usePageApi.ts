@@ -32,7 +32,14 @@ const usePageApi = <T extends PagequeryParamsBaseType, P extends any>({
   const [total, setTotal] = useState<number>(0);
   const [queryParams, setqueryParams] = useState<any>({});
   const queryLastTime: number = 0;
-  // 处理 翻页参数问题
+  /*   const nameSpaceStr = [...nameSpace];
+  nameSpaceStr[0] = nameSpaceStr[0].toUpperCase();
+ const  nameSpaceStr.join("") */
+  /**
+   * @desc: 处理 翻页参数问题
+   * @param {T} params
+   * @return {*}
+   */
   const _resetParams = (params: T): resultParams => {
     const { page, pageSize, ...rest } = params;
     const num = (page - 1) * pageSize;
@@ -43,6 +50,11 @@ const usePageApi = <T extends PagequeryParamsBaseType, P extends any>({
       ...rest,
     };
   };
+  /**
+   * @desc: 判断是否刷新
+   * @param {resultParams} newParams
+   * @return {*}
+   */
   const _canRefreshData = (newParams: resultParams): boolean => {
     // 缓存处理 条件如下 强制刷新 / 数据超时 / 已存在数据 但是请求参数未变化
     const nowTime = new Date().getTime();
@@ -52,11 +64,20 @@ const usePageApi = <T extends PagequeryParamsBaseType, P extends any>({
       (list.length > 0 && JSON.stringify(newParams) === JSON.stringify(queryParams))
     );
   };
+  /**
+   * @desc: 刷新列表
+   * @return {*}
+   */
   const refresh = async () => {
     await queryData(queryParams, true);
   };
 
-  // 获取列表
+  /**
+   * @desc: 获取列表
+   * @param {T} params
+   * @param {*} isRefresh
+   * @return {*}
+   */
   async function queryData(params: T, isRefresh = false): Promise<void> {
     if (!searchApi) return;
 
