@@ -1,4 +1,3 @@
-import { UserOutlined } from '@ant-design/icons';
 import { Avatar, Button, Card, Descriptions } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import React from 'react';
@@ -14,7 +13,7 @@ const SettingInfo: React.FC = () => {
     <div className={cls['company-info-title']}>
       <div>
         <Title level={4}>当前单位</Title>
-        <Avatar size={48} icon={<UserOutlined />} />
+        <Avatar size={48}>杭</Avatar>
       </div>
       <div>
         <Button type="link">编辑信息</Button>
@@ -28,14 +27,14 @@ const SettingInfo: React.FC = () => {
     <div className={cls['company-info-content']}>
       <Card bordered={false}>
         <Descriptions title={title} bordered column={2}>
-          <Descriptions.Item label="单位名称">Zhou Maomao</Descriptions.Item>
-          <Descriptions.Item label="单位法人">1810000000</Descriptions.Item>
+          <Descriptions.Item label="单位名称">杭州电子科技大学</Descriptions.Item>
+          <Descriptions.Item label="单位法人">朱泽飞</Descriptions.Item>
           <Descriptions.Item label="社会统一信用代码">
-            Hangzhou, Zhejiang
+            12330000470009026T
           </Descriptions.Item>
-          <Descriptions.Item label="联系方式">empty</Descriptions.Item>
+          <Descriptions.Item label="联系方式">暂无</Descriptions.Item>
           <Descriptions.Item label="单位地址" span={2}>
-            No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
+            杭州市杭州经济开发区白杨街道2号大街1158号
           </Descriptions.Item>
         </Descriptions>
       </Card>
