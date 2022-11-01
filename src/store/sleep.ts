@@ -1,12 +1,12 @@
-import useStore from './index';
+// import useStore from './index';
 
 export const sleep = (timeout: number) => {
-  const { setLoading } = useStore.getState();
+  // const { setLoading } = useStore.getState();
 
   return new Promise((resolve) => {
-    setLoading(true);
+    // setLoading(true);
     setTimeout(() => {
-      setLoading(false);
+      // setLoading(false);
       resolve(true);
     }, timeout);
   });

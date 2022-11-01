@@ -32,9 +32,9 @@ const usePageApi = <T extends PagequeryParamsBaseType, P extends any>({
   const [total, setTotal] = useState<number>(0);
   const [queryParams, setqueryParams] = useState<any>({});
   const queryLastTime: number = 0;
-  /*   const nameSpaceStr = [...nameSpace];
+  let nameSpaceStr = [...nameSpace];
   nameSpaceStr[0] = nameSpaceStr[0].toUpperCase();
- const  nameSpaceStr.join("") */
+  const resNameSpaceStr = nameSpaceStr.join('');
   /**
    * @desc: 处理 翻页参数问题
    * @param {T} params
@@ -178,10 +178,9 @@ const usePageApi = <T extends PagequeryParamsBaseType, P extends any>({
       await refresh;
     }
   }
-
-  return {
-    [`query${nameSpace.toUpperCase()}Data`]: queryData,
-    [`${nameSpace.toUpperCase()}Data`]: list,
+  return [
+    queryData,
+    list,
     total,
     creatFun,
     deleteFun,
@@ -189,7 +188,19 @@ const usePageApi = <T extends PagequeryParamsBaseType, P extends any>({
     quitTarget,
     joinTarget,
     refresh,
-  };
+  ];
+
+  // return {
+  //   [`query${resNameSpaceStr}Data`]: queryData,
+  //   [`${resNameSpaceStr}Data`]: list,
+  //   [`${resNameSpaceStr}Total`]: total,
+  //   creatFun,
+  //   deleteFun,
+  //   updateFun,
+  //   quitTarget,
+  //   joinTarget,
+  //   refresh,
+  // };
 };
 
 export default usePageApi;

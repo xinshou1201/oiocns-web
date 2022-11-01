@@ -5,12 +5,13 @@ import {
   FundFilled,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
-import React from 'react';
+import React, { useState } from 'react';
 
 import cls from './index.module.less';
 import MarketClassifyTree from './Tree';
 
 const MarketClassify: React.FC<any> = ({ history }) => {
+  const [selectMenu, setSelectMenu] = useState<string>('');
   const items = [
     {
       label: '开放市场',
@@ -34,6 +35,7 @@ const MarketClassify: React.FC<any> = ({ history }) => {
   ];
 
   const handleChange = (path: string) => {
+    setSelectMenu(path);
     history.push(path);
   };
   return (
@@ -45,7 +47,7 @@ const MarketClassify: React.FC<any> = ({ history }) => {
         defaultOpenKeys={['openMarket']}
         onClick={({ key }) => handleChange(key)}
       />
-      <MarketClassifyTree></MarketClassifyTree>
+      <MarketClassifyTree key={selectMenu} treeType={selectMenu} />
     </div>
   );
 };

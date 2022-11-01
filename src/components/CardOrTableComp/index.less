@@ -1,8 +1,10 @@
 .common-table-wrap {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  box-sizing: border-box;
   height: 100%;
+  flex: 1;
+
   .operation-btn {
     display: flex;
     align-items: center;
@@ -12,6 +14,7 @@
     border-radius: 12px;
     font-size: 18px;
     overflow: hidden;
+
     &:hover {
       background-color: @primary-color;
       color: @white-color;
@@ -41,31 +44,32 @@
 // 卡片布局
 .common-card {
   flex: 1;
+  box-sizing: border-box;
   display: flex;
   flex-wrap: wrap;
   align-content: flex-start;
-  padding: 16px;
+  overflow-y: auto;
 }
 
 .common-table-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  padding:10px 10px 10px 0;
 
   .btn-box {
     display: flex;
 
     .anticon {
-      width: 32px;
-      height: 20px;
+      width: 34px;
+      height: 22px;
       box-sizing: border-box;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-size: 10px;
+      font-size: 13px;
       margin-right: 5px;
-      border-radius: 10px;
+      border-radius: 12px;
 
       &.active {
         color: #fff;

@@ -1,8 +1,8 @@
-import './index.less';
+import cls from './index.module.less';
 
 import React from 'react';
 
-import AppShowComp from '@/bizcomponents/AppTablePage';
+import AppShowComp from '@/bizcomponents/AppTableWithBuy';
 import MarketService from '@/module/appstore/market';
 
 const service = new MarketService({
@@ -16,7 +16,7 @@ const service = new MarketService({
 const Index: React.FC = () => {
   return (
     <>
-      <AppShowComp service={service} />
+      <AppShowComp className={cls['market-public-wrap']} service={service} />
     </>
   );
 };
