@@ -1,7 +1,7 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import type { ProColumns } from '@ant-design/pro-components';
 /* eslint-disable no-unused-vars */
-import './index.less';
+import cls from './index.module.less';
 
 import { Dropdown, Menu, Pagination } from 'antd';
 import { ProTable } from '@ant-design/pro-components';
@@ -13,12 +13,14 @@ import { MarketTypes } from 'typings/marketType';
 interface PageType<T> {
   dataSource: T[]; // 展示数据源
   rowKey: string; //唯一key
+  parentRef?: any; // 父级容器ref-用于计算高度
   defaultPageType?: PageShowType; //当前展示类型 card: 卡片; list: 列表
   showChangeBtn?: boolean; //是否展示 图列切换按钮
   hideOperation?: boolean; //是否展示 默认操作区域
   columns?: ProColumns<any, 'text'>[]; //表格头部数组
   total?: number; // 总条数 总数量
   page?: number; // 当前页
+  height?: number; //表格高度
   stripe?: boolean; // 斑马纹
   style?: React.CSSProperties; // wrap样式加载 对表格外部margin pading 等定制展示
   onChange?: (page: number, pageSize: number) => void; // 弹出切换页码事件
@@ -39,13 +41,28 @@ const Index: <T extends unknown>(props: PageType<T>) => React.ReactElement = ({
   operation,
   total,
   page,
+  height,
+  parentRef,
   stripe = false,
   style,
   onChange,
   renderCardContent,
+  headerTitle,
   ...rest
 }) => {
-  const [pageType, setPageType] = useState<PageShowType>(defaultPageType || 'table');
+  const [pageType, setPageType] = useState<PageShowType>(defaultPageType || 'table'); //切换设置
+  const [defaultHeight, setDefaultHeight] = useState<number | 'auto'>('auto'); //计算高度
+
+  // 监听父级高度
+  useEffect(() => {
+    setTimeout(() => {
+      if (parentRef.current) {
+        let _height = parentRef.current.offsetHeight;
+        // let width = parentRef.current.offsetWidth;
+        setDefaultHeight(_height > 300 ? _height - (headerTitle ? 164 : 116) : 300);
+      }
+    }, 10);
+  }, [parentRef]);
 
   /**
    * @desc: 操作按钮区域
@@ -70,7 +87,7 @@ const Index: <T extends unknown>(props: PageType<T>) => React.ReactElement = ({
         valueType: 'option',
         fixed: 'right',
         render: (_text, record) => [
-          <Dropdown className="operation-btn" overlay={menu(record)} key="key">
+          <Dropdown className={cls['operation-btn']} overlay={menu(record)} key="key">
             <EllipsisOutlined />
           </Dropdown>,
         ],
@@ -81,39 +98,51 @@ const Index: <T extends unknown>(props: PageType<T>) => React.ReactElement = ({
   const renderTable = useMemo(() => {
     return pageType === 'table' ? (
       <ProTable
-        className="common-table"
+        className={cls['common-table']}
         columns={hideOperation ? columns : resetColumns}
-        bordered
         dataSource={dataSource}
-        scroll={{ x: 1000 }}
-        options={false}
+        scroll={{ x: 1000, y: height || defaultHeight }}
         search={false}
+        headerTitle={headerTitle}
         rowKey={rowKey || 'key'}
         pagination={false}
+        options={false}
+        // options={{
+        //   setting: {
+        //     listsHeight: 400,
+        //   },
+        // }}
         rowClassName={
           stripe
             ? (_record: any, index: number) => {
-                return index % 2 !== 0 ? 'stripe' : '';
+                return index % 2 !== 0 ? cls['stripe'] : '';
               }
             : ''
         }
         {...rest}
       />
     ) : (
-      <div className="common-card">
-        {renderCardContent && renderCardContent(dataSource)}
-      </div>
+      <>
+        {headerTitle ? <div className="card-title">{headerTitle}</div> : ''}
+        <div
+          className={cls['common-card']}
+          style={{
+            height: defaultHeight !== 'auto' ? defaultHeight + 57 + 'px' : defaultHeight,
+          }}>
+          {renderCardContent && renderCardContent(dataSource)}
+        </div>
+      </>
     );
-  }, [pageType, dataSource]);
+  }, [pageType, dataSource, defaultHeight]);
   /**
    * @desc: 自定义表格 底部区域
    * @return {底部组件}
    */
   const renderFooter = () => {
     return (
-      <div className="common-table-footer ">
+      <div className={cls['common-table-footer']}>
         {/* 切换展示形式 */}
-        <div className="btn-box">
+        <div className={cls['btn-box']}>
           {showChangeBtn ? (
             <>
               <IconFont
@@ -148,7 +177,7 @@ const Index: <T extends unknown>(props: PageType<T>) => React.ReactElement = ({
   };
 
   return (
-    <div className="common-table-wrap" style={style}>
+    <div className={cls['common-table-wrap']} style={style}>
       {renderTable} {renderFooter()}
     </div>
   );

@@ -7,8 +7,11 @@ import {
 import { Dropdown, Input, Menu, Tree } from 'antd';
 import type { DataNode, TreeProps } from 'antd/es/tree';
 import React, { useState } from 'react';
-
 import cls from './index.module.less';
+
+interface TreeType {
+  treeType: string;
+}
 
 const x = 3;
 const y = 2;
@@ -69,7 +72,10 @@ const generateData = (_level: number, _preKey?: React.Key, _tns?: DataNode[]) =>
 };
 generateData(z);
 
-const StoreClassifyTree: React.FC = () => {
+const StoreClassifyTree: React.FC<TreeType> = ({ treeType }) => {
+  //TODO: 树形数据需要切换
+  console.log('树形数据需要切换', treeType);
+
   const [gData, setGData] = useState(defaultData);
   const [expandedKeys] = useState(['0-0', '0-0-0', '0-0-0-0']);
 

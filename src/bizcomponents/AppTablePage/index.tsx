@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import './index.less';
+import React, { useEffect, useRef, useState } from 'react';
+import cls from './index.module.less';
 
 import CardOrTable from '@/components/CardOrTableComp';
 import AppCard from '@/components/AppCardComp';
@@ -7,14 +7,16 @@ import { columns } from '@/components/CardOrTableComp/config';
 import { MarketTypes } from 'typings/marketType';
 import { IdPage } from '@/module/typings';
 import { MarketServiceType } from '@/module/appstore/market';
+import { sleep } from '@/store/sleep';
 interface AppShowCompType {
   service: MarketServiceType;
 }
-
 const AppShowComp: React.FC<AppShowCompType> = ({ service }) => {
   const [list, setList] = useState<MarketTypes.ProductType[]>([]);
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
+
+  const parentRef = useRef<any>(null); //父级容器Dom
 
   useEffect(() => {
     getTableList();
@@ -30,7 +32,10 @@ const AppShowComp: React.FC<AppShowCompType> = ({ service }) => {
     if (isGofirst) {
       setPage(1);
     }
-    console.log('是是是', service);
+    if (!service.PUBLIC_STORE.id) {
+      // 防止页面刷新时,数据请求缓慢造成数据缺失问题
+      await sleep(100);
+    }
 
     const params = {
       id: service.PUBLIC_STORE.id,
@@ -38,7 +43,6 @@ const AppShowComp: React.FC<AppShowCompType> = ({ service }) => {
       pageSize: 10,
       filter: searchKey,
     };
-    console.log('jejejej', params);
 
     await service.getList<IdPage>({ ...params, ...req });
     setList([...service.List]);
@@ -108,11 +112,12 @@ const AppShowComp: React.FC<AppShowCompType> = ({ service }) => {
     });
   };
   return (
-    <div className="app-wrap">
+    <div className={cls['app-wrap']} ref={parentRef}>
       <CardOrTable<MarketTypes.ProductType>
         dataSource={list}
         total={total}
         page={page}
+        parentRef={parentRef}
         renderCardContent={renderCardFun}
         operation={renderOperation}
         columns={columns as any}

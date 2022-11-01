@@ -34,14 +34,14 @@ export default class CommonClass {
     this.joinTargetApi = this._handleApi(data.joinTargetApi);
     this.quitTargetApi = this._handleApi(data.quitTargetApi);
   }
-  protected _handleApi = (apiName?: string) => {
+  private _handleApi = (apiName?: string) => {
     if (!apiName) {
       return null;
     }
     let arr = apiName?.split('.');
     return API[arr[0]][arr[1]];
   };
-  protected _resetParams = <T extends { page: number; pageSize: number }>(params: T) => {
+  private _resetParams = <T extends { page: number; pageSize: number }>(params: T) => {
     const { page, pageSize, ...rest } = params;
 
     return {

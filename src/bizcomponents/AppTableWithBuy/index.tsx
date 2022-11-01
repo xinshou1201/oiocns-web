@@ -1,23 +1,29 @@
-import React, { useEffect, useState } from 'react';
-import './index.less';
+import React, { useEffect, useRef, useState } from 'react';
+import cls from './index.module.less';
 
 import CardOrTable from '@/components/CardOrTableComp';
 import AppCard from '@/components/AppCardOfBuy';
 import { columns } from '@/components/CardOrTableComp/config';
-import MarketService from '@/module/appstore/market';
+import { MarketServiceType } from '@/module/appstore/market';
+import { IdPage } from '@/module/typings';
 import { MarketTypes } from 'typings/marketType';
+import { sleep } from '@/store/sleep';
 interface AppShowCompType {
-  apiName: string;
-  defalutKeys: { listKey: string; totalKey: string };
+  className: string;
+  title: string;
+  service: MarketServiceType;
 }
 
-const AppShowComp: React.FC<AppShowCompType> = ({ apiName, defalutKeys }) => {
+const AppShowComp: React.FC<AppShowCompType> = ({ service, className, title }) => {
   const [list, setList] = useState<MarketTypes.ProductType[]>([]);
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
-
+  const parentRef = useRef<any>(null); //父级容器Dom
   useEffect(() => {
     getTableList();
+    setTimeout(() => {
+      console.log('高度', parentRef.current.offsetHeight);
+    }, 100);
   }, []);
 
   /**
@@ -27,17 +33,24 @@ const AppShowComp: React.FC<AppShowCompType> = ({ apiName, defalutKeys }) => {
    * @return {*}
    */
   const getTableList = async (req = {}, searchKey = '', isGofirst = false) => {
-    isGofirst && setPage(1);
+    if (isGofirst) {
+      setPage(1);
+    }
+    if (!service.PUBLIC_STORE.id) {
+      // 防止页面刷新时,数据请求缓慢造成数据缺失问题
+      await sleep(100);
+    }
 
     const params = {
+      id: service.PUBLIC_STORE.id,
       page: isGofirst ? 1 : page,
       pageSize: 10,
       filter: searchKey,
     };
-    await MarketService[apiName]({ ...params, ...req });
 
-    setList([...MarketService[defalutKeys.listKey]]);
-    setTotal(MarketService[defalutKeys.totalKey]);
+    await service.getList<IdPage>({ ...params, ...req });
+    setList([...service.List]);
+    setTotal(service.Total);
   };
 
   /**
@@ -47,7 +60,6 @@ const AppShowComp: React.FC<AppShowCompType> = ({ apiName, defalutKeys }) => {
    * @return {*}
    */
   const handlePageChange = (page: number, pageSize: number) => {
-    console.log('搜索', page, pageSize);
     setPage(page);
     getTableList({ page, pageSize });
   };
@@ -109,6 +121,13 @@ const AppShowComp: React.FC<AppShowCompType> = ({ apiName, defalutKeys }) => {
           className="card"
           data={item}
           key={item.id}
+          defaultKey={{
+            name: 'caption',
+            size: 'price',
+            type: 'sellAuth',
+            desc: 'remark',
+            creatTime: 'createTime',
+          }}
           operation={renderOperation}
           handleBuyApp={handleBuyAppFun}
         />
@@ -116,13 +135,16 @@ const AppShowComp: React.FC<AppShowCompType> = ({ apiName, defalutKeys }) => {
     });
   };
   return (
-    <div className="app-wrap">
+    <div className={`${cls['app-wrap']} ${className}`} ref={parentRef}>
       <CardOrTable
         dataSource={list}
         total={total}
+        headerTitle={title}
+        parentRef={parentRef}
         renderCardContent={renderCardFun}
         operation={renderOperation}
         columns={columns as any}
+        page={page}
         onChange={handlePageChange}
         rowKey={'id'}
       />
