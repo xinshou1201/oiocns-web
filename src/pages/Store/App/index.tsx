@@ -41,7 +41,9 @@ const StoreApp: React.FC = () => {
   const renderBtns = () => {
     return (
       <Space>
-        <Button type="primary">购买</Button>
+        <Button type="primary" onClick={() => {}}>
+          购买
+        </Button>
         <Button>创建</Button>
         <Button>暂存</Button>
       </Space>

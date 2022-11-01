@@ -2,17 +2,13 @@
 
 .buyCard {
   background-color: transparent;
-  border-color: #EBEEF5 !important;
+  border-color: @border-color-base !important;
   transition: all .3s ease .1s;
 
-  &:hover {
-    // box-shadow: @card-shadow;
-    // border-color: #EBEEF5;
-  }
 
   &::after {
     display: none;
-    border-color: #EBEEF5;
+    border-color: @border-color-base;
   }
 
   :global {
@@ -26,14 +22,23 @@
       justify-content: space-between;
     }
 
+    .app-desc {
+      height: 37px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box; //将对象作为弹性伸缩盒子模型显示。
+      -webkit-box-orient: vertical; // 从上到下垂直排列子元素
+      -webkit-line-clamp: 2; //显示的行数
+    }
 
   }
+
   .operationBtn {
     font-size: 24px;
     height: max-content;
     transition: all .3s ease .1s;
 
-    &:hover{
+    &:hover {
       transform: scale(1.2);
     }
   }
@@ -47,7 +52,7 @@
     .version {
       color: #C0C4CC;
       font-size: 12px;
-      margin: 12px 0 0 9px;
+      margin: 14px 0 0 9px;
     }
   }
 
