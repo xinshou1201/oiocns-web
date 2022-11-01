@@ -1,127 +1,191 @@
 import CardOrTableComp from '@/components/CardOrTableComp';
+import PageCard from '../components/PageCard';
+import TableItemCard from '../components/TableItemCard';
+import { ApprovalType } from '@/module/todo/typings';
 import { ProColumns } from '@ant-design/pro-table';
-import { Button, Card, Space } from 'antd';
-import type { CardTabListType } from 'antd/lib/card';
+import API from '@/services';
+import { Button, message, Space, Tag } from 'antd';
+import todoService from '@/module/todo';
+import React, { useState, useEffect } from 'react';
 
-import React, { useState } from 'react';
+// import styles from './index.module.less';
 
-import styles from './index.module.less';
-const tabs: CardTabListType[] = [
-  { tab: '待办', key: '1' },
-  { tab: '已办', key: '2' },
-  { tab: '已完成', key: '3' },
-  { tab: '我的发起', key: '4' },
-  { tab: '已过期', key: '5' },
-];
-// const optionItems = (activeKey: string, item: any) => {
-//   switch (activeKey) {
-//     case '1':
-//       return (item: any) => [
-//         {
-//           key: 'approve',
-//           label: '审核',
-//           onClick: () => {
-//             console.log('审核', 'approve', item);
-//           },
-//         },
-//         {
-//           key: 'back',
-//           label: '回退',
-//           onClick: () => {
-//             console.log('回退', 'back', item);
-//           },
-//         },
-//       ];
-//   }
-// };
+const friendService = new todoService({
+  applyApi: API.person.applyJoin,
+  retractApi: API.person.cancelJoin,
+  approveApi: API.person.joinSuccess,
+  refuseApi: API.person.joinRefuse,
+});
+/**
+ * 批量同意
+ * @param ids  React.Key[] 选中的数据id数组
+ */
+const handleApproveSelect = async (ids: React.Key[]) => {
+  if (ids.length > 0) {
+    const { success } = await friendService.approve(ids.toString());
+    if (success) {
+      message.success('添加成功！');
+    } else {
+      message.error('抱歉，提交失败');
+    }
+  }
+};
+// 生成说明数据
+const remarkText = (activeKey: string, item: ApprovalType) => {
+  return activeKey === '2'
+    ? '请求添加' + item.team.name + '为好友'
+    : item.target.name + '请求添加好友';
+};
+
+// 生成说明数据
+const tableOperation = (activeKey: string, item: ApprovalType) => {
+  return activeKey == '1'
+    ? [
+        {
+          key: 'approve',
+          label: '同意',
+          onClick: () => {
+            friendService.approve(item.id);
+            console.log('同意', 'approve', item);
+          },
+        },
+        {
+          key: 'refuse',
+          label: '拒绝',
+          onClick: () => {
+            friendService.refuse(item.id);
+            console.log('拒绝', 'back', item);
+          },
+        },
+      ]
+    : [
+        {
+          key: 'retractApply',
+          label: '取消申请',
+          onClick: () => {
+            friendService.retractApply(item.id);
+            console.log('同意', 'approve', item);
+          },
+        },
+      ];
+};
+
+// 卡片渲染
+type TodoCommonTableProps = {
+  // columns: ProColumns<ApprovalType>[],
+};
 /**
  * 办事-好友申请
  * @returns
  */
-const TodoFriend: React.FC = () => {
-  const [activeKey, setActiveKey] = useState<string>();
-  const columns: ProColumns<any>[] = [
+const TodoFriend: React.FC<TodoCommonTableProps> = () => {
+  const [activeKey, setActiveKey] = useState<string>('1');
+  const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
+  const [pageData, setPageData] = useState<ApprovalType[]>([]);
+  const [total, setPageTotal] = useState<number>(0);
+  const columns: ProColumns<ApprovalType>[] = [
     {
       title: '序号',
       dataIndex: 'index',
       valueType: 'index',
-    },
-    {
-      title: '事项',
-
-      dataIndex: 'name',
+      width: 60,
     },
     {
       title: '说明',
-
       dataIndex: 'remark',
+      render: (_, row) => {
+        return remarkText(activeKey, row);
+      },
     },
     {
-      title: '发起人',
-
-      dataIndex: 'createUser',
+      title: '事项',
+      dataIndex: 'name',
+      render: () => {
+        return <Tag color="#5BD8A6">加好友</Tag>;
+      },
     },
     {
-      title: '过期时间',
-
+      title: '申请人',
+      dataIndex: '',
+      render: (_, row) => {
+        return row.target.name;
+      },
+    },
+    {
+      title: '申请时间',
       dataIndex: 'createTime',
+      valueType: 'dateTime',
     },
   ];
+  // 获取申请/审核列表
+  const handlePageChange = async (page: number, pageSize: number) => {
+    const { data = [], total } = await friendService[
+      activeKey == '1' ? 'getApprove' : 'getApply'
+    ]({
+      id: '0',
+      page: page,
+      pageSize: pageSize,
+    });
+    setPageData(data);
+    setPageTotal(total);
+  };
+  useEffect(() => {
+    handlePageChange(1, 12);
+  }, [activeKey]);
 
   return (
-    <Card
-      className={styles[`friend-warp`]}
-      tabList={tabs}
-      bordered={false}
-      headStyle={{ borderBottom: 0, fontSize: 12 }}
+    <PageCard
       activeTabKey={activeKey}
       onTabChange={(key: string) => {
         setActiveKey(key as string);
       }}
       tabBarExtraContent={
         <Space>
-          <Button key="1" type="primary">
-            审核
+          <Button
+            key="approve"
+            type="primary"
+            onClick={() => handleApproveSelect(selectedRowKeys)}>
+            同意
           </Button>
-          <Button key="2" type="primary">
-            回退
-          </Button>
-          <Button key="3" type="primary">
-            打印
-          </Button>
+          <Button key="2">拒绝</Button>
+          <Button key="3">打印</Button>
         </Space>
       }>
       <CardOrTableComp
         rowKey={'id'}
         bordered={false}
         columns={columns}
-        dataSource={[
-          {
-            name: '“张三”想成为你的好友',
-            remark: '你好，我是市场部新员工张三',
-            createUser: '张三',
-            createTime: '2022/10/4 20:00',
+        dataSource={pageData}
+        total={total}
+        onChange={handlePageChange}
+        operation={(item: ApprovalType) => tableOperation(activeKey, item)}
+        renderCardContent={(arr) => (
+          <TableItemCard<ApprovalType>
+            data={arr}
+            statusType={'好友'}
+            targetOrTeam="team"
+          />
+        )}
+        rowSelection={{
+          onChange: (selectedRowKeys: React.Key[], selectedRows: DataType[]) => {
+            console.log(
+              `selectedRowKeys: ${selectedRowKeys}`,
+              'selectedRows: ',
+              selectedRows,
+            );
+            setSelectedRowKeys(selectedRowKeys);
           },
-        ]}
-        hideOperation={activeKey !== '1' ? true : false}
-        operation={(item: any) => [
-          {
-            key: 'approve',
-            label: '审核申请',
-            onClick: () => {
-              console.log('审核', 'approve', item);
-            },
-          },
-          {
-            key: 'back',
-            label: '回退申请',
-            onClick: () => {
-              console.log('回退', 'back', item);
-            },
-          },
-        ]}
+        }}
+        tableAlertOptionRender={() => {
+          return (
+            <Space size={16}>
+              <a>批量同意</a>
+              <a>批量拒绝</a>
+            </Space>
+          );
+        }}
       />
-    </Card>
+    </PageCard>
   );
 };
 

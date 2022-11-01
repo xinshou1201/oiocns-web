@@ -5,7 +5,7 @@ import ContentTemplate from '@/components/ContentTemplate';
 import { IRouteConfig } from '@/routes/config';
 
 import TodoMenu from './Menu';
-
+import './index.less';
 const Todo: React.FC<{ route: IRouteConfig }> = ({ route }) => {
   const sider = <TodoMenu></TodoMenu>;
 
