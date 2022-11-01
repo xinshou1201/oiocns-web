@@ -10,22 +10,39 @@ interface BuyAppType {
   className?: string;
   showBtn?: boolean; //是否展示按钮
   data: any; //数据源
+  defaultKey?: any;
   shouOperation?: boolean; //是否展示 右上角操作按钮
   handleBuyApp: (_type: 'buy' | 'join', item: BuyAppType['data']) => void;
   onClick?: (e?: Event) => void; //卡片点击事件
   operation?: (_item: MarketTypes.ProductType) => MarketTypes.OperationType[]; //操作区域数据
 }
-
+const defaultObj = {
+  name: 'name', //名称
+  size: 'size', //大小
+  type: 'type', //是否免费
+  desc: 'desc', //描述
+  typeName: 'typeName', //应用类型
+  creatTime: 'creatTime', //上架时间
+};
 const Index: React.FC<BuyAppType> = (props) => {
   const {
     data,
     className,
     showBtn = true,
     shouOperation = false,
+    defaultKey,
     onClick,
     operation,
     handleBuyApp,
   } = props;
+  const {
+    name = 'name',
+    size = 'size',
+    type = 'type',
+    desc = 'desc',
+    typeName = 'typeName',
+    creatTime = 'creatTime',
+  } = { ...defaultObj, ...defaultKey };
   /**
    * @desc: 操作按钮区域
    * @param {any} item - 表格单条数据 data
@@ -37,7 +54,7 @@ const Index: React.FC<BuyAppType> = (props) => {
   function renderName() {
     return (
       <>
-        <h3 className={cls.nameLabel}>{data['name']}</h3>
+        <span className={cls.nameLabel}>{data[name]}</span>
         {shouOperation ? (
           <Dropdown overlay={menu} placement="bottom">
             <EllipsisOutlined className={cls.operationBtn} />
@@ -51,7 +68,7 @@ const Index: React.FC<BuyAppType> = (props) => {
   function renderDesc() {
     return (
       <div>
-        <p>选择一个由流程编排提供的典型用户案例，可以从。</p>
+        <p className="app-desc">{data[desc] || '暂无描述'}</p>
         {showBtn ? (
           <p className={cls.btnBox}>
             <Button

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import './index.less';
+import cls from './index.module.less';
 
 import CardOrTable from '@/components/CardOrTableComp';
 import AppCard from '@/components/AppCardOfBuy';
@@ -120,6 +120,13 @@ const AppShowComp: React.FC<AppShowCompType> = ({ service, className }) => {
           className="card"
           data={item}
           key={item.id}
+          defaultKey={{
+            name: 'caption',
+            size: 'price',
+            type: 'sellAuth',
+            desc: 'remark',
+            creatTime: 'createTime',
+          }}
           operation={renderOperation}
           handleBuyApp={handleBuyAppFun}
         />
@@ -127,7 +134,7 @@ const AppShowComp: React.FC<AppShowCompType> = ({ service, className }) => {
     });
   };
   return (
-    <div className={`app-wrap ${className}`} ref={parentRef}>
+    <div className={`${cls['app-wrap']} ${className}`} ref={parentRef}>
       <CardOrTable
         dataSource={list}
         total={total}

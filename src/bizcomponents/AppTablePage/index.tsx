@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import './index.less';
+import cls from './index.module.less';
 
 import CardOrTable from '@/components/CardOrTableComp';
 import AppCard from '@/components/AppCardComp';
@@ -112,7 +112,7 @@ const AppShowComp: React.FC<AppShowCompType> = ({ service }) => {
     });
   };
   return (
-    <div className="app-wrap" ref={parentRef}>
+    <div className={cls['app-wrap']} ref={parentRef}>
       <CardOrTable<MarketTypes.ProductType>
         dataSource={list}
         total={total}
