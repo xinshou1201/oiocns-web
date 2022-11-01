@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { SearchOutlined } from '@ant-design/icons';
 import { Input, Tabs } from 'antd';
 import React, { useEffect, useState } from 'react';
@@ -6,6 +7,19 @@ import { chat } from '@/module/chat/orgchat';
 import useChatStore from '@/store/chat';
 import { formatDate } from '@/utils/index';
 import sideStyle from './groupSidebar.module.less';
+
+interface MousePosition {
+  left: number;
+  top: number;
+  isShowContext: boolean;
+  selectedItem: ImMsgChildType;
+  selectMenu?: MenuItemType[];
+}
+
+interface MenuItemType {
+  value: number;
+  label: string;
+}
 
 const GroupSideBar = () => {
   const getInfo = () => {
@@ -21,6 +35,18 @@ const GroupSideBar = () => {
   const [searchValue, setSearchValue] = useState<string>(''); // 搜索值
   let [openIdArr, setOpenIdArr] = useState<Array<string>>([]);
   const [isMounted, setIsMounted] = useState<boolean>(false); // 是否已加载--判断是否需要默认打开
+  const [mousePosition, setMousePosition] = useState<MousePosition>({
+    left: 0,
+    top: 0,
+    isShowContext: false,
+    selectedItem: {} as ImMsgChildType,
+  });
+  const [menuList, setMenuList] = useState<any>([
+    { value: 1, label: '置顶会话' },
+    { value: 2, label: '清空信息' },
+    { value: 3, label: '取消置顶' },
+  ]);
+
   const onChange = (values: string) => {
     setSearchValue(values);
   };
@@ -75,7 +101,6 @@ const GroupSideBar = () => {
   };
   const openChangeds = async (child: ImMsgChildType) => {
     await ChatStore.setCurrent(child);
-    // openChanged(child);
   };
 
   useEffect(() => {
@@ -102,6 +127,37 @@ const GroupSideBar = () => {
     // 不超过一天 展示 时/分
     return formatDate(timeStr, 'H:mm');
   };
+
+  // 鼠标右键事件
+  const handleContextClick = (e: MouseEvent, item: ImMsgChildType) => {
+    if (!item) {
+      return;
+    }
+    setMousePosition({
+      left: e.pageX + 6,
+      top: e.pageY + 6,
+      isShowContext: true,
+      selectedItem: item,
+      selectMenu: item.isTop ? menuList.slice(1, 3) : menuList.slice(0, 2),
+    });
+  };
+  // 关闭右侧点击出现的弹框
+  // const closecontextmenu = () => {
+  //   setMousePosition({
+  //     isShowContext: false,
+  //     left: 0,
+  //     top: 0,
+  //     selectedItem: {} as ImMsgChildType,
+  //   });
+  // };
+  useEffect(() => {
+    // window.addEventListener('click');
+    // console.log('biubiu', window.addEventListener('click'));
+    // return () => {
+    //   // 组件卸载移除事件
+    //   document.removeEventListener('click', closecontextmenu);
+    // };
+  }, []);
 
   return (
     <div className={sideStyle.chart_side_wrap}>
@@ -154,7 +210,11 @@ const GroupSideBar = () => {
           </div>
         </Tabs.TabPane>
         <Tabs.TabPane tab="通讯录" key="2">
-          <div className={sideStyle.group_side_bar_wrap}>
+          <div
+            className={sideStyle.group_side_bar_wrap}
+            onContextMenu={(e) => {
+              e.preventDefault();
+            }}>
             {chat.chats.map((item: any) => {
               return (
                 <div key={item.id}>
@@ -183,7 +243,8 @@ const GroupSideBar = () => {
                                   ? sideStyle.active
                                   : ''
                               }`}
-                              key={child.id}>
+                              key={child.id}
+                              onContextMenu={(e: any) => handleContextClick(e, child)}>
                               <HeadImg name={child.name} label={child.label} />
                               {child.noRead > 0 ? (
                                 <div
@@ -275,22 +336,24 @@ const GroupSideBar = () => {
               );
             })}
           </div>
-          {/* 鼠标右键 */}
-          {/* {mousePosition.isShowContext ? (
-            <div className={sideStyle.context_text_wrap}>
-              {mousePosition.selectMenu.map((item) => {
-                return (
-                  <div key={item.value} className={sideStyle.context_menu_item}>
-                    {item.label}
-                  </div>
-                );
-              })}
-            </div>
-          ) : (
-            ''
-          )} */}
         </Tabs.TabPane>
       </Tabs>
+      {/* 鼠标右键 */}
+      {mousePosition.isShowContext ? (
+        <div
+          className={sideStyle.context_text_wrap}
+          style={{ left: `${mousePosition.left}px`, top: `${mousePosition.top}px` }}>
+          {mousePosition.selectMenu?.map((item) => {
+            return (
+              <div key={item.value} className={sideStyle.context_menu_item}>
+                {item.label}
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        ''
+      )}
     </div>
   );
 };
