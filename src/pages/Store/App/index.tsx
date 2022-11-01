@@ -51,7 +51,7 @@ const StoreApp: React.FC = () => {
     return <AppShowComp service={service} />;
   }, [apiName]);
   return (
-    <div className={'pages-wrap flex flex-direction-col'}>
+    <div className={`pages-wrap flex flex-direction-col ${cls['pages-wrap']}`}>
       {<StoreRecent />}
       <Card
         title="应用"

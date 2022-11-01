@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import type { ProColumns } from '@ant-design/pro-components';
 /* eslint-disable no-unused-vars */
-import './index.less';
+import cls from './index.module.less';
 
 import { Dropdown, Menu, Pagination } from 'antd';
 import { ProTable } from '@ant-design/pro-components';
@@ -86,7 +86,7 @@ const Index: <T extends unknown>(props: PageType<T>) => React.ReactElement = ({
         valueType: 'option',
         fixed: 'right',
         render: (_text, record) => [
-          <Dropdown className="operation-btn" overlay={menu(record)} key="key">
+          <Dropdown className={cls['operation-btn']} overlay={menu(record)} key="key">
             <EllipsisOutlined />
           </Dropdown>,
         ],
@@ -97,7 +97,7 @@ const Index: <T extends unknown>(props: PageType<T>) => React.ReactElement = ({
   const renderTable = useMemo(() => {
     return pageType === 'table' ? (
       <ProTable
-        className="common-table"
+        className={cls['common-table']}
         columns={hideOperation ? columns : resetColumns}
         dataSource={dataSource}
         scroll={{ x: 1000, y: height || defaultHeight }}
@@ -113,7 +113,7 @@ const Index: <T extends unknown>(props: PageType<T>) => React.ReactElement = ({
         rowClassName={
           stripe
             ? (_record: any, index: number) => {
-                return index % 2 !== 0 ? 'stripe' : '';
+                return index % 2 !== 0 ? cls['stripe'] : '';
               }
             : ''
         }
@@ -121,7 +121,7 @@ const Index: <T extends unknown>(props: PageType<T>) => React.ReactElement = ({
       />
     ) : (
       <div
-        className="common-card"
+        className={cls['common-card']}
         style={{
           height: defaultHeight !== 'auto' ? defaultHeight + 57 + 'px' : defaultHeight,
         }}>
@@ -135,9 +135,9 @@ const Index: <T extends unknown>(props: PageType<T>) => React.ReactElement = ({
    */
   const renderFooter = () => {
     return (
-      <div className="common-table-footer">
+      <div className={cls['common-table-footer']}>
         {/* 切换展示形式 */}
-        <div className="btn-box">
+        <div className={cls['btn-box']}>
           {showChangeBtn ? (
             <>
               <IconFont
@@ -172,7 +172,7 @@ const Index: <T extends unknown>(props: PageType<T>) => React.ReactElement = ({
   };
 
   return (
-    <div className="common-table-wrap" style={style}>
+    <div className={cls['common-table-wrap']} style={style}>
       {renderTable} {renderFooter()}
     </div>
   );
