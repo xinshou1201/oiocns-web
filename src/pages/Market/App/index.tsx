@@ -16,7 +16,11 @@ const service = new MarketService({
 const Index: React.FC = () => {
   return (
     <>
-      <AppShowComp className={cls['market-public-wrap']} service={service} />
+      <AppShowComp
+        title="共享仓库"
+        className={cls['market-public-wrap']}
+        service={service}
+      />
     </>
   );
 };

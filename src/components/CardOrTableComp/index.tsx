@@ -47,6 +47,7 @@ const Index: <T extends unknown>(props: PageType<T>) => React.ReactElement = ({
   style,
   onChange,
   renderCardContent,
+  headerTitle,
   ...rest
 }) => {
   const [pageType, setPageType] = useState<PageShowType>(defaultPageType || 'table'); //切换设置
@@ -58,7 +59,7 @@ const Index: <T extends unknown>(props: PageType<T>) => React.ReactElement = ({
       if (parentRef.current) {
         let _height = parentRef.current.offsetHeight;
         // let width = parentRef.current.offsetWidth;
-        setDefaultHeight(_height > 300 ? _height - 116 : 300);
+        setDefaultHeight(_height > 300 ? _height - (headerTitle ? 164 : 116) : 300);
       }
     }, 10);
   }, [parentRef]);
@@ -102,6 +103,7 @@ const Index: <T extends unknown>(props: PageType<T>) => React.ReactElement = ({
         dataSource={dataSource}
         scroll={{ x: 1000, y: height || defaultHeight }}
         search={false}
+        headerTitle={headerTitle}
         rowKey={rowKey || 'key'}
         pagination={false}
         options={false}
@@ -120,13 +122,16 @@ const Index: <T extends unknown>(props: PageType<T>) => React.ReactElement = ({
         {...rest}
       />
     ) : (
-      <div
-        className={cls['common-card']}
-        style={{
-          height: defaultHeight !== 'auto' ? defaultHeight + 57 + 'px' : defaultHeight,
-        }}>
-        {renderCardContent && renderCardContent(dataSource)}
-      </div>
+      <>
+        {headerTitle ? <div className="card-title">{headerTitle}</div> : ''}
+        <div
+          className={cls['common-card']}
+          style={{
+            height: defaultHeight !== 'auto' ? defaultHeight + 57 + 'px' : defaultHeight,
+          }}>
+          {renderCardContent && renderCardContent(dataSource)}
+        </div>
+      </>
     );
   }, [pageType, dataSource, defaultHeight]);
   /**
