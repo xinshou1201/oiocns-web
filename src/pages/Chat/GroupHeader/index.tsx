@@ -2,12 +2,10 @@
 import { EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
 import { Breadcrumb, Modal } from 'antd';
 import React, { useState } from 'react';
-
 import HeadImg from '@/components/headImg/headImg';
 import QrCodeCustom from '@/components/qrCode';
 import useChatStore from '@/store/chat';
-
-import headerStyle from './groupheader.module.less';
+import headerStyle from './index.module.less';
 
 interface Iprops {
   handleViewDetail: Function;
@@ -37,7 +35,7 @@ const Groupheader = (props: Iprops) => {
       <div className={headerStyle.group_header_wrap}>
         <div className={`${headerStyle.user} ${headerStyle.flex}`}>
           <HeadImg name={ChatStore.curChat?.name} label={''} />
-          <div className={headerStyle.user_info}>
+          <div>
             <div className={`${headerStyle.flex} ${headerStyle.user_info_top}`}>
               <div className={`${headerStyle.user_info_top_name}`}>
                 {ChatStore.curChat?.name}

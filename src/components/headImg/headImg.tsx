@@ -1,7 +1,6 @@
-import { Tag } from 'antd';
 import React from 'react';
 
-import headimgStyle from './headimg.module.less';
+import headimgStyle from './headImg.module.less';
 
 interface Iprops {
   name?: string;
@@ -13,23 +12,9 @@ interface Iprops {
   imgWidth?: number;
 }
 const HeadImg = (props: Iprops) => {
-  const {
-    name = '',
-    label = '',
-    url,
-    limit = 2,
-    isSquare = true,
-    imgWidth = 40 + 'px',
-  } = props;
+  const { name = '', url, limit = 2, isSquare = true, imgWidth = 40 + 'px' } = props;
   return (
     <>
-      {label ? (
-        <div className={headimgStyle.user_head_label}>
-          <Tag color="#3e5ed8">{label}</Tag>
-        </div>
-      ) : (
-        ''
-      )}
       {url ? (
         <div
           className={`${headimgStyle.user_head_img_wrap}`}
