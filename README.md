@@ -4,7 +4,7 @@
 
 ## 前往 product/rules 查看编码规则
 
-## git 提交跳过检查 --no-verify
+## (TODO) git 提交跳过检查 --no-verify
 
 ### 项目目录
 ```
