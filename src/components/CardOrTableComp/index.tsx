@@ -56,7 +56,7 @@ const Index: <T extends unknown>(props: PageType<T>) => React.ReactElement = ({
   // 监听父级高度
   useEffect(() => {
     setTimeout(() => {
-      if (parentRef.current) {
+      if (parentRef?.current) {
         let _height = parentRef.current.offsetHeight;
         // let width = parentRef.current.offsetWidth;
         setDefaultHeight(_height > 300 ? _height - (headerTitle ? 164 : 116) : 300);
