@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import useChatStore from '@/store/chat';
-import GroupContent from './components/groupContent/groupContent';
-import GroupDetail from './components/groupDetail/groupDetail';
-import GroupHeader from './components/groupHeader/groupHeader';
-import GroupInputBox from './components/groupInputBox/groupInputBox';
-import GroupSideBar from './components/groupSideBar/groupSideBar';
+import GroupContent from './groupContent/groupContent';
+import GroupDetail from './groupDetail/groupDetail';
+import GroupHeader from './groupHeader/groupHeader';
+import GroupInputBox from './groupInputBox/groupInputBox';
+import GroupSideBar from './groupSideBar/groupSideBar';
 import charsStyle from './index.module.less';
 const Chat = () => {
   const [isShowDetail, setIsShowDetail] = useState<boolean>(false);

@@ -113,59 +113,67 @@ const Groupdetail = () => {
       setState({ ...state, delids: [...state.delids, item.id] });
     }
   };
+  // 头像
+  const heads = (
+    <Row style={{ paddingBottom: '12px' }}>
+      <Col span={4}>
+        <HeadImg name={ChatStore.curChat?.name} label={''} />
+      </Col>
+      <Col span={20}>
+        <h4 className={detailStyle.title}>
+          {ChatStore.curChat?.name}
+          {ChatStore.curChat?.typeName !== '人员' ? (
+            <span className={detailStyle.number}>({ChatStore.curChat?.personNum})</span>
+          ) : (
+            ''
+          )}
+        </h4>
+        <div className={detailStyle.base_info_desc}>{ChatStore.curChat?.remark}</div>
+      </Col>
+    </Row>
+  );
+  // 群组成员
+  const grouppeoples = (
+    <>
+      {ChatStore?.qunPersons.map((item: any, index: any) => {
+        return (
+          <div key={item.id} title={item.name} className={detailStyle.show_persons}>
+            <HeadImg name={item.name} label={''} />
+            <span className={detailStyle.img_list_con_name}>{item.name}</span>
+          </div>
+        );
+      })}
+      {ChatStore.curChat?.typeName === '群组' ? (
+        <>
+          <div
+            className={`${detailStyle.img_list_con} ${detailStyle.img_list_add}`}
+            onClick={() => {
+              openDialogAdd();
+            }}>
+            +
+          </div>
+          <div
+            className={`${detailStyle.img_list_con} ${detailStyle.img_list_add}`}
+            onClick={() => {
+              // openDialogDel();
+              setIsShiftUp(true);
+            }}>
+            -
+          </div>
+        </>
+      ) : (
+        ''
+      )}
+    </>
+  );
 
   return (
     <>
       <div className={detailStyle.group_detail_wrap}>
-        <Row style={{ paddingBottom: '12px' }}>
-          <Col span={4}>
-            <HeadImg name={ChatStore.curChat?.name} label={''} />
-          </Col>
-          <Col span={20}>
-            <h4 className={detailStyle.title}>
-              {ChatStore.curChat?.name}
-              {ChatStore.curChat?.typeName !== '人员' ? (
-                <span className={detailStyle.number}>
-                  ({ChatStore.curChat?.personNum})
-                </span>
-              ) : (
-                ''
-              )}
-            </h4>
-            <div className={detailStyle.base_info_desc}>{ChatStore.curChat?.remark}</div>
-          </Col>
-        </Row>
+        {heads}
         <div className={detailStyle.user_list}>
           <div className={`${detailStyle.img_list} ${detailStyle.con}`}>
-            {ChatStore?.qunPersons.map((item: any, index: any) => {
-              return (
-                <div key={item.id} title={item.name} className={detailStyle.show_persons}>
-                  <HeadImg name={item.name} label={''} />
-                  <span className={detailStyle.img_list_con_name}>{item.name}</span>
-                </div>
-              );
-            })}
-            {ChatStore.curChat?.typeName === '群组' ? (
-              <>
-                <div
-                  className={`${detailStyle.img_list_con} ${detailStyle.img_list_add}`}
-                  onClick={() => {
-                    openDialogAdd();
-                  }}>
-                  +
-                </div>
-                <div
-                  className={`${detailStyle.img_list_con} ${detailStyle.img_list_add}`}
-                  onClick={() => {
-                    // openDialogDel();
-                    setIsShiftUp(true);
-                  }}>
-                  -
-                </div>
-              </>
-            ) : (
-              ''
-            )}
+            {grouppeoples}
             {ChatStore.curChat?.personNum > 1 ? (
               <span
                 className={`${detailStyle.img_list} ${detailStyle.more_btn}`}
