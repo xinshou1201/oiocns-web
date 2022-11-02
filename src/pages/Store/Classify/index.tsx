@@ -9,7 +9,7 @@ import React from 'react';
 import { useHistory } from 'react-router-dom';
 
 import cls from './index.module.less';
-import StoreClassifyTree from './Tree';
+import StoreClassifyTree from '@/components/CustomTreeComp';
 
 const StoreClassify: React.FC = () => {
   const history = useHistory();
@@ -37,7 +37,7 @@ const StoreClassify: React.FC = () => {
       <div>
         <div className={cls.subTitle}>常用分类</div>
         <Menu items={items} onClick={to} />
-        <StoreClassifyTree></StoreClassifyTree>
+        <StoreClassifyTree treeType="试试"></StoreClassifyTree>
       </div>
     </div>
   );

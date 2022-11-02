@@ -1,4 +1,4 @@
-import { Button, Card, Space } from 'antd';
+import { Card } from 'antd';
 import React, { useState } from 'react';
 import API from '@/services';
 import AppShowComp from '@/bizcomponents/AppTablePage';
@@ -6,13 +6,14 @@ import MarketService from '@/module/appstore/market';
 import cls from './index.module.less';
 import { columns } from '@/components/CardOrTableComp/config';
 import { useHistory } from 'react-router-dom';
+import { BtnGroupDiv } from '@/components/CommonComp';
 
 const service = new MarketService({
-  nameSpace: 'publicStore',
-  searchApi: API.appstore.merchandise,
-  createApi: API.appstore.create,
-  deleteApi: API.appstore.marketDel,
-  updateApi: API.appstore.updateMarket,
+  nameSpace: 'myApp',
+  searchApi: API.product.searchOwnProduct,
+  createApi: API.product.register,
+  deleteApi: API.product.delete,
+  updateApi: API.product.update,
 });
 
 import StoreRecent from '../Recent';
@@ -43,41 +44,46 @@ const StoreApp: React.FC = () => {
     },
   ];
 
-  const test = async () => {
-    let rs = await API.mock.test();
-    console.log('从测试测试测试', rs);
+  // const BtnsList = [
+  //   {
+  //     text: '购买',
+  //   },
+  //   {
+  //     text: '创建',
+  //   },
+  //   {
+  //     text: '暂存',
+  //   },
+  // ];
+  const BtnsList = ['购买', '创建', '暂存'];
+  const handleBtnsClick = (item: { text: string }) => {
+    console.log('按钮点击', item);
+    switch (item.text) {
+      case '购买':
+        history.push('/market/app');
+        break;
+      case '创建':
+        console.log('点击事件', '创建');
+        break;
+      case '暂存':
+        console.log('点击事件', '暂存');
+        break;
+      default:
+        console.log('点击事件', item.text);
+        break;
+    }
   };
-  const renderBtns = () => {
-    return (
-      <Space>
-        <Button
-          type="primary"
-          onClick={() => {
-            history.push('/market/app');
-          }}>
-          购买
-        </Button>
-        <Button
-          onClick={() => {
-            test();
-          }}>
-          创建
-        </Button>
-        <Button>暂存</Button>
-      </Space>
-    );
-  };
+
   return (
     <div className={`pages-wrap flex flex-direction-col ${cls['pages-wrap']}`}>
       {<StoreRecent />}
       <Card
         title="应用"
         className={cls['app-tabs']}
-        extra={renderBtns()}
+        extra={<BtnGroupDiv list={BtnsList} onClick={handleBtnsClick} />}
         tabList={items}
         onTabChange={(key) => {
           setStatusKey(key);
-          console.log('切换事件', key);
         }}
       />
       <div className={cls['page-content-table']}>
