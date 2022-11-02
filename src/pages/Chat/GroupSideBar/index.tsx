@@ -6,7 +6,7 @@ import HeadImg from '@/components/headImg/headImg';
 import { chat } from '@/module/chat/orgchat';
 import useChatStore from '@/store/chat';
 import { formatDate } from '@/utils/index';
-import sideStyle from './groupSidebar.module.less';
+import sideStyle from './index.module.less';
 
 interface MousePosition {
   left: number;
@@ -21,7 +21,7 @@ interface MenuItemType {
   label: string;
 }
 
-const GroupSideBar = () => {
+const GroupSideBar: React.FC = () => {
   const getInfo = () => {
     const data = chat.chats;
     if (data.length === 0) {

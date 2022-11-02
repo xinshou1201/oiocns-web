@@ -3,13 +3,11 @@
 import { DownOutlined, RightOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Col, Empty, message, Modal, Row } from 'antd';
 import React, { useState } from 'react';
-
 import HeadImg from '@/components/headImg/headImg';
 import CohortServers from '@/module/chat/cohortchat';
 import { chat } from '@/module/chat/orgchat';
 import useChatStore from '@/store/chat';
-
-import detailStyle from './groupdetail.module.less';
+import detailStyle from './index.module.less';
 
 interface itemResult {
   code: string;
@@ -25,7 +23,7 @@ interface itemResult {
   version: string;
 }
 
-const Groupdetail = () => {
+const Groupdetail: React.FC = () => {
   const ChatStore: any = useChatStore();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // 邀请好友
   const [isShiftUp, setIsShiftUp] = useState<boolean>(false); // 移出群聊
@@ -249,7 +247,7 @@ const Groupdetail = () => {
           ''
         )}
       </div>
-      <Modal
+      {/* <Modal
         title="邀请好友"
         open={isModalOpen}
         onOk={handleOk}
@@ -294,7 +292,7 @@ const Groupdetail = () => {
             <Empty description={<span>暂无可拉取好友</span>} />
           )}
         </div>
-      </Modal>
+      </Modal> */}
       <Modal
         title="移出群聊"
         open={isShiftUp}

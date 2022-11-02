@@ -2,12 +2,10 @@
 import { EllipsisOutlined, PlusOutlined } from '@ant-design/icons';
 import { Breadcrumb, Modal } from 'antd';
 import React, { useState } from 'react';
-
 import HeadImg from '@/components/headImg/headImg';
 import QrCodeCustom from '@/components/qrCode';
 import useChatStore from '@/store/chat';
-
-import headerStyle from './groupheader.module.less';
+import headerStyle from './index.module.less';
 
 interface Iprops {
   handleViewDetail: Function;

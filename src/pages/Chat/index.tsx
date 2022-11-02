@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
 import useChatStore from '@/store/chat';
-import GroupContent from './groupContent/groupContent';
-import GroupDetail from './groupDetail/groupDetail';
-import GroupHeader from './groupHeader/groupHeader';
-import GroupInputBox from './groupInputBox/groupInputBox';
-import GroupSideBar from './groupSideBar/groupSideBar';
+import GroupContent from './GroupContent';
+import GroupDetail from './GroupDetail';
+import GroupHeader from './GroupHeader';
+import GroupInputBox from './GroupInputBox';
+import GroupSideBar from './GroupSideBar';
 import charsStyle from './index.module.less';
-const Chat = () => {
+
+/* 
+  沟通聊天
+*/
+const Chat: React.FC = () => {
   const [isShowDetail, setIsShowDetail] = useState<boolean>(false);
   const [writeContent, setWriteContent] = useState<any>(null);
   const ChatStore: any = useChatStore();

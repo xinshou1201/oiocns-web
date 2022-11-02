@@ -3,12 +3,10 @@ import { Button, Popover } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useRef, useState } from 'react';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-
 import HeadImg from '@/components/headImg/headImg';
 import { chat } from '@/module/chat/orgchat';
 import useChatStore from '@/store/chat';
-
-import contentStyle from './groupContent.module.less';
+import contentStyle from './index.module.less';
 
 interface Iprops {
   handleReWrites: Function;
