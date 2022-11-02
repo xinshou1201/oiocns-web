@@ -3,16 +3,17 @@ import cls from './index.module.less';
 
 import CardOrTable from '@/components/CardOrTableComp';
 import AppCard from '@/components/AppCardComp';
-import { columns } from '@/components/CardOrTableComp/config';
 import { MarketTypes } from 'typings/marketType';
 import { IdPage } from '@/module/typings';
 import { MarketServiceType } from '@/module/appstore/market';
 import { sleep } from '@/store/sleep';
+import type { ProColumns } from '@ant-design/pro-components';
 interface AppShowCompType {
   service: MarketServiceType;
   searchParams: {};
+  columns: ProColumns<any>[];
 }
-const AppShowComp: React.FC<AppShowCompType> = ({ service, searchParams }) => {
+const AppShowComp: React.FC<AppShowCompType> = ({ service, searchParams, columns }) => {
   const [list, setList] = useState<MarketTypes.ProductType[]>([]);
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);

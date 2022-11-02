@@ -17,7 +17,7 @@ interface PageType<T> {
   defaultPageType?: PageShowType; //当前展示类型 card: 卡片; list: 列表
   showChangeBtn?: boolean; //是否展示 图列切换按钮
   hideOperation?: boolean; //是否展示 默认操作区域
-  columns?: ProColumns<any, 'text'>[]; //表格头部数组
+  columns?: ProColumns<any>[]; //表格头部数组
   total?: number; // 总条数 总数量
   page?: number; // 当前页
   height?: number; //表格高度

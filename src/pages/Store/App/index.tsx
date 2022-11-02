@@ -4,6 +4,7 @@ import API from '@/services';
 import AppShowComp from '@/bizcomponents/AppTablePage';
 import MarketService from '@/module/appstore/market';
 import cls from './index.module.less';
+import { columns } from '@/components/CardOrTableComp/config';
 
 const service = new MarketService({
   nameSpace: 'publicStore',
@@ -64,7 +65,11 @@ const StoreApp: React.FC = () => {
         }}
       />
       <div className={cls['page-content-table']}>
-        <AppShowComp service={service} searchParams={{ status: statusKey }} />
+        <AppShowComp
+          service={service}
+          searchParams={{ status: statusKey }}
+          columns={columns}
+        />
       </div>
     </div>
   );
