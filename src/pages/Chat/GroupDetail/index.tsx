@@ -1,7 +1,7 @@
 /* eslint-disable no-constant-condition */
 /* eslint-disable no-unused-vars */
 import { DownOutlined, RightOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Col, Empty, message, Modal, Row } from 'antd';
+import { Button, Checkbox, Col, message, Modal, Row, Empty } from 'antd';
 import React, { useState } from 'react';
 import HeadImg from '@/components/headImg/headImg';
 import CohortServers from '@/module/chat/cohortchat';
@@ -247,12 +247,7 @@ const Groupdetail: React.FC = () => {
           ''
         )}
       </div>
-      {/* <Modal
-        title="邀请好友"
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        getContainer={false}>
+      <Modal>
         <div className={detailStyle.invitateBox}>
           {state.friendsData?.length > 0 ? (
             <>
@@ -292,13 +287,8 @@ const Groupdetail: React.FC = () => {
             <Empty description={<span>暂无可拉取好友</span>} />
           )}
         </div>
-      </Modal> */}
-      <Modal
-        title="移出群聊"
-        open={isShiftUp}
-        onOk={handleMoveOk}
-        onCancel={handleCancel}
-        getContainer={false}>
+      </Modal>
+      <Modal>
         <div className={detailStyle.invitateBox}>
           <>
             {ChatStore.qunPersons?.map((item: any, index: any) => {
