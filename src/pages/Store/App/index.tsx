@@ -1,21 +1,22 @@
 import { Button, Card, Space } from 'antd';
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
+import API from '@/services';
 import AppShowComp from '@/bizcomponents/AppTablePage';
 import MarketService from '@/module/appstore/market';
 import cls from './index.module.less';
 
 const service = new MarketService({
-  spaceName: 'publicStore',
-  searchApi: 'appstore.merchandise',
-  createApi: 'appstore.create',
-  deleteApi: 'appstore.marketDel',
-  updateApi: 'appstore.updateMarket',
+  nameSpace: 'publicStore',
+  searchApi: API.appstore.merchandise,
+  createApi: API.appstore.create,
+  deleteApi: API.appstore.marketDel,
+  updateApi: API.appstore.updateMarket,
 });
 
 import StoreRecent from '../Recent';
 
 const StoreApp: React.FC = () => {
-  const [apiName, setApiName] = useState('merchandise');
+  const [statusKey, setStatusKey] = useState('merchandise');
   const items = [
     {
       tab: `全部`,
@@ -49,9 +50,6 @@ const StoreApp: React.FC = () => {
       </Space>
     );
   };
-  const renderTable = useMemo(() => {
-    return <AppShowComp service={service} />;
-  }, [apiName]);
   return (
     <div className={`pages-wrap flex flex-direction-col ${cls['pages-wrap']}`}>
       {<StoreRecent />}
@@ -61,10 +59,13 @@ const StoreApp: React.FC = () => {
         extra={renderBtns()}
         tabList={items}
         onTabChange={(key) => {
-          setApiName(key);
+          setStatusKey(key);
+          console.log('切换事件', key);
         }}
       />
-      <div className={cls['page-content-table']}>{renderTable}</div>
+      <div className={cls['page-content-table']}>
+        <AppShowComp service={service} searchParams={{ status: statusKey }} />
+      </div>
     </div>
   );
 };

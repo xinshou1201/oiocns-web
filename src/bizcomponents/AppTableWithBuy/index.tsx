@@ -21,9 +21,6 @@ const AppShowComp: React.FC<AppShowCompType> = ({ service, className, title }) =
   const parentRef = useRef<any>(null); //父级容器Dom
   useEffect(() => {
     getTableList();
-    setTimeout(() => {
-      console.log('高度', parentRef.current.offsetHeight);
-    }, 100);
   }, []);
 
   /**
