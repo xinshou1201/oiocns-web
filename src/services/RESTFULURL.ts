@@ -277,4 +277,7 @@ export default {
     aggregate: (collName: string) => collection + '/aggregate/' + collName,
   },
   //others
+  mock: {
+    test: '/api/test',
+  },
 };

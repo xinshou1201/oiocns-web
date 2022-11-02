@@ -24,11 +24,6 @@ const HeaderNav: React.FC<RouteComponentProps> = () => {
       icon: 'icon-todo',
     },
     {
-      path: '/market/app',
-      title: '市场',
-      icon: 'icon-guangshangcheng',
-    },
-    {
       path: '/store/app',
       title: '仓库',
       icon: 'icon-store',

@@ -5,6 +5,7 @@ import AppShowComp from '@/bizcomponents/AppTablePage';
 import MarketService from '@/module/appstore/market';
 import cls from './index.module.less';
 import { columns } from '@/components/CardOrTableComp/config';
+import { useHistory } from 'react-router-dom';
 
 const service = new MarketService({
   nameSpace: 'publicStore',
@@ -17,6 +18,7 @@ const service = new MarketService({
 import StoreRecent from '../Recent';
 
 const StoreApp: React.FC = () => {
+  const history = useHistory();
   const [statusKey, setStatusKey] = useState('merchandise');
   const items = [
     {
@@ -40,13 +42,27 @@ const StoreApp: React.FC = () => {
       key: '5',
     },
   ];
+
+  const test = async () => {
+    let rs = await API.mock.test();
+    console.log('从测试测试测试', rs);
+  };
   const renderBtns = () => {
     return (
       <Space>
-        <Button type="primary" onClick={() => {}}>
+        <Button
+          type="primary"
+          onClick={() => {
+            history.push('/market/app');
+          }}>
           购买
         </Button>
-        <Button>创建</Button>
+        <Button
+          onClick={() => {
+            test();
+          }}>
+          创建
+        </Button>
         <Button>暂存</Button>
       </Space>
     );
