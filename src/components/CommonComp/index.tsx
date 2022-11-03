@@ -29,12 +29,18 @@ export const BtnGroupDiv: React.FC<BtnDivType> = ({
         <Button
           className={item.className}
           type={item.type || 'link'}
+          key={index}
           onClick={() => {
             onClick && onClick({ text: item.text, key: item?.key });
           }}>
           {item.text}
         </Button>
-        {showDivider && (index === list.length - 1 ? '' : <Divider type="vertical" />)}
+        {showDivider &&
+          (index === list.length - 1 ? (
+            ''
+          ) : (
+            <Divider key={'Divider' + index} type="vertical" />
+          ))}
       </>
     );
   }
@@ -49,12 +55,18 @@ export const BtnGroupDiv: React.FC<BtnDivType> = ({
       <>
         <Button
           type={'link'}
+          key={item}
           onClick={() => {
             onClick && onClick({ text: item });
           }}>
           {item}
         </Button>
-        {showDivider && (index === list.length - 1 ? '' : <Divider type="vertical" />)}
+        {showDivider &&
+          (index === list.length - 1 ? (
+            ''
+          ) : (
+            <Divider key={'Divider' + index} type="vertical" />
+          ))}
       </>
     );
   }

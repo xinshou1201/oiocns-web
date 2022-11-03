@@ -8,6 +8,7 @@ import { IdPage } from '@/module/typings';
 import { MarketServiceType } from '@/module/appstore/market';
 import { sleep } from '@/store/sleep';
 import type { ProColumns } from '@ant-design/pro-components';
+import useDebounce from '@/hooks/useDebounce';
 interface AppShowCompType {
   service: MarketServiceType;
   searchParams: {};
@@ -24,7 +25,12 @@ const AppShowComp: React.FC<AppShowCompType> = ({ service, searchParams, columns
     getTableList();
   }, []);
   useEffect(() => {
-    getTableList(searchParams, '', true);
+    //TODO: 其他条件 发出请求
+    // if (Object.keys(searchParams).length == 0) {
+    //   return;
+    // }
+    // getTableList(searchParams, '', true);
+    console.log('其他搜索参数', searchParams, '', true);
   }, [searchParams]);
   /**
    * @desc: 获取展示列表
@@ -32,7 +38,9 @@ const AppShowComp: React.FC<AppShowCompType> = ({ service, searchParams, columns
    * @param {boolean} isGofirst 是否返回第一页
    * @return {*}
    */
-  const getTableList = async (req = {}, searchKey = '', isGofirst = false) => {
+  const getTableList = useDebounce(async (params1: any) => {
+    const [req = {}, searchKey = '', isGofirst = false] = params1;
+
     if (isGofirst) {
       setPage(1);
     }
@@ -49,9 +57,12 @@ const AppShowComp: React.FC<AppShowCompType> = ({ service, searchParams, columns
     };
 
     await service.getList<IdPage>({ ...params, ...req });
+
+    console.log('获取列表', service['nameSpace'], service.List);
+
     setList([...service.List]);
     setTotal(service.Total);
-  };
+  }, 300);
 
   /**
    * handlePageChage

@@ -1,6 +1,6 @@
 // 市场业务
 export default class CommonClass {
-  protected nameSpace: string; //命名空间--用于区分功能
+  public nameSpace: string; //命名空间--用于区分功能
   // 接口注册
   protected searchApi: Function | undefined; // 查 数据
   protected createApi: Function | undefined; // 增 数据
