@@ -8,9 +8,10 @@ import { Dropdown, Input, Menu, Tree } from 'antd';
 import type { DataNode, TreeProps } from 'antd/es/tree';
 import React, { useState } from 'react';
 import cls from './index.module.less';
+import { renderNum } from '@/utils/tools';
 
 interface TreeType {
-  treeType: string;
+  treeType?: string;
 }
 
 const x = 3;
@@ -48,7 +49,7 @@ const menu = (
     ]}
   />
 );
-
+const nameArr = '擦传递火炬方法合并VS阿我认为有任务和感受到风清热'.split('');
 const generateData = (_level: number, _preKey?: React.Key, _tns?: DataNode[]) => {
   const preKey = _preKey || '0';
   const tns = _tns || defaultData;
@@ -56,7 +57,7 @@ const generateData = (_level: number, _preKey?: React.Key, _tns?: DataNode[]) =>
   const children = [];
   for (let i = 0; i < x; i++) {
     const key = `${preKey}-${i}`;
-    tns.push({ title: key, key });
+    tns.push({ title: nameArr[renderNum(1, 15)] + nameArr[renderNum(1, 15)], key });
     if (i < y) {
       children.push(key);
     }
@@ -154,7 +155,7 @@ const StoreClassifyTree: React.FC<TreeType> = ({ treeType }) => {
     return (
       <div className={cls.treeTitleBox}>
         <div>{node.title}</div>
-        <div onClick={(e: any) => e.stopPropagation()}>
+        <div className={cls.treeTitleBoxBtns} onClick={(e: any) => e.stopPropagation()}>
           <PlusOutlined className={cls.titleIcon} />
           <Dropdown overlay={menu} placement="bottom" trigger={['click']}>
             <EllipsisOutlined className={cls.titleIcon} rotate={90} />
@@ -185,4 +186,4 @@ const StoreClassifyTree: React.FC<TreeType> = ({ treeType }) => {
   );
 };
 
-export default StoreClassifyTree;
+export default React.memo(StoreClassifyTree);

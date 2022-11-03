@@ -3,15 +3,17 @@ import cls from './index.module.less';
 
 import CardOrTable from '@/components/CardOrTableComp';
 import AppCard from '@/components/AppCardComp';
-import { columns } from '@/components/CardOrTableComp/config';
 import { MarketTypes } from 'typings/marketType';
 import { IdPage } from '@/module/typings';
 import { MarketServiceType } from '@/module/appstore/market';
 import { sleep } from '@/store/sleep';
+import type { ProColumns } from '@ant-design/pro-components';
 interface AppShowCompType {
   service: MarketServiceType;
+  searchParams: {};
+  columns: ProColumns<any>[];
 }
-const AppShowComp: React.FC<AppShowCompType> = ({ service }) => {
+const AppShowComp: React.FC<AppShowCompType> = ({ service, searchParams, columns }) => {
   const [list, setList] = useState<MarketTypes.ProductType[]>([]);
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
@@ -21,7 +23,9 @@ const AppShowComp: React.FC<AppShowCompType> = ({ service }) => {
   useEffect(() => {
     getTableList();
   }, []);
-
+  useEffect(() => {
+    getTableList(searchParams, '', true);
+  }, [searchParams]);
   /**
    * @desc: 获取展示列表
    * @param {string} searchKey 搜索关键词

@@ -1,15 +1,13 @@
 /* eslint-disable no-constant-condition */
 /* eslint-disable no-unused-vars */
 import { DownOutlined, RightOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Col, Empty, message, Modal, Row } from 'antd';
+import { Button, Checkbox, Col, message, Modal, Row, Empty } from 'antd';
 import React, { useState } from 'react';
-
 import HeadImg from '@/components/headImg/headImg';
 import CohortServers from '@/module/chat/cohortchat';
 import { chat } from '@/module/chat/orgchat';
 import useChatStore from '@/store/chat';
-
-import detailStyle from './groupdetail.module.less';
+import detailStyle from './index.module.less';
 
 interface itemResult {
   code: string;
@@ -25,7 +23,7 @@ interface itemResult {
   version: string;
 }
 
-const Groupdetail = () => {
+const Groupdetail: React.FC = () => {
   const ChatStore: any = useChatStore();
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false); // 邀请好友
   const [isShiftUp, setIsShiftUp] = useState<boolean>(false); // 移出群聊
@@ -113,59 +111,67 @@ const Groupdetail = () => {
       setState({ ...state, delids: [...state.delids, item.id] });
     }
   };
+  // 头像
+  const heads = (
+    <Row style={{ paddingBottom: '12px' }}>
+      <Col span={4}>
+        <HeadImg name={ChatStore.curChat?.name} label={''} />
+      </Col>
+      <Col span={20}>
+        <h4 className={detailStyle.title}>
+          {ChatStore.curChat?.name}
+          {ChatStore.curChat?.typeName !== '人员' ? (
+            <span className={detailStyle.number}>({ChatStore.curChat?.personNum})</span>
+          ) : (
+            ''
+          )}
+        </h4>
+        <div className={detailStyle.base_info_desc}>{ChatStore.curChat?.remark}</div>
+      </Col>
+    </Row>
+  );
+  // 群组成员
+  const grouppeoples = (
+    <>
+      {ChatStore?.qunPersons.map((item: any, index: any) => {
+        return (
+          <div key={item.id} title={item.name} className={detailStyle.show_persons}>
+            <HeadImg name={item.name} label={''} />
+            <span className={detailStyle.img_list_con_name}>{item.name}</span>
+          </div>
+        );
+      })}
+      {ChatStore.curChat?.typeName === '群组' ? (
+        <>
+          <div
+            className={`${detailStyle.img_list_con} ${detailStyle.img_list_add}`}
+            onClick={() => {
+              openDialogAdd();
+            }}>
+            +
+          </div>
+          <div
+            className={`${detailStyle.img_list_con} ${detailStyle.img_list_add}`}
+            onClick={() => {
+              // openDialogDel();
+              setIsShiftUp(true);
+            }}>
+            -
+          </div>
+        </>
+      ) : (
+        ''
+      )}
+    </>
+  );
 
   return (
     <>
       <div className={detailStyle.group_detail_wrap}>
-        <Row style={{ paddingBottom: '12px' }}>
-          <Col span={4}>
-            <HeadImg name={ChatStore.curChat?.name} label={''} />
-          </Col>
-          <Col span={20}>
-            <h4 className={detailStyle.title}>
-              {ChatStore.curChat?.name}
-              {ChatStore.curChat?.typeName !== '人员' ? (
-                <span className={detailStyle.number}>
-                  ({ChatStore.curChat?.personNum})
-                </span>
-              ) : (
-                ''
-              )}
-            </h4>
-            <div className={detailStyle.base_info_desc}>{ChatStore.curChat?.remark}</div>
-          </Col>
-        </Row>
+        {heads}
         <div className={detailStyle.user_list}>
           <div className={`${detailStyle.img_list} ${detailStyle.con}`}>
-            {ChatStore?.qunPersons.map((item: any, index: any) => {
-              return (
-                <div key={item.id} title={item.name} className={detailStyle.show_persons}>
-                  <HeadImg name={item.name} label={''} />
-                  <span className={detailStyle.img_list_con_name}>{item.name}</span>
-                </div>
-              );
-            })}
-            {ChatStore.curChat?.typeName === '群组' ? (
-              <>
-                <div
-                  className={`${detailStyle.img_list_con} ${detailStyle.img_list_add}`}
-                  onClick={() => {
-                    openDialogAdd();
-                  }}>
-                  +
-                </div>
-                <div
-                  className={`${detailStyle.img_list_con} ${detailStyle.img_list_add}`}
-                  onClick={() => {
-                    // openDialogDel();
-                    setIsShiftUp(true);
-                  }}>
-                  -
-                </div>
-              </>
-            ) : (
-              ''
-            )}
+            {grouppeoples}
             {ChatStore.curChat?.personNum > 1 ? (
               <span
                 className={`${detailStyle.img_list} ${detailStyle.more_btn}`}
@@ -241,12 +247,7 @@ const Groupdetail = () => {
           ''
         )}
       </div>
-      <Modal
-        title="邀请好友"
-        open={isModalOpen}
-        onOk={handleOk}
-        onCancel={handleCancel}
-        getContainer={false}>
+      <Modal>
         <div className={detailStyle.invitateBox}>
           {state.friendsData?.length > 0 ? (
             <>
@@ -287,12 +288,7 @@ const Groupdetail = () => {
           )}
         </div>
       </Modal>
-      <Modal
-        title="移出群聊"
-        open={isShiftUp}
-        onOk={handleMoveOk}
-        onCancel={handleCancel}
-        getContainer={false}>
+      <Modal>
         <div className={detailStyle.invitateBox}>
           <>
             {ChatStore.qunPersons?.map((item: any, index: any) => {

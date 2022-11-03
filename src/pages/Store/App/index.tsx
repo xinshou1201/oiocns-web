@@ -1,21 +1,26 @@
-import { Button, Card, Space } from 'antd';
-import React, { useMemo, useState } from 'react';
+import { Card } from 'antd';
+import React, { useState } from 'react';
+import API from '@/services';
 import AppShowComp from '@/bizcomponents/AppTablePage';
 import MarketService from '@/module/appstore/market';
 import cls from './index.module.less';
+import { columns } from '@/components/CardOrTableComp/config';
+import { useHistory } from 'react-router-dom';
+import { BtnGroupDiv } from '@/components/CommonComp';
 
 const service = new MarketService({
-  spaceName: 'publicStore',
-  searchApi: 'appstore.merchandise',
-  createApi: 'appstore.create',
-  deleteApi: 'appstore.marketDel',
-  updateApi: 'appstore.updateMarket',
+  nameSpace: 'myApp',
+  searchApi: API.product.searchOwnProduct,
+  createApi: API.product.register,
+  deleteApi: API.product.delete,
+  updateApi: API.product.update,
 });
 
 import StoreRecent from '../Recent';
 
 const StoreApp: React.FC = () => {
-  const [apiName, setApiName] = useState('merchandise');
+  const history = useHistory();
+  const [statusKey, setStatusKey] = useState('merchandise');
   const items = [
     {
       tab: `全部`,
@@ -38,33 +43,56 @@ const StoreApp: React.FC = () => {
       key: '5',
     },
   ];
-  const renderBtns = () => {
-    return (
-      <Space>
-        <Button type="primary" onClick={() => {}}>
-          购买
-        </Button>
-        <Button>创建</Button>
-        <Button>暂存</Button>
-      </Space>
-    );
+
+  // const BtnsList = [
+  //   {
+  //     text: '购买',
+  //   },
+  //   {
+  //     text: '创建',
+  //   },
+  //   {
+  //     text: '暂存',
+  //   },
+  // ];
+  const BtnsList = ['购买', '创建', '暂存'];
+  const handleBtnsClick = (item: { text: string }) => {
+    console.log('按钮点击', item);
+    switch (item.text) {
+      case '购买':
+        history.push('/market/app');
+        break;
+      case '创建':
+        console.log('点击事件', '创建');
+        break;
+      case '暂存':
+        console.log('点击事件', '暂存');
+        break;
+      default:
+        console.log('点击事件', item.text);
+        break;
+    }
   };
-  const renderTable = useMemo(() => {
-    return <AppShowComp service={service} />;
-  }, [apiName]);
+
   return (
     <div className={`pages-wrap flex flex-direction-col ${cls['pages-wrap']}`}>
       {<StoreRecent />}
       <Card
         title="应用"
         className={cls['app-tabs']}
-        extra={renderBtns()}
+        extra={<BtnGroupDiv list={BtnsList} onClick={handleBtnsClick} />}
         tabList={items}
         onTabChange={(key) => {
-          setApiName(key);
+          setStatusKey(key);
         }}
       />
-      <div className={cls['page-content-table']}>{renderTable}</div>
+      <div className={cls['page-content-table']}>
+        <AppShowComp
+          service={service}
+          searchParams={{ status: statusKey }}
+          columns={columns}
+        />
+      </div>
     </div>
   );
 };

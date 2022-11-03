@@ -5,7 +5,7 @@ interface DataType {
   desc: string;
   creatTime: string;
 }
-import type { ColumnsType } from 'antd/es/table';
+import type { ProColumns } from '@ant-design/pro-components';
 
 export const data: DataType[] = [
   {
@@ -51,10 +51,11 @@ export const data: DataType[] = [
     creatTime: '2022-12-12',
   },
 ];
-export const columns: ColumnsType<any> = [
+export const columns: ProColumns<any>[] = [
   {
     title: '序号',
     fixed: 'left',
+    dataIndex: 'index',
     width: 50,
     render: (_key: any, _record: any, index: number) => {
       return index + 1;

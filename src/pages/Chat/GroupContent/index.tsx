@@ -1,21 +1,19 @@
 /* eslint-disable no-unused-vars */
-import { Button, message, Popover } from 'antd';
+import { Button, Popover } from 'antd';
 import moment from 'moment';
 import React, { useEffect, useRef, useState } from 'react';
-
+import { CopyToClipboard } from 'react-copy-to-clipboard';
 import HeadImg from '@/components/headImg/headImg';
 import { chat } from '@/module/chat/orgchat';
 import useChatStore from '@/store/chat';
-
-import contentStyle from './groupContent.module.less';
+import contentStyle from './index.module.less';
 
 interface Iprops {
-  goPageEnds: Function;
   handleReWrites: Function;
 }
 
 const GroupContent = (props: Iprops) => {
-  const { goPageEnds, handleReWrites } = props;
+  const { handleReWrites } = props;
   const ChatStore: any = useChatStore();
   const messageNodeRef = useRef<HTMLDivElement>(null); // dom节点
   const [selectId, setSelectId] = useState<string>('');
@@ -92,8 +90,6 @@ const GroupContent = (props: Iprops) => {
     // });
   };
 
-  goPageEnds();
-
   return (
     <div className={contentStyle.group_content_wrap}>
       {ChatStore?.curMsgs.map((item: any, index: any) => {
@@ -141,14 +137,21 @@ const GroupContent = (props: Iprops) => {
                   }}
                   content={
                     canDelete(item) ? (
-                      <Button
-                        type="text"
-                        danger
-                        onClick={() => {
-                          deleteMsg(item);
-                        }}>
-                        删除
-                      </Button>
+                      <>
+                        <CopyToClipboard text={item.msgBody}>
+                          <Button type="text" style={{ color: '#3e5ed8' }}>
+                            复制
+                          </Button>
+                        </CopyToClipboard>
+                        <Button
+                          type="text"
+                          danger
+                          onClick={() => {
+                            deleteMsg(item);
+                          }}>
+                          删除
+                        </Button>
+                      </>
                     ) : (
                       ''
                     )
@@ -196,22 +199,14 @@ const GroupContent = (props: Iprops) => {
                     }}
                     content={
                       <>
-                        {/* <Button
-                          type="text"
-                          style={{ color: '#3e5ed8' }}
-                          onClick={() => {
-                            recallMsg(item);
-                          }}>
-                          复制
-                        </Button>
-                        <Button
-                          type="text"
-                          style={{ color: '#3e5ed8' }}
-                          onClick={() => {
-                            recallMsg(item);
-                          }}>
+                        <CopyToClipboard text={item.msgBody}>
+                          <Button type="text" style={{ color: '#3e5ed8' }}>
+                            复制
+                          </Button>
+                        </CopyToClipboard>
+                        <Button type="text" style={{ color: '#3e5ed8' }}>
                           转发
-                        </Button> */}
+                        </Button>
                         <Button
                           type="text"
                           style={{ color: '#3e5ed8' }}

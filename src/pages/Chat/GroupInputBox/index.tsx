@@ -1,10 +1,9 @@
 import { AudioOutlined, SmileOutlined } from '@ant-design/icons';
 import { Button, message, Popover } from 'antd';
 import React, { useEffect, useState } from 'react';
-
 import useChatStore from '@/store/chat';
+import inputboxStyle from './index.module.less';
 
-import inputboxStyle from './groupinputbox.module.less';
 interface Iprops {
   writeContent: any;
 }
@@ -28,6 +27,8 @@ const Groupinputbox = (props: Iprops) => {
         msgType: 'text',
         msgBody: massage,
       });
+      ChatStore.addSessionList();
+      ChatStore._cacheSession();
     }
     document.getElementById('insterHtml').innerHTML = '';
   };
