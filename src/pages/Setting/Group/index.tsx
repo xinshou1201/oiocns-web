@@ -1,18 +1,12 @@
+/* eslint-disable no-unused-vars */
 import React, { useState } from 'react';
 import { Card, Button, Descriptions, Space } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import cls from './index.module.less';
-import AppShowComp from '@/bizcomponents/AppTablePage';
-import API from '@/services';
-import MarketService from '@/module/appstore/market';
-
-const service = new MarketService({
-  nameSpace: 'publicStore',
-  searchApi: API.appstore.merchandise,
-  createApi: API.appstore.create,
-  deleteApi: API.appstore.marketDel,
-  updateApi: API.appstore.updateMarket,
-});
+import CardOrTable from '@/components/CardOrTableComp';
+import { MarketTypes } from 'typings/marketType';
+import { columns } from './config';
+import { dataSource } from './datamock';
 
 /**
  * 集团设置
@@ -20,6 +14,34 @@ const service = new MarketService({
  */
 const SettingGroup: React.FC = () => {
   const [statusKey, setStatusKey] = useState('merchandise');
+  // 操作内容渲染函数
+  const renderOperation = (
+    item: MarketTypes.ProductType,
+  ): MarketTypes.OperationType[] => {
+    return [
+      {
+        key: 'publish',
+        label: '调整节点',
+        onClick: () => {
+          console.log('按钮事件', 'publish', item);
+        },
+      },
+      {
+        key: 'share',
+        label: '岗位集团',
+        onClick: () => {
+          console.log('按钮事件', 'share', item);
+        },
+      },
+      {
+        key: 'detail',
+        label: '移出集团',
+        onClick: () => {
+          console.log('按钮事件', 'detail', item);
+        },
+      },
+    ];
+  };
   // 标题tabs页
   const TitleItems = [
     {
@@ -84,7 +106,13 @@ const SettingGroup: React.FC = () => {
             }}
           />
           <div className={cls['page-content-table']}>
-            <AppShowComp service={service} searchParams={{ status: statusKey }} />
+            <CardOrTable
+              dataSource={dataSource as any}
+              rowKey={'key'}
+              operation={renderOperation}
+              columns={columns as any}
+              height={210}
+            />
           </div>
         </div>
       </Card>
