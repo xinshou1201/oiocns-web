@@ -7,6 +7,8 @@ import CardOrTable from '@/components/CardOrTableComp';
 import { MarketTypes } from 'typings/marketType';
 import { columns } from './config';
 import { dataSource } from './datamock';
+import EditCustomModal from './components/EditCustomModal';
+import AddPersonModal from './components/AddPersonModal';
 
 /**
  * 部门设置
@@ -14,6 +16,8 @@ import { dataSource } from './datamock';
  */
 const SettingDept: React.FC = () => {
   const parentRef = useRef<any>(null); //父级容器Dom
+  const [isopen, setIsOpen] = useState<boolean>(false); // 编辑
+  const [isAddOpen, setIsAddOpen] = useState<boolean>(false); // 添加成员
   const [statusKey, setStatusKey] = useState('merchandise');
   // 操作内容渲染函数
   const renderOperation = (
@@ -64,6 +68,14 @@ const SettingDept: React.FC = () => {
       },
     ];
   };
+  const onOk = () => {
+    setIsOpen(false);
+    setIsAddOpen(false);
+  };
+  const handleOk = () => {
+    setIsOpen(false);
+    setIsAddOpen(false);
+  };
   // 标题tabs页
   const TitleItems = [
     {
@@ -97,7 +109,13 @@ const SettingDept: React.FC = () => {
         <Title level={4}>部门信息</Title>
       </div>
       <div>
-        <Button type="link">编辑</Button>
+        <Button
+          type="link"
+          onClick={() => {
+            setIsOpen(true);
+          }}>
+          编辑
+        </Button>
         <Button type="link">权限管理</Button>
       </div>
     </div>
@@ -127,7 +145,13 @@ const SettingDept: React.FC = () => {
         <Button type="link" onClick={() => {}}>
           岗位设置
         </Button>
-        <Button type="link">添加成员</Button>
+        <Button
+          type="link"
+          onClick={() => {
+            setIsAddOpen(true);
+          }}>
+          添加成员
+        </Button>
         <Button type="link">查看申请</Button>
       </Space>
     );
@@ -164,6 +188,21 @@ const SettingDept: React.FC = () => {
     <div className={cls[`dept-content-box`]}>
       {content}
       {deptCount}
+      {/* 编辑单位 */}
+      <EditCustomModal
+        open={isopen}
+        title={'请编辑单位信息'}
+        onOk={onOk}
+        handleOk={handleOk}
+      />
+      {/* 添加成员 */}
+      <AddPersonModal
+        title={'搜索人员'}
+        open={isAddOpen}
+        onOk={onOk}
+        handleOk={handleOk}
+        columns={columns}
+      />
     </div>
   );
 };

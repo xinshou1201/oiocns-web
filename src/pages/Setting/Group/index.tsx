@@ -7,6 +7,8 @@ import CardOrTable from '@/components/CardOrTableComp';
 import { MarketTypes } from 'typings/marketType';
 import { columns } from './config';
 import { dataSource } from './datamock';
+import EditCustomModal from '../Dept/components/EditCustomModal';
+import AddPersonModal from '../Dept/components/AddPersonModal';
 
 /**
  * 集团设置
@@ -14,7 +16,17 @@ import { dataSource } from './datamock';
  */
 const SettingGroup: React.FC = () => {
   const parentRef = useRef<any>(null); //父级容器Dom
+  const [isopen, setIsOpen] = useState<boolean>(false); // 编辑
+  const [isAddOpen, setIsAddOpen] = useState<boolean>(false); // 添加单位
   const [statusKey, setStatusKey] = useState('merchandise');
+  const onOk = () => {
+    setIsOpen(false);
+    setIsAddOpen(false);
+  };
+  const handleOk = () => {
+    setIsOpen(false);
+    setIsAddOpen(false);
+  };
   // 操作内容渲染函数
   const renderOperation = (
     item: MarketTypes.ProductType,
@@ -57,7 +69,13 @@ const SettingGroup: React.FC = () => {
         <Title level={4}>节点信息</Title>
       </div>
       <div>
-        <Button type="link">编辑</Button>
+        <Button
+          type="link"
+          onClick={() => {
+            setIsOpen(true);
+          }}>
+          编辑
+        </Button>
         <Button type="link">删除</Button>
       </div>
     </div>
@@ -87,7 +105,13 @@ const SettingGroup: React.FC = () => {
         <Button type="link" onClick={() => {}}>
           集团岗位
         </Button>
-        <Button type="link">添加单位</Button>
+        <Button
+          type="link"
+          onClick={() => {
+            setIsAddOpen(true);
+          }}>
+          添加单位
+        </Button>
         <Button type="link">查看申请</Button>
       </Space>
     );
@@ -123,6 +147,21 @@ const SettingGroup: React.FC = () => {
     <div className={cls[`group-content-box`]}>
       {content}
       {deptCount}
+      {/* 编辑集团 */}
+      <EditCustomModal
+        open={isopen}
+        title={'请编辑集团信息'}
+        onOk={onOk}
+        handleOk={handleOk}
+      />
+      {/* 添加单位 */}
+      <AddPersonModal
+        title={'搜索单位'}
+        open={isAddOpen}
+        onOk={onOk}
+        handleOk={handleOk}
+        columns={columns}
+      />
     </div>
   );
 };
