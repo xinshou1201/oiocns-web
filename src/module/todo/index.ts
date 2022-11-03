@@ -22,9 +22,9 @@ export type tabStatus = '1' | '2';
  */
 interface TodoServiceProps {
   statusList: statusItem[];
-  currentActiveStatus: tabStatus; // 当前选中的状态
-  currentModel: pageModel; // 当前模块
   apiPaths: Record<pageModel, { [key: string]: Function }> /**各业务请求api地址*/;
+  currentModel: pageModel; // 当前模块
+  currentActiveStatus: tabStatus; // 当前选中的状态
 }
 
 class TodoService implements TodoServiceProps {
@@ -60,7 +60,7 @@ class TodoService implements TodoServiceProps {
     },
     app: {
       approveList: API.appstore.searchManagerPublishApply, // 查询产品上架申请
-      applyList: API.appstore.searchPublishApply, // 加入市场申请列表
+      applyList: API.appstore.searchPublishApply, // 加入产品上架申请列表
       // retract: API.appstore.cancelJoin, // 没有取消应用上架
       approve: API.appstore.approvalPublish, // 审批加入市场申请 "id": 0, "status": 0
     },
@@ -69,6 +69,20 @@ class TodoService implements TodoServiceProps {
     { tab: '待办', key: '1' },
     { tab: '我的发起', key: '2' },
   ];
+  statusMap = {
+    1: {
+      color: 'blue',
+      text: '待处理',
+    },
+    100: {
+      color: 'green',
+      text: '已处理',
+    },
+    200: {
+      color: 'red',
+      text: '已拒绝',
+    },
+  };
   /**当前页面模块名称 */
   currentModel: pageModel;
   /** 当前数据状态*/
@@ -104,6 +118,7 @@ class TodoService implements TodoServiceProps {
   /*获取列表*/
   public async getList<T extends DataType, U extends Page>(params: U) {
     // 根据当前查询状态判断选择什么接口
+    console.log(this.currentModel);
     const fn: Function =
       this.apiPaths[this.currentModel][
         this.currentActiveStatus == '1' ? 'approveList' : 'applyList'
