@@ -15,7 +15,7 @@ const service = new MarketService({
   updateApi: API.product.update,
 });
 
-import StoreRecent from '../Recent';
+import StoreRecent from '../components/Recent';
 
 const StoreApp: React.FC = () => {
   const history = useHistory();
