@@ -10,7 +10,7 @@ import SettingMenu from './Menu';
 const Setting: React.FC<{ route: IRouteConfig }> = ({ route }) => {
   const sider = <SettingMenu></SettingMenu>;
   const contentTopLeft = <BreadCrumb></BreadCrumb>;
-  const content = <div>{renderRoutes(route.routes)}</div>;
+  const content = <>{renderRoutes(route.routes)}</>;
   return (
     <ContentTemplate sider={sider} contentTopLeft={contentTopLeft} content={content} />
   );

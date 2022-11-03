@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { Card, Button, Descriptions, Space } from 'antd';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Title from 'antd/lib/typography/Title';
 import cls from './index.module.less';
 import CardOrTable from '@/components/CardOrTableComp';
@@ -13,6 +13,7 @@ import { dataSource } from './datamock';
  * @returns
  */
 const SettingDept: React.FC = () => {
+  const parentRef = useRef<any>(null); //父级容器Dom
   const [statusKey, setStatusKey] = useState('merchandise');
   // 操作内容渲染函数
   const renderOperation = (
@@ -146,13 +147,13 @@ const SettingDept: React.FC = () => {
               console.log('切换事件', key);
             }}
           />
-          <div className={cls['page-content-table']}>
+          <div className={cls['page-content-table']} ref={parentRef}>
             <CardOrTable
               dataSource={dataSource as any}
               rowKey={''}
               operation={renderOperation}
               columns={columns as any}
-              height={180}
+              parentRef={parentRef}
             />
           </div>
         </div>

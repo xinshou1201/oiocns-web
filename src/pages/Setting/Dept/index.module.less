@@ -1,5 +1,6 @@
 .dept-content-box {
   background-color: #eff4f9;
+  height: 100%;
 }
 .company-dept-title {
   display: flex;
@@ -34,9 +35,14 @@
   }
 }
 .dept-wrap-pages {
+  height: calc(100% - 200px);
   :global {
+    .ogo-card {
+      height: 100%;
+    }
     .ogo-card-body {
       padding: 0;
+      height: calc(100% - 60px);
     }
   }
 }
@@ -67,7 +73,7 @@
 
   .page-content-table {
     flex: 1;
-    height: calc(100% - 380px);
-    padding: 0 22px;
+    height: calc(100% - 90px);
+    padding: 0 24px;
   }
 }
