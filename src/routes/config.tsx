@@ -168,12 +168,12 @@ const StoreRouter: IRouteConfig[] = [
         icon: <FundOutlined />,
         component: React.lazy(() => import('@/pages/Store/Data')),
       },
-      {
-        path: '/store/src',
-        title: '资源',
-        icon: <DatabaseOutlined />,
-        component: React.lazy(() => import('@/pages/Store/Src')),
-      },
+      // {
+      //   path: '/store/src',
+      //   title: '资源',
+      //   icon: <DatabaseOutlined />,
+      //   component: React.lazy(() => import('@/pages/Store/Src')),
+      // },
       {
         path: '/store/app_publish',
         title: '应用上架列表',
