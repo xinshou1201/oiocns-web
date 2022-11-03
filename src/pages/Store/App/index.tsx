@@ -1,4 +1,4 @@
-import { Card } from 'antd';
+import { Card, Form, Modal } from 'antd';
 import React, { useState } from 'react';
 import API from '@/services';
 import AppShowComp from '@/bizcomponents/AppTablePage';
@@ -6,6 +6,7 @@ import MarketService from '@/module/appstore/market';
 import cls from './index.module.less';
 import { useHistory } from 'react-router-dom';
 import { BtnGroupDiv } from '@/components/CommonComp';
+import PutawayComp from '../components/PutawayModal';
 
 const service = new MarketService({
   nameSpace: 'myApp',
@@ -20,6 +21,9 @@ import StoreRecent from '../components/Recent';
 const StoreApp: React.FC = () => {
   const history = useHistory();
   const [statusKey, setStatusKey] = useState('merchandise');
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [putawayForm] = Form.useForm();
+
   const items = [
     {
       tab: `全部`,
@@ -55,11 +59,18 @@ const StoreApp: React.FC = () => {
         break;
       case '暂存':
         console.log('点击事件', '暂存');
+        setShowModal(true);
         break;
       default:
         console.log('点击事件未注册', item.text);
         break;
     }
+  };
+  const handlePutawaySumbit = () => {
+    const searchData = putawayForm.getFieldsValue();
+    console.log('searchData', searchData);
+
+    // setShowModal(false);
   };
 
   return (
@@ -81,6 +92,22 @@ const StoreApp: React.FC = () => {
           columns={service.getMyappColumns()}
         />
       </div>
+      <Modal
+        title="弹出层"
+        width={670}
+        destroyOnClose={true}
+        open={showModal}
+        bodyStyle={{ padding: 0 }}
+        okText="确定"
+        onOk={() => {
+          handlePutawaySumbit();
+        }}
+        onCancel={() => {
+          console.log(`取消按钮`);
+          setShowModal(false);
+        }}>
+        <PutawayComp initialValues={{}} form={putawayForm} />
+      </Modal>
     </div>
   );
 };
