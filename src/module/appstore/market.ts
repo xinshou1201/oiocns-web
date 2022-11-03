@@ -18,6 +18,7 @@ export default class MarketService extends CommonClass {
   public PUBLIC_STORE: MarketTypes.MarketType = {} as MarketTypes.MarketType; //共享仓库信息
   public ShopAppColumns: ProColumns<any>[] = []; //商店应用 表格头部展示数据
   public MyAppColumns: ProColumns<any>[] = []; //我的应用 表格头部展示数据
+  public PublishColumns: ProColumns<any>[] = []; //应用上架 表格头部展示数据
 
   constructor(data: CommonClassData) {
     super(data);
@@ -88,7 +89,7 @@ export default class MarketService extends CommonClass {
     return data;
   }
   /* 获取我的应用列表 表头 */
-  public getMyappColumns() {
+  public getMyappColumns(): ProColumns<any>[] {
     if (this.MyAppColumns.length > 1) {
       return this.MyAppColumns;
     }
@@ -135,4 +136,79 @@ export default class MarketService extends CommonClass {
     this.MyAppColumns = [...data];
     return data;
   }
+
+  /* 获取我的应用列表 表头 */
+  public getPublishColumns(): ProColumns<any>[] {
+    if (this.PublishColumns.length > 1) {
+      return this.PublishColumns;
+    }
+    const data: any = [
+      {
+        title: '序号',
+        dataIndex: 'index',
+        width: 50,
+        render: (_key: any, _record: any, index: number) => {
+          return index + 1;
+        },
+      },
+      {
+        dataIndex: 'id',
+        ellipsis: true,
+        title: '应用编号',
+      },
+      {
+        dataIndex: 'caption',
+        title: '应用名称',
+      },
+      {
+        dataIndex: 'marketId',
+        ellipsis: true,
+        title: '应用来源',
+      },
+      {
+        dataIndex: 'productAuthority',
+        title: '应用权限',
+      },
+      {
+        dataIndex: 'productTypeName',
+        title: '应用类型',
+      },
+      {
+        dataIndex: 'marketName',
+        ellipsis: true,
+        title: '市场名称',
+      },
+      {
+        dataIndex: 'marketCode',
+        ellipsis: true,
+        title: '市场编号',
+      },
+      {
+        dataIndex: 'sellAuth',
+        title: '售卖权属',
+      },
+      {
+        dataIndex: 'price',
+        title: '价格',
+      },
+      {
+        dataIndex: 'days',
+        title: '使用期限',
+      },
+      {
+        dataIndex: 'createTime',
+        title: '创建时间',
+        width: 200,
+      },
+      {
+        title: '备注',
+        ellipsis: true,
+        width: 200,
+        dataIndex: 'information',
+      },
+    ];
+    this.PublishColumns = [...data];
+    return data;
+  }
 }
+/* , */

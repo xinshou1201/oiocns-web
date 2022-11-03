@@ -187,6 +187,12 @@ const StoreRouter: IRouteConfig[] = [
         icon: <DatabaseOutlined />,
         component: React.lazy(() => import('@/pages/Store/Src')),
       },
+      {
+        path: '/store/app_publish',
+        title: '应用上架列表',
+        icon: '',
+        component: React.lazy(() => import('@/pages/Store/components/PublishList')),
+      },
     ],
   },
 ];

@@ -29,10 +29,10 @@ interface CommonClassType<P> {
 
 interface CommonClassData {
   nameSpace: string; //命名空间--用于区分功能
-  searchApi: Function; // 查 数据
-  createApi: Function; // 增 数据
-  deleteApi: Function; // 删 数据
-  updateApi: Function; // 改 数据
+  searchApi?: Function; // 查 数据
+  createApi?: Function; // 增 数据
+  deleteApi?: Function; // 删 数据
+  updateApi?: Function; // 改 数据
   joinTargetApi?: Function; // 向...加入
   quitTargetApi?: Function; // 从...退出
 }
