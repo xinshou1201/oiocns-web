@@ -1,4 +1,4 @@
-import { Col, Layout, Row } from 'antd';
+import { Col, Layout, MenuProps, Row } from 'antd';
 import React from 'react';
 
 import { IRouteConfig } from '@/routes/config';
@@ -6,6 +6,7 @@ import { IRouteConfig } from '@/routes/config';
 import BreadCrumb from '../BreadCrumb';
 import ContentMenu from '../ContentMenu';
 import cls from './index.module.less';
+import { MenuClickEventHandler } from 'rc-menu/lib/interface';
 
 const { Content } = Layout;
 
@@ -22,6 +23,8 @@ type ContentTemplateType = {
   hideBreadCrumb?: boolean; // 是否隐藏面包屑
   children?: React.ReactNode; // 子组件
   route?: IRouteConfig; // 路由
+  siderMenuData?: MenuProps[`items`];
+  menuClick?: MenuClickEventHandler;
 };
 
 /**
@@ -31,10 +34,13 @@ type ContentTemplateType = {
  * @returns
  */
 const ContentTemplate: React.FC<ContentTemplateType> = (props) => {
+  console.log(props);
   const {
     className,
     content,
     sider,
+    siderMenuData,
+    menuClick = () => {},
     // contentTop,
     contentTopLeft,
     contentTopRight,
@@ -44,7 +50,11 @@ const ContentTemplate: React.FC<ContentTemplateType> = (props) => {
   // TODO 布局样式、侧边展开和收缩 侧边栏顶部([icon/名称] 需传入展示)
   return (
     <Layout className={`${className}`} style={{ height: '100%' }}>
-      {sider && <ContentMenu>{sider}</ContentMenu>}
+      {sider && (
+        <ContentMenu data={siderMenuData} menuClick={menuClick}>
+          {sider}
+        </ContentMenu>
+      )}
 
       <Layout className={cls.container}>
         {(!hideBreadCrumb || contentTopRight) && (
