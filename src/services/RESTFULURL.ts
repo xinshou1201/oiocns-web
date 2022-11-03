@@ -254,14 +254,14 @@ export default {
     searchAll: appstore + '/search/all',
     applyJoin: appstore + '/apply/join',
     staging: appstore + '/staging',
-    searchJoinApplyManager: appstore + '/search/join/apply/manager',
-    searchJoinApply: appstore + '/search/join/apply',
-    approvalJoin: appstore + '/approval/join',
-    cancelJoin: appstore + '/cancel/join',
-    searchManagerPublishApply: appstore + '/search/manager/publish/apply',
-    approvalPublish: appstore + '/approval/publish',
+    searchJoinApplyManager: appstore + '/search/join/apply/manager', //管理员：加入市场申请
+    searchJoinApply: appstore + '/search/join/apply', //发起者:查询加入市场申请
+    approvalJoin: appstore + '/approval/join', //审批加入市场申请
+    cancelJoin: appstore + '/cancel/join', // 取消申请加入市场
+    searchManagerPublishApply: appstore + '/search/manager/publish/apply', // 管理员:查询产品上架申请
+    approvalPublish: appstore + '/approval/publish', // 审批商品上架申请
     pullTarget: appstore + '/pull/target',
-    searchPublishApply: appstore + '/search/publish/apply',
+    searchPublishApply: appstore + '/search/publish/apply', // 发起者:查询产品上架申请
   },
   object: {
     get: (objName: string) => object + '/get/' + objName,
@@ -277,4 +277,7 @@ export default {
     aggregate: (collName: string) => collection + '/aggregate/' + collName,
   },
   //others
+  mock: {
+    test: '/api/test',
+  },
 };

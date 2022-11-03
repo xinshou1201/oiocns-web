@@ -3,18 +3,25 @@ import cls from './index.module.less';
 
 import CardOrTable from '@/components/CardOrTableComp';
 import AppCard from '@/components/AppCardOfBuy';
-import { columns } from '@/components/CardOrTableComp/config';
 import { MarketServiceType } from '@/module/appstore/market';
 import { IdPage } from '@/module/typings';
 import { MarketTypes } from 'typings/marketType';
 import { sleep } from '@/store/sleep';
+import type { ProColumns } from '@ant-design/pro-components';
+
 interface AppShowCompType {
   className: string;
   title: string;
   service: MarketServiceType;
+  columns: ProColumns<any>[];
 }
 
-const AppShowComp: React.FC<AppShowCompType> = ({ service, className, title }) => {
+const AppShowComp: React.FC<AppShowCompType> = ({
+  service,
+  className,
+  title,
+  columns,
+}) => {
   const [list, setList] = useState<MarketTypes.ProductType[]>([]);
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
@@ -140,7 +147,7 @@ const AppShowComp: React.FC<AppShowCompType> = ({ service, className, title }) =
         parentRef={parentRef}
         renderCardContent={renderCardFun}
         operation={renderOperation}
-        columns={columns as any}
+        columns={columns}
         page={page}
         onChange={handlePageChange}
         rowKey={'id'}

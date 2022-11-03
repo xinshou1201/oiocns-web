@@ -1,10 +1,10 @@
 // 基本前缀
-export const BASE_URL = {
-  development: '/api',
-  production: '/api',
-  // beta: '/beta',
-  // release: '/release',
-};
+// export const BASE_URL = {
+//   development: '/api',
+//   production: '/api',
+//   // beta: '/beta',
+//   // release: '/release',
+// };
 // 开发端口
 export const PORT = 8088;
 // 基本路径
@@ -14,7 +14,7 @@ export const VITE_BASE_PATH = '/';
 // 应用名称
 export const VITE_APP_TITLE = '奥集能';
 // 开启 mock
-export const VITE_APP_MOCK: boolean = false;
+export const VITE_APP_MOCK: boolean = true;
 // 开启包依赖分析 可视化
 export const VITE_APP_ANALYZE: boolean = false;
 // 开启Gzip压缩

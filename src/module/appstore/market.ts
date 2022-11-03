@@ -2,7 +2,7 @@
 import { MarketTypes } from 'typings/marketType';
 // import { IdPage, Page } from '../typings';
 import API from '@/services';
-
+import type { ProColumns } from '@ant-design/pro-components';
 import CommonClass from '../commonClass/BaseServiceClass';
 // public 是默认可见性，所以，'可以直接省略'
 // protected: 表示'受保护的',仅对其声明所在类和子类中 (非实例对象) 可见
@@ -13,8 +13,12 @@ import CommonClass from '../commonClass/BaseServiceClass';
 export interface MarketServiceType extends CommonClassType<MarketTypes.ProductType> {
   PUBLIC_STORE: MarketTypes.MarketType; //共享仓库信息,用于获取共享仓库应用列表
 }
+
 export default class MarketService extends CommonClass {
   public PUBLIC_STORE: MarketTypes.MarketType = {} as MarketTypes.MarketType; //共享仓库信息
+  public ShopAppColumns: ProColumns<any>[] = []; //商店应用 表格头部展示数据
+  public MyAppColumns: ProColumns<any>[] = []; //我的应用 表格头部展示数据
+  public PublishColumns: ProColumns<any>[] = []; //应用上架 表格头部展示数据
 
   constructor(data: CommonClassData) {
     super(data);
@@ -35,4 +39,176 @@ export default class MarketService extends CommonClass {
       this.PUBLIC_STORE = data;
     }
   }
+  /* 获取商店列表 表头 */
+  public getShopappColumns() {
+    if (this.ShopAppColumns.length > 1) {
+      return this.ShopAppColumns;
+    }
+    const data: any = [
+      {
+        title: '序号',
+        dataIndex: 'index',
+        width: 50,
+        render: (_key: any, _record: any, index: number) => {
+          return index + 1;
+        },
+      },
+      {
+        title: '应用名称',
+        dataIndex: 'caption',
+      },
+      {
+        title: '来源',
+        dataIndex: 'marketId',
+      },
+      {
+        title: '应用类型',
+        dataIndex: 'typeName',
+      },
+      {
+        title: '售卖权限',
+        dataIndex: 'sellAuth',
+      },
+      {
+        title: '价格',
+        dataIndex: 'price',
+      },
+
+      {
+        title: '创建时间',
+        dataIndex: 'createTime',
+      },
+
+      {
+        title: '备注',
+        ellipsis: true,
+        dataIndex: 'remark',
+      },
+    ];
+    this.ShopAppColumns = [...data];
+    return data;
+  }
+  /* 获取我的应用列表 表头 */
+  public getMyappColumns(): ProColumns<any>[] {
+    if (this.MyAppColumns.length > 1) {
+      return this.MyAppColumns;
+    }
+    const data: any = [
+      {
+        title: '序号',
+        dataIndex: 'index',
+        width: 50,
+        render: (_key: any, _record: any, index: number) => {
+          return index + 1;
+        },
+      },
+      {
+        title: '应用图标',
+        dataIndex: 'icon',
+      },
+      {
+        title: '应用名称',
+        dataIndex: 'name',
+      },
+      {
+        title: '版本号',
+        dataIndex: 'version',
+      },
+      {
+        title: '应用类型',
+        dataIndex: 'typeName',
+      },
+      {
+        title: '应用来源',
+        dataIndex: 'belongId',
+      },
+      {
+        title: '创建时间',
+        dataIndex: 'createTime',
+      },
+
+      {
+        title: '备注',
+        ellipsis: true,
+        dataIndex: 'remark',
+      },
+    ];
+    this.MyAppColumns = [...data];
+    return data;
+  }
+
+  /* 获取我的应用列表 表头 */
+  public getPublishColumns(): ProColumns<any>[] {
+    if (this.PublishColumns.length > 1) {
+      return this.PublishColumns;
+    }
+    const data: any = [
+      {
+        title: '序号',
+        dataIndex: 'index',
+        width: 50,
+        render: (_key: any, _record: any, index: number) => {
+          return index + 1;
+        },
+      },
+      {
+        dataIndex: 'id',
+        ellipsis: true,
+        title: '应用编号',
+      },
+      {
+        dataIndex: 'caption',
+        title: '应用名称',
+      },
+      {
+        dataIndex: 'marketId',
+        ellipsis: true,
+        title: '应用来源',
+      },
+      {
+        dataIndex: 'productAuthority',
+        title: '应用权限',
+      },
+      {
+        dataIndex: 'productTypeName',
+        title: '应用类型',
+      },
+      {
+        dataIndex: 'marketName',
+        ellipsis: true,
+        title: '市场名称',
+      },
+      {
+        dataIndex: 'marketCode',
+        ellipsis: true,
+        title: '市场编号',
+      },
+      {
+        dataIndex: 'sellAuth',
+        title: '售卖权属',
+      },
+      {
+        dataIndex: 'price',
+        title: '价格',
+      },
+      {
+        dataIndex: 'days',
+        title: '使用期限',
+      },
+      {
+        dataIndex: 'createTime',
+        title: '创建时间',
+        width: 200,
+      },
+      {
+        title: '备注',
+        ellipsis: true,
+        width: 200,
+        dataIndex: 'information',
+      },
+    ];
+    this.PublishColumns = [...data];
+    return data;
+  }
 }
+/* , */

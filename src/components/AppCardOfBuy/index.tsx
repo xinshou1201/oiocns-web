@@ -6,6 +6,8 @@ import { EllipsisOutlined } from '@ant-design/icons';
 import cls from './index.module.less';
 import { MarketTypes } from 'typings/marketType';
 
+import appImg from '@/assets/img/appLogo.png';
+
 interface BuyAppType {
   className?: string;
   showBtn?: boolean; //是否展示按钮
@@ -93,11 +95,7 @@ const Index: React.FC<BuyAppType> = (props) => {
   function renderTitle() {
     return (
       <div className={cls.cardTitle}>
-        <img
-          style={{ width: 60, height: 60 }}
-          src="https://gw.alipayobjects.com/zos/bmw-prod/f601048d-61c2-44d0-bf57-ca1afe7fd92e.svg"
-          alt=""
-        />
+        <img style={{ width: 60, height: 60 }} src={appImg} alt="" />
         <span className={cls.version}>V 0.0.1</span>
       </div>
     );
