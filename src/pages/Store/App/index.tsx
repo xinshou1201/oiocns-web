@@ -4,7 +4,6 @@ import API from '@/services';
 import AppShowComp from '@/bizcomponents/AppTablePage';
 import MarketService from '@/module/appstore/market';
 import cls from './index.module.less';
-import { columns } from '@/components/CardOrTableComp/config';
 import { useHistory } from 'react-router-dom';
 import { BtnGroupDiv } from '@/components/CommonComp';
 
@@ -44,20 +43,9 @@ const StoreApp: React.FC = () => {
     },
   ];
 
-  // const BtnsList = [
-  //   {
-  //     text: '购买',
-  //   },
-  //   {
-  //     text: '创建',
-  //   },
-  //   {
-  //     text: '暂存',
-  //   },
-  // ];
   const BtnsList = ['购买', '创建', '暂存'];
   const handleBtnsClick = (item: { text: string }) => {
-    console.log('按钮点击', item);
+    // console.log('按钮点击', item);
     switch (item.text) {
       case '购买':
         history.push('/market/app');
@@ -69,7 +57,7 @@ const StoreApp: React.FC = () => {
         console.log('点击事件', '暂存');
         break;
       default:
-        console.log('点击事件', item.text);
+        console.log('点击事件未注册', item.text);
         break;
     }
   };
@@ -90,7 +78,7 @@ const StoreApp: React.FC = () => {
         <AppShowComp
           service={service}
           searchParams={{ status: statusKey }}
-          columns={columns}
+          columns={service.getMyappColumns()}
         />
       </div>
     </div>
