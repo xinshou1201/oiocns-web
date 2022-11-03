@@ -124,7 +124,22 @@ const TodoRouter: IRouteConfig[] = [
         title: '商店审核',
         icon: <ShopOutlined />,
         component: React.lazy(() => import('@/pages/Todo/Store')),
+        routes: [
+          {
+            path: '/todo/store/app',
+            title: '应用上架',
+            icon: <ShopOutlined />,
+            component: React.lazy(() => import('@/pages/Todo/Store')),
+          },
+          {
+            path: '/todo/store/market',
+            title: '加入市场',
+            icon: <ShopOutlined />,
+            component: React.lazy(() => import('@/pages/Todo/Store')),
+          },
+        ],
       },
+
       {
         path: '/todo/order',
         title: '订单审核',

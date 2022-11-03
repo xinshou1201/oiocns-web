@@ -86,11 +86,11 @@ export function toPageData<T>(res: PageResponse<T>): PageData<T> {
     return {
       success: true,
       data: res.data?.result || [],
-      total: res.data.total || 0,
+      total: res.data?.total || 0,
       msg: res.msg,
     };
   } else {
-    console.error(res.msg);
+    console.error(res?.msg);
     return { success: false, data: [], total: 0, msg: res.msg };
   }
 }
