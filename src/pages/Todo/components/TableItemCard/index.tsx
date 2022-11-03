@@ -1,22 +1,26 @@
-import { Card, Avatar, Space, Tag, Typography } from 'antd';
+import { Card, Avatar, Space, Typography, Dropdown, MenuProps, Menu } from 'antd';
 import React from 'react';
 import { ApprovalType } from '@/module/todo/typings';
 import styles from './index.module.less';
 import moment from 'moment';
 
 const { Meta } = Card;
+interface TableItemCardProps<T> {
+  data: T[];
+  targetOrTeam: 'target' | 'team' | 'market' | 'product';
+  // eslint-disable-next-line no-unused-vars
+  statusType: (item: T) => React.ReactNode | string;
+  // eslint-disable-next-line no-unused-vars
+  operation?: (item: T) => MenuProps['items'];
+}
 /**
  *
  * @param data <T extends ApprovalType> 需要渲染的数据列表
  * @params statusType 事项 卡片tag显示的类型
  * @returns JSX.Element
  */
-const TableItemCard = <T extends ApprovalType>(props: {
-  data: T[];
-  targetOrTeam: 'target' | 'team';
-  statusType: string;
-}) => {
-  const { data, statusType, targetOrTeam } = props;
+const TableItemCard = <T extends ApprovalType>(props: TableItemCardProps<T>) => {
+  const { data, statusType, targetOrTeam, operation } = props;
   return (
     <>
       {data.map((item: T) => {
@@ -29,14 +33,25 @@ const TableItemCard = <T extends ApprovalType>(props: {
                 </Avatar>
               }
               title={
-                <Space>
-                  <span className={styles['card-title']}>{item[targetOrTeam].name}</span>
-                  <Tag color="#5BD8A6">{statusType}</Tag>
-                </Space>
+                <div>
+                  <Space>
+                    <span className={styles['card-title']}>
+                      {item[targetOrTeam].name}
+                    </span>
+                    {statusType && statusType(item)}
+                  </Space>
+                  {operation && (
+                    <Dropdown.Button
+                      type="text"
+                      overlay={<Menu items={operation(item)}></Menu>}
+                      className={styles['drop-down']}
+                    />
+                  )}
+                </div>
               }
               description={
                 <Typography.Text type="secondary" className={styles['card-description']}>
-                  {moment(item.createTime).format('YYYY/MM/DD HH:mm:ss')}
+                  申请时间：{moment(item.createTime).format('YYYY/MM/DD HH:mm:ss')}
                 </Typography.Text>
               }
             />

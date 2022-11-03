@@ -30,14 +30,15 @@ const TodoMenu: React.FC<RouteComponentProps> = (props) => {
     { label: '单位审核', key: 'org', icon: <AuditOutlined /> },
     {
       label: '商店审核',
-      key: 'store',
+      key: 'appAndStore',
       icon: <ShopOutlined />,
       children: [
         {
           label: '应用上架',
-          key: 'store/app',
+          key: 'app',
+          icon: <ShopOutlined />,
         },
-        { label: '加入市场', key: 'store/market' },
+        { label: '加入市场', key: 'store', icon: <ShopOutlined /> },
       ],
     },
     { label: '订单审核', key: 'order', icon: <UnorderedListOutlined /> },
@@ -56,7 +57,7 @@ const TodoMenu: React.FC<RouteComponentProps> = (props) => {
   const toNext = (e: any) => {
     setMenuKeys(e.keyPath);
     history.push(`/todo/${e.key}`);
-    console.log(menukeys);
+    // console.log(menukeys);
   };
   const handleClickMenu = (e: any) => {
     setMenuKeys(e.keyPath);
@@ -69,6 +70,7 @@ const TodoMenu: React.FC<RouteComponentProps> = (props) => {
           mode="inline"
           items={items}
           onClick={toNext}
+          defaultOpenKeys={['appAndStore']}
           selectedKeys={menukeys}
           defaultSelectedKeys={menukeys}
         />
