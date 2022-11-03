@@ -11,9 +11,9 @@ import {
 } from '@ant-design/icons';
 // import { Menu } from 'antd';
 import React from 'react';
-// import { RouteComponentProps, withRouter } from 'react-router-dom';
+import { RouteComponentProps, withRouter } from 'react-router-dom';
 
-// import cls from './index.module.less';
+import cls from './index.module.less';
 // TODO 获取应用待办
 const apps = [
   { label: '公益仓', key: 'gyc', icon: <HomeOutlined /> },
@@ -52,47 +52,47 @@ export const muneItems = [
   },
 ];
 
-// /**
-//  * 待办页面菜单
-//  * @returns
-//  */
-// const TodoMenu: React.FC<RouteComponentProps> = (props) => {
-//   const { location, history } = props;
-//   const currentKey = location.pathname.split('/')[2];
-//   const [menukeys, setMenuKeys] = useState<string[]>([currentKey || 'friend']);
+/**
+ * 待办页面菜单
+ * @returns
+ */
+const TodoMenu: React.FC<RouteComponentProps> = () => {
+  // const { location, history } = props;
+  // const currentKey = location.pathname.split('/')[2];
+  // const [menukeys, setMenuKeys] = useState<string[]>([currentKey || 'friend']);
 
-//   /* 应用待办 */
+  /* 应用待办 */
 
-//   // 菜单跳转
-//   const toNext = (e: any) => {
-//     setMenuKeys(e.keyPath);
-//     history.push(`/todo/${e.key}`);
-//     // console.log(menukeys);
-//   };
-//   const handleClickMenu = (e: any) => {
-//     setMenuKeys(e.keyPath);
-//   };
-//   return (
-//     <div className={cls.container}>
-//       {/* <div>
-//         <div className={cls[`sub-title`]}>平台待办</div>
-//         <Menu
-//           mode="inline"
-//           items={muneItems}
-//           onClick={toNext}
-//           defaultOpenKeys={['appAndStore']}
-//           selectedKeys={menukeys}
-//           defaultSelectedKeys={menukeys}
-//         />
-//       </div> */}
-//       {/* <div>
-//         <div className={cls[`sub-title`]}>
-//           应用待办 <PlusOutlined className={cls[`add-icon`]} />
-//         </div>
-//         <Menu items={apps} selectedKeys={menukeys} onClick={handleClickMenu} />
-//       </div> */}
-//     </div>
-//   );
-// };
+  // 菜单跳转
+  // const toNext = (e: any) => {
+  //   setMenuKeys(e.keyPath);
+  //   history.push(`/todo/${e.key}`);
+  //   // console.log(menukeys);
+  // };
+  // const handleClickMenu = (e: any) => {
+  //   setMenuKeys(e.keyPath);
+  // };
+  return (
+    <div className={cls.container}>
+      {/* <div>
+        <div className={cls[`sub-title`]}>平台待办</div>
+        <Menu
+          mode="inline"
+          items={muneItems}
+          onClick={toNext}
+          defaultOpenKeys={['appAndStore']}
+          selectedKeys={menukeys}
+          defaultSelectedKeys={menukeys}
+        />
+      </div> */}
+      {/* <div>
+        <div className={cls[`sub-title`]}>
+          应用待办 <PlusOutlined className={cls[`add-icon`]} />
+        </div>
+        <Menu items={apps} selectedKeys={menukeys} onClick={handleClickMenu} />
+      </div> */}
+    </div>
+  );
+};
 
-// export default withRouter(TodoMenu);
+export default withRouter(TodoMenu);
