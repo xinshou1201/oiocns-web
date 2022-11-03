@@ -28,7 +28,18 @@ const TodoMenu: React.FC<RouteComponentProps> = (props) => {
   const items = [
     { label: '好友申请', key: 'friend', icon: <UserOutlined /> },
     { label: '单位审核', key: 'org', icon: <AuditOutlined /> },
-    { label: '商店审核', key: 'store', icon: <ShopOutlined /> },
+    {
+      label: '商店审核',
+      key: 'store',
+      icon: <ShopOutlined />,
+      children: [
+        {
+          label: '应用上架',
+          key: 'store/app',
+        },
+        { label: '加入市场', key: 'store/market' },
+      ],
+    },
     { label: '订单审核', key: 'order', icon: <UnorderedListOutlined /> },
   ];
 
@@ -55,6 +66,7 @@ const TodoMenu: React.FC<RouteComponentProps> = (props) => {
       <div>
         <div className={cls[`sub-title`]}>平台待办</div>
         <Menu
+          mode="inline"
           items={items}
           onClick={toNext}
           selectedKeys={menukeys}

@@ -1,7 +1,5 @@
 import CardOrTableComp from '@/components/CardOrTableComp';
-
 import TodoService from '@/module/todo';
-import API from '@/services';
 import { ApprovalType } from '@/module/todo/typings';
 import { Button, Space, Tag } from 'antd';
 import { CardTabListType } from 'antd/lib/card';
@@ -10,13 +8,9 @@ import PageCard from '../components/PageCard';
 
 import TableItemCard from '../components/TableItemCard';
 import { ProColumns } from '@ant-design/pro-components';
+import { IdPage } from '@/module/typings';
 
-const todoService = new TodoService({
-  applyApi: API.person.applyJoin,
-  retractApi: API.person.cancelJoin,
-  approveApi: API.person.joinSuccess,
-  refuseApi: API.person.joinRefuse,
-});
+const todoService = new TodoService('org');
 const tabs: CardTabListType[] = [
   { tab: '待办', key: '1' },
   { tab: '我的发起', key: '2' },
@@ -54,7 +48,7 @@ const tableOperation = (activeKey: string, item: ApprovalType) => {
           label: '取消申请',
           onClick: () => {
             todoService.retractApply(item.id);
-            console.log('同意', 'approve', item);
+            console.log('取消申请', 'approve', item);
           },
         },
       ];
@@ -86,7 +80,7 @@ const TodoOrg: React.FC = () => {
       title: '事项',
       dataIndex: 'name',
       render: () => {
-        return <Tag color="#5BD8A6">加好友</Tag>;
+        return <Tag color="#5BD8A6">加单位</Tag>;
       },
     },
     {
@@ -104,14 +98,11 @@ const TodoOrg: React.FC = () => {
   ];
   // 获取申请/审核列表
   const handlePageChange = async (page: number, pageSize: number) => {
-    const { data = [], total } = await todoService[
-      activeKey == '1' ? 'getApprove' : 'getApply'
-    ]({
+    const { data = [], total = 0 } = await todoService.getList<ApprovalType, IdPage>({
       id: '0',
       page: page,
       pageSize: pageSize,
     });
-
     setPageData(data);
     setPageTotal(total);
   };

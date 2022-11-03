@@ -3,19 +3,14 @@ import PageCard from '../components/PageCard';
 import TableItemCard from '../components/TableItemCard';
 import { ApprovalType } from '@/module/todo/typings';
 import { ProColumns } from '@ant-design/pro-table';
-import API from '@/services';
 import { Button, message, Space, Tag } from 'antd';
-import todoService from '@/module/todo';
+import todoService, { tabStatus } from '@/module/todo';
 import React, { useState, useEffect } from 'react';
+import { IdPage } from '@/module/typings';
 
 // import styles from './index.module.less';
 
-const friendService = new todoService({
-  applyApi: API.person.applyJoin,
-  retractApi: API.person.cancelJoin,
-  approveApi: API.person.joinSuccess,
-  refuseApi: API.person.joinRefuse,
-});
+const friendService = new todoService('friend');
 /**
  * 批量同意
  * @param ids  React.Key[] 选中的数据id数组
@@ -71,15 +66,13 @@ const tableOperation = (activeKey: string, item: ApprovalType) => {
 };
 
 // 卡片渲染
-type TodoCommonTableProps = {
-  // columns: ProColumns<ApprovalType>[],
-};
+type TodoCommonTableProps = {};
 /**
  * 办事-好友申请
  * @returns
  */
 const TodoFriend: React.FC<TodoCommonTableProps> = () => {
-  const [activeKey, setActiveKey] = useState<string>('1');
+  const [activeKey, setActiveKey] = useState<string>(friendService.activeStatus);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [pageData, setPageData] = useState<ApprovalType[]>([]);
   const [total, setPageTotal] = useState<number>(0);
@@ -119,9 +112,7 @@ const TodoFriend: React.FC<TodoCommonTableProps> = () => {
   ];
   // 获取申请/审核列表
   const handlePageChange = async (page: number, pageSize: number) => {
-    const { data = [], total } = await friendService[
-      activeKey == '1' ? 'getApprove' : 'getApply'
-    ]({
+    const { data = [], total } = await friendService.getList<ApprovalType, IdPage>({
       id: '0',
       page: page,
       pageSize: pageSize,
@@ -135,8 +126,10 @@ const TodoFriend: React.FC<TodoCommonTableProps> = () => {
 
   return (
     <PageCard
+      tabList={friendService.statusList}
       activeTabKey={activeKey}
       onTabChange={(key: string) => {
+        friendService.activeStatus = key as tabStatus;
         setActiveKey(key as string);
       }}
       tabBarExtraContent={
