@@ -1,34 +1,24 @@
 import CardOrTableComp from '@/components/CardOrTableComp';
-
 import TodoService from '@/module/todo';
-import API from '@/services';
-import { ApprovalType } from '@/module/todo/typings';
+import { TeamApprovalType } from '@/module/todo/typings';
 import { Button, Space, Tag } from 'antd';
-import { CardTabListType } from 'antd/lib/card';
 import React, { useEffect, useState } from 'react';
 import PageCard from '../components/PageCard';
 
 import TableItemCard from '../components/TableItemCard';
 import { ProColumns } from '@ant-design/pro-components';
+import { IdPage } from '@/module/typings';
 
-const todoService = new TodoService({
-  applyApi: API.person.applyJoin,
-  retractApi: API.person.cancelJoin,
-  approveApi: API.person.joinSuccess,
-  refuseApi: API.person.joinRefuse,
-});
-const tabs: CardTabListType[] = [
-  { tab: '待办', key: '1' },
-  { tab: '我的发起', key: '2' },
-];
+const todoService = new TodoService('org');
+
 // 生成说明数据
-const remarkText = (activeKey: string, item: ApprovalType) => {
+const remarkText = (activeKey: string, item: TeamApprovalType) => {
   return activeKey === '2'
     ? '请求加入' + item.team.name + '单位'
     : item.target.name + '请求加入单位';
 };
 // 生成说明数据
-const tableOperation = (activeKey: string, item: ApprovalType) => {
+const tableOperation = (activeKey: string, item: TeamApprovalType) => {
   return activeKey == '1'
     ? [
         {
@@ -54,21 +44,26 @@ const tableOperation = (activeKey: string, item: ApprovalType) => {
           label: '取消申请',
           onClick: () => {
             todoService.retractApply(item.id);
-            console.log('同意', 'approve', item);
+            console.log('取消申请', 'approve', item);
           },
         },
       ];
 };
 
+// 根据状态值渲染标签
+const renderItemStatus = (record: TeamApprovalType) => {
+  const status = todoService.statusMap[record.status];
+  return <Tag color={status.color}>{status.text}</Tag>;
+};
 /**
  * 办事-单位审核
  * @returns
  */
 const TodoOrg: React.FC = () => {
   const [activeKey, setActiveKey] = useState<string>('1');
-  const [pageData, setPageData] = useState<ApprovalType[]>([]);
+  const [pageData, setPageData] = useState<TeamApprovalType[]>([]);
   const [total, setPageTotal] = useState<number>(0);
-  const columns: ProColumns<ApprovalType>[] = [
+  const columns: ProColumns<TeamApprovalType>[] = [
     {
       title: '序号',
       dataIndex: 'index',
@@ -86,7 +81,7 @@ const TodoOrg: React.FC = () => {
       title: '事项',
       dataIndex: 'name',
       render: () => {
-        return <Tag color="#5BD8A6">加好友</Tag>;
+        return <Tag color="#5BD8A6">加单位</Tag>;
       },
     },
     {
@@ -104,14 +99,11 @@ const TodoOrg: React.FC = () => {
   ];
   // 获取申请/审核列表
   const handlePageChange = async (page: number, pageSize: number) => {
-    const { data = [], total } = await todoService[
-      activeKey == '1' ? 'getApprove' : 'getApply'
-    ]({
+    const { data = [], total = 0 } = await todoService.getList<TeamApprovalType, IdPage>({
       id: '0',
       page: page,
       pageSize: pageSize,
     });
-
     setPageData(data);
     setPageTotal(total);
   };
@@ -120,7 +112,7 @@ const TodoOrg: React.FC = () => {
   }, [activeKey]);
   return (
     <PageCard
-      tabList={tabs}
+      tabList={todoService.statusList}
       activeTabKey={activeKey}
       onTabChange={(key: string) => {
         setActiveKey(key as string);
@@ -141,12 +133,13 @@ const TodoOrg: React.FC = () => {
         dataSource={pageData}
         total={total}
         onChange={handlePageChange}
-        operation={(item: ApprovalType) => tableOperation(activeKey, item)}
+        operation={(item: TeamApprovalType) => tableOperation(activeKey, item)}
         renderCardContent={(arr) => (
-          <TableItemCard<ApprovalType>
+          <TableItemCard<TeamApprovalType>
             data={arr}
-            statusType={'单位'}
+            statusType={(item) => renderItemStatus(item)}
             targetOrTeam="team"
+            operation={(item: TeamApprovalType) => tableOperation(activeKey, item)}
           />
         )}
         rowSelection={{}}

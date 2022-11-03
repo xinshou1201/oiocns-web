@@ -1,13 +1,15 @@
-import { Card } from 'antd';
+import { Card, Form, Modal } from 'antd';
 import React, { useState } from 'react';
 import API from '@/services';
 import AppShowComp from '@/bizcomponents/AppTablePage';
 import MarketService from '@/module/appstore/market';
 import cls from './index.module.less';
-import { columns } from '@/components/CardOrTableComp/config';
 import { useHistory } from 'react-router-dom';
 import { BtnGroupDiv } from '@/components/CommonComp';
-
+import PutawayComp from '../components/PutawayComp'; // 上架弹窗
+import PublishList from '../components/PublishList'; // 上架列表
+import StoreRecent from '../components/Recent';
+import { MarketTypes } from 'typings/marketType';
 const service = new MarketService({
   nameSpace: 'myApp',
   searchApi: API.product.searchOwnProduct,
@@ -16,11 +18,16 @@ const service = new MarketService({
   updateApi: API.product.update,
 });
 
-import StoreRecent from '../Recent';
-
 const StoreApp: React.FC = () => {
   const history = useHistory();
   const [statusKey, setStatusKey] = useState('merchandise');
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [showPublishListModal, setShowPublishListModal] = useState<boolean>(false);
+  const [selectAppInfo, setSelectAppInfo] = useState<MarketTypes.ProductType>(
+    {} as MarketTypes.ProductType,
+  );
+  const [putawayForm] = Form.useForm();
+
   const items = [
     {
       tab: `全部`,
@@ -44,20 +51,9 @@ const StoreApp: React.FC = () => {
     },
   ];
 
-  // const BtnsList = [
-  //   {
-  //     text: '购买',
-  //   },
-  //   {
-  //     text: '创建',
-  //   },
-  //   {
-  //     text: '暂存',
-  //   },
-  // ];
   const BtnsList = ['购买', '创建', '暂存'];
   const handleBtnsClick = (item: { text: string }) => {
-    console.log('按钮点击', item);
+    // console.log('按钮点击', item);
     switch (item.text) {
       case '购买':
         history.push('/market/app');
@@ -67,13 +63,57 @@ const StoreApp: React.FC = () => {
         break;
       case '暂存':
         console.log('点击事件', '暂存');
+        setShowModal(true);
         break;
       default:
-        console.log('点击事件', item.text);
+        console.log('点击事件未注册', item.text);
         break;
     }
   };
+  const handlePutawaySumbit = async () => {
+    const putawayParams = await putawayForm.validateFields();
+    console.log('上架信息打印', putawayParams);
 
+    setShowModal(false);
+  };
+  const renderOperation = (
+    item: MarketTypes.ProductType,
+  ): MarketTypes.OperationType[] => {
+    return [
+      {
+        key: 'publish',
+        label: '上架',
+        onClick: () => {
+          console.log('按钮事件', 'publish', item);
+          setShowModal(true);
+        },
+      },
+      {
+        key: 'share',
+        label: '共享',
+        onClick: () => {
+          console.log('按钮事件', 'share', item);
+        },
+      },
+      {
+        key: 'detail',
+        label: '详情',
+        onClick: () => {
+          console.log('按钮事件', 'detail', item);
+        },
+      },
+      {
+        key: 'publishList',
+        label: '上架列表',
+        onClick: () => {
+          setShowPublishListModal(true);
+          setSelectAppInfo({ ...item });
+          // history.push({ pathname: '/store/app_publish', state: { appId: item.id } });
+          console.log('按钮事件', 'publishList', item);
+        },
+      },
+    ];
+  };
   return (
     <div className={`pages-wrap flex flex-direction-col ${cls['pages-wrap']}`}>
       {<StoreRecent />}
@@ -90,9 +130,26 @@ const StoreApp: React.FC = () => {
         <AppShowComp
           service={service}
           searchParams={{ status: statusKey }}
-          columns={columns}
+          columns={service.getMyappColumns()}
+          renderOperation={renderOperation}
         />
       </div>
+      <Modal
+        title="应用上架"
+        width={670}
+        destroyOnClose={true}
+        open={showModal}
+        okText="确定"
+        onOk={() => {
+          handlePutawaySumbit();
+        }}
+        onCancel={() => {
+          console.log(`取消按钮`);
+          setShowModal(false);
+        }}>
+        <PutawayComp initialValues={{}} form={putawayForm} />
+      </Modal>
+      {showPublishListModal ? <PublishList appId={selectAppInfo.id} /> : ''}
     </div>
   );
 };

@@ -1,26 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react';
 import cls from './index.module.less';
-
+import API from '@/services';
 import CardOrTable from '@/components/CardOrTableComp';
 import AppCard from '@/components/AppCardComp';
 import { MarketTypes } from 'typings/marketType';
 import { IdPage } from '@/module/typings';
-import { MarketServiceType } from '@/module/appstore/market';
-import { sleep } from '@/store/sleep';
-import type { ProColumns } from '@ant-design/pro-components';
+import MarketService from '@/module/appstore/market';
 import useDebounce from '@/hooks/useDebounce';
-interface AppShowCompType {
-  service: MarketServiceType;
-  searchParams: {};
-  columns: ProColumns<any>[];
-  renderOperation?: any; //渲染操作按钮
+interface PublishListType {
+  appId: string;
 }
-const AppShowComp: React.FC<AppShowCompType> = ({
-  service,
-  searchParams,
-  columns,
-  renderOperation,
-}) => {
+
+const service = new MarketService({
+  nameSpace: 'PublishList',
+  searchApi: API.product.searchPublishList,
+  createApi: undefined,
+  deleteApi: API.product.unpublishMerchandise,
+  updateApi: undefined,
+});
+const PublishListComp: React.FC<PublishListType> = ({ appId }) => {
   const [list, setList] = useState<MarketTypes.ProductType[]>([]);
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
@@ -30,14 +28,6 @@ const AppShowComp: React.FC<AppShowCompType> = ({
   useEffect(() => {
     getTableList();
   }, []);
-  useEffect(() => {
-    //TODO: 其他条件 发出请求
-    // if (Object.keys(searchParams).length == 0) {
-    //   return;
-    // }
-    // getTableList(searchParams, '', true);
-    console.log('其他搜索参数', searchParams, '', true);
-  }, [searchParams]);
   /**
    * @desc: 获取展示列表
    * @param {string} searchKey 搜索关键词
@@ -50,13 +40,9 @@ const AppShowComp: React.FC<AppShowCompType> = ({
     if (isGofirst) {
       setPage(1);
     }
-    if (!service.PUBLIC_STORE.id) {
-      // 防止页面刷新时,数据请求缓慢造成数据缺失问题
-      await sleep(100);
-    }
 
     const params = {
-      id: service.PUBLIC_STORE.id,
+      id: appId,
       page: isGofirst ? 1 : page,
       pageSize: 10,
       filter: searchKey,
@@ -78,40 +64,26 @@ const AppShowComp: React.FC<AppShowCompType> = ({
     getTableList({ page, pageSize });
   };
   // // 操作内容渲染函数
-  // const renderOperation = (
-  //   item: MarketTypes.ProductType,
-  // ): MarketTypes.OperationType[] => {
-  //   return [
-  //     {
-  //       key: 'publish',
-  //       label: '上架',
-  //       onClick: () => {
-  //         console.log('按钮事件', 'publish', item);
-  //       },
-  //     },
-  //     {
-  //       key: 'share',
-  //       label: '共享',
-  //       onClick: () => {
-  //         console.log('按钮事件', 'share', item);
-  //       },
-  //     },
-  //     {
-  //       key: 'detail',
-  //       label: '详情',
-  //       onClick: () => {
-  //         console.log('按钮事件', 'detail', item);
-  //       },
-  //     },
-  //     {
-  //       key: 'publishList',
-  //       label: '上架列表',
-  //       onClick: () => {
-  //         console.log('按钮事件', 'publishList', item);
-  //       },
-  //     },
-  //   ];
-  // };
+  const renderOperation = (
+    item: MarketTypes.ProductType,
+  ): MarketTypes.OperationType[] => {
+    return [
+      {
+        key: 'detail',
+        label: '查看详情',
+        onClick: () => {
+          console.log('按钮事件', 'detail', item);
+        },
+      },
+      {
+        key: 'unpublish',
+        label: '下架应用',
+        onClick: () => {
+          console.log('按钮事件', 'unpublish', item);
+        },
+      },
+    ];
+  };
   // 卡片内容渲染函数
   const renderCardFun = (dataArr: MarketTypes.ProductType[]): React.ReactNode[] => {
     return dataArr.map((item: MarketTypes.ProductType) => {
@@ -133,7 +105,7 @@ const AppShowComp: React.FC<AppShowCompType> = ({
     });
   };
   return (
-    <div className={cls['app-wrap']} ref={parentRef}>
+    <div className={cls['appPublish-wrap']} ref={parentRef}>
       <CardOrTable<MarketTypes.ProductType>
         dataSource={list}
         total={total}
@@ -141,7 +113,8 @@ const AppShowComp: React.FC<AppShowCompType> = ({
         parentRef={parentRef}
         renderCardContent={renderCardFun}
         operation={renderOperation}
-        columns={columns}
+        headerTitle="应用上架列表"
+        columns={service.getPublishColumns()}
         onChange={handlePageChange}
         rowKey={'id'}
       />
@@ -149,4 +122,4 @@ const AppShowComp: React.FC<AppShowCompType> = ({
   );
 };
 
-export default AppShowComp;
+export default PublishListComp;

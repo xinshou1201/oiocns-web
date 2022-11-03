@@ -120,21 +120,23 @@ const TodoRouter: IRouteConfig[] = [
         component: React.lazy(() => import('@/pages/Todo/Org')),
       },
       {
+        path: '/todo/app',
+        title: '应用上架',
+        icon: <ShopOutlined />,
+        component: React.lazy(() => import('@/pages/Todo/Product')),
+      },
+      {
         path: '/todo/store',
-        title: '商店审核',
+        title: '加入市场',
         icon: <ShopOutlined />,
         component: React.lazy(() => import('@/pages/Todo/Store')),
       },
+
       {
         path: '/todo/order',
         title: '订单审核',
         icon: <UnorderedListOutlined />,
         component: React.lazy(() => import('@/pages/Todo/Order')),
-      },
-      {
-        path: '/todo',
-        title: '办事',
-        render: () => <RouterRedirect to="/todo/friend" />,
       },
     ],
   },
@@ -171,6 +173,12 @@ const StoreRouter: IRouteConfig[] = [
         title: '资源',
         icon: <DatabaseOutlined />,
         component: React.lazy(() => import('@/pages/Store/Src')),
+      },
+      {
+        path: '/store/app_publish',
+        title: '应用上架列表',
+        icon: '',
+        component: React.lazy(() => import('@/pages/Store/components/PublishList')),
       },
     ],
   },

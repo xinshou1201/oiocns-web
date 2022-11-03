@@ -1,23 +1,23 @@
 import CardOrTableComp from '@/components/CardOrTableComp';
 import PageCard from '../components/PageCard';
 import TableItemCard from '../components/TableItemCard';
-import { MarketApprovalType } from '@/module/todo/typings';
+import { ProductApprovalType } from '@/module/todo/typings';
 import { ProColumns } from '@ant-design/pro-table';
-import { Button, message, Space, Tag, Typography } from 'antd';
+import { Button, message, Space, Tag } from 'antd';
 import todoService, { tabStatus } from '@/module/todo';
 import React, { useState, useEffect } from 'react';
 import { Page } from '@/module/typings';
 
 // import styles from './index.module.less';
 
-const storeService = new todoService('market');
+const appService = new todoService('app');
 /**
  * 批量同意
  * @param ids  React.Key[] 选中的数据id数组
  */
 const handleApproveSelect = async (ids: React.Key[]) => {
   if (ids.length > 0) {
-    const { success } = await storeService.approve(ids.toString());
+    const { success } = await appService.approve(ids.toString());
     if (success) {
       message.success('添加成功！');
     } else {
@@ -25,16 +25,21 @@ const handleApproveSelect = async (ids: React.Key[]) => {
     }
   }
 };
+// 根据状态值渲染标签
+const renderItemStatus = (record: ProductApprovalType) => {
+  const status = appService.statusMap[record.status];
+  return <Tag color={status.color}>{status.text}</Tag>;
+};
 
 // 生成说明数据
-const tableOperation = (activeKey: string, item: MarketApprovalType) => {
+const tableOperation = (activeKey: string, item: ProductApprovalType) => {
   return activeKey == '1'
     ? [
         {
           key: 'approve',
           label: '同意',
           onClick: () => {
-            storeService.approve(item.id, 100); // 0-100 待批 //100-200 已批 200 以上是拒绝
+            appService.approve(item.id, 100); // 0-100 待批 //100-200 已批 200 以上是拒绝
             console.log('同意', 'approve', item);
           },
         },
@@ -42,7 +47,7 @@ const tableOperation = (activeKey: string, item: MarketApprovalType) => {
           key: 'refuse',
           label: '拒绝',
           onClick: () => {
-            storeService.refuse(item.id, 201);
+            appService.refuse(item.id, 201);
             console.log('拒绝', 'back', item);
           },
         },
@@ -52,31 +57,25 @@ const tableOperation = (activeKey: string, item: MarketApprovalType) => {
           key: 'retractApply',
           label: '取消申请',
           onClick: () => {
-            storeService.retractApply(item.id);
+            appService.retractApply(item.id);
             console.log('同意', 'approve', item);
           },
         },
       ];
 };
 
-// 根据状态值渲染标签
-const renderItemStatus = (record: MarketApprovalType) => {
-  const status = storeService.statusMap[record.status];
-  return <Tag color={status.color}>{status.text}</Tag>;
-};
-
 // 卡片渲染
 type TodoCommonTableProps = {};
 /**
- * 办事-加入市场审批
+ * 办事-应用上架审批
  * @returns
  */
 const TodoStore: React.FC<TodoCommonTableProps> = () => {
-  const [activeKey, setActiveKey] = useState<string>(storeService.activeStatus);
+  const [activeKey, setActiveKey] = useState<string>(appService.activeStatus);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const [pageData, setPageData] = useState<MarketApprovalType[]>([]);
+  const [pageData, setPageData] = useState<ProductApprovalType[]>([]);
   const [total, setPageTotal] = useState<number>(0);
-  const columns: ProColumns<MarketApprovalType>[] = [
+  const columns: ProColumns<ProductApprovalType>[] = [
     {
       title: '序号',
       dataIndex: 'index',
@@ -85,38 +84,63 @@ const TodoStore: React.FC<TodoCommonTableProps> = () => {
     },
     {
       title: '市场名称',
-      dataIndex: 'market.name',
-      render: (_, row) => {
-        return row?.market.name;
+      dataIndex: 'name',
+      render: (_, record) => {
+        return record.market.name;
       },
     },
     {
-      title: '市场编码',
+      title: '应用名称',
       dataIndex: 'code',
-      render: (_, row) => {
+      render: (_, record) => {
         return (
-          <Typography.Paragraph copyable={{ text: row?.market.code }}>
-            {row?.market.code}
-          </Typography.Paragraph>
+          <Space>
+            {record.product.name}
+            <Tag color="#5BD8A6">{record.product.source}</Tag>
+          </Space>
         );
       },
     },
     {
-      title: '状态 ',
-      dataIndex: 'status',
-      valueType: 'select',
+      title: '应用编号',
+      dataIndex: 'code',
       render: (_, record) => {
-        return renderItemStatus(record);
+        return record.product.code;
       },
     },
     {
-      title: '申请人',
-      dataIndex: '',
-      hideInTable: activeKey === '2',
-      render: (_, row) => {
-        return row.target ? row.target.name : '本人';
+      title: '价格/使用期限',
+      dataIndex: 'code',
+      render: (_, record) => {
+        return (
+          <Space>
+            {record?.price || '0.00'}
+            <Tag>使用期：{record.days} 天</Tag>
+          </Space>
+        );
       },
     },
+    {
+      title: '应用类型',
+      dataIndex: 'code',
+      render: (_, record) => {
+        return record.product?.typeName;
+      },
+    },
+    {
+      title: '应用权限',
+      dataIndex: 'sellAuth',
+      render: (_, record) => {
+        return record.product.authority;
+      },
+    },
+    // {
+    //   title: '申请人',
+    //   dataIndex: '',
+    //   render: (_, row) => {
+    //     return row.target.name;
+    //   },
+    // },
     {
       title: '申请时间',
       dataIndex: 'createTime',
@@ -125,7 +149,7 @@ const TodoStore: React.FC<TodoCommonTableProps> = () => {
   ];
   // 获取申请/审核列表
   const handlePageChange = async (page: number, pageSize: number) => {
-    const { data = [], total } = await storeService.getList<MarketApprovalType, Page>({
+    const { data = [], total } = await appService.getList<ProductApprovalType, Page>({
       filter: '',
       page: page,
       pageSize: pageSize,
@@ -139,10 +163,10 @@ const TodoStore: React.FC<TodoCommonTableProps> = () => {
 
   return (
     <PageCard
-      tabList={storeService.statusList}
+      tabList={appService.statusList}
       activeTabKey={activeKey}
       onTabChange={(key: string) => {
-        storeService.activeStatus = key as tabStatus;
+        appService.activeStatus = key as tabStatus;
         setActiveKey(key as string);
       }}
       tabBarExtraContent={
@@ -164,13 +188,13 @@ const TodoStore: React.FC<TodoCommonTableProps> = () => {
         dataSource={pageData}
         total={total}
         onChange={handlePageChange}
-        operation={(item: MarketApprovalType) => tableOperation(activeKey, item)}
+        operation={(item: ProductApprovalType) => tableOperation(activeKey, item)}
         renderCardContent={(arr) => (
-          <TableItemCard<MarketApprovalType>
+          <TableItemCard<ProductApprovalType>
             data={arr}
-            operation={(item: MarketApprovalType) => tableOperation(activeKey, item)}
             statusType={(item) => renderItemStatus(item)}
-            targetOrTeam="market"
+            targetOrTeam="product"
+            operation={(item) => tableOperation(activeKey, item)}
           />
         )}
         rowSelection={{
