@@ -7,6 +7,10 @@ import QrCodeCustom from '@/components/qrCode';
 import useChatStore from '@/store/chat';
 import headerStyle from './index.module.less';
 
+/* 
+  头部展示
+*/
+
 interface Iprops {
   handleViewDetail: Function;
 }

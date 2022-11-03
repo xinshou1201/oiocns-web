@@ -8,6 +8,10 @@ import useChatStore from '@/store/chat';
 import { formatDate } from '@/utils/index';
 import sideStyle from './index.module.less';
 
+/* 
+  会话列表、通讯录
+*/
+
 interface MousePosition {
   left: number;
   top: number;

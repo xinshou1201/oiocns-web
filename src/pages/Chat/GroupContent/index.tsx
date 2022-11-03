@@ -8,6 +8,10 @@ import { chat } from '@/module/chat/orgchat';
 import useChatStore from '@/store/chat';
 import contentStyle from './index.module.less';
 
+/* 
+  聊天区域
+*/
+
 interface Iprops {
   handleReWrites: Function;
 }
