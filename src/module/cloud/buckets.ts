@@ -50,6 +50,13 @@ class Bucket {
   }
 
   /**
+   * 处理新建文件夹后回显的树形
+   * @returns 树形
+   */
+  public GetKey() {
+    return this.Current.Upload();
+  }
+  /**
    * 获取单例
    * @returns 单例
    */

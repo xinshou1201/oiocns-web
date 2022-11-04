@@ -180,7 +180,9 @@ export default class ObjectLay {
   /**
    * 上传对象
    */
-  public async Upload() {}
+  public async Upload() {
+    return this.formatKey();
+  }
   /**
    * 分享
    */
