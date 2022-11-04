@@ -1,0 +1,69 @@
+.container {
+  width: 100%;
+  height: 100%;
+}
+.container ::deep .ogo-card-body {
+  height: 100%;
+}
+:global .ogo-card-body {
+  height: calc(100% - 40px);
+}
+:global .row {
+  margin: unset !important;
+  width: 100%;
+  height: 100%;
+}
+.topBtn {
+  margin-top: 12px;
+}
+.leftBtn {
+  margin-right: 10px;
+}
+.file {
+  width: 100%;
+  margin-top: 20px;
+  flex: 1;
+  overflow: auto;
+  overflow-x: hidden;
+}
+.top {
+  width: 100%;
+  height: 40px;
+  display: flex;
+}
+.topBox {
+  width: 200px;
+  border-right: 1px solid #e6e5e6;
+  padding-right: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.fileBox {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+}
+.fileImg {
+  width: 90%;
+  height: 100px;
+}
+.fileName {
+  width: 100%;
+  display: -webkit-box;
+  overflow: hidden;
+  word-break: break-all;
+  text-overflow: ellipsis;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  white-space: pre-line;
+  text-align: center;
+}
