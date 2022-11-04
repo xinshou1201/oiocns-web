@@ -43,10 +43,11 @@ const StoreClassify: React.FC = () => {
 
     await Service.getList<Page>({ ...params, ...req });
     setList(
-      Service.List.map((item) => {
+      Service.List.map((item, index) => {
         return {
           title: item.name,
-          key: item.id,
+          key: `0-${index}`,
+          id: item.id,
           children: [],
         };
       }),

@@ -199,7 +199,7 @@ const StoreClassifyTree: React.FC<TreeType> = ({
         blockNode
         onDragEnter={onDragEnter}
         onDrop={onDrop}
-        treeData={gData}
+        treeData={treeData}
       />
     </div>
   );
