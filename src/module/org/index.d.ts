@@ -63,6 +63,17 @@ export interface Org {
   team: Team;
 }
 
+export interface UserDept {
+  order: number;
+  deptId: string;
+  deptName: string;
+  deptDesc: string;
+  createCompany: string;
+  createCompanyId: number;
+  joinDate: string;
+
+}
+
 /**
  * 用户
  */

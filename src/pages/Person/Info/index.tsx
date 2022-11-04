@@ -1,5 +1,6 @@
 import { UserOutlined } from '@ant-design/icons';
 import { Avatar, Button, Card, Descriptions } from 'antd';
+import Layout from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
 import React from 'react';
 
@@ -21,7 +22,9 @@ const PersonInfo: React.FC = () => {
         <Avatar size={48} icon={<UserOutlined />} />
       </div>
       <div>
-        <Button type="link">编辑信息</Button>
+        <Button type="link">修改信息</Button>
+        <Button type="link">修改手机</Button>
+        <Button type="link">修改密码</Button>
       </div>
     </div>
   );
@@ -41,13 +44,19 @@ const PersonInfo: React.FC = () => {
       </Card>
     </div>
   );
+  //
   // TODO 1、个人空间显示加入的公司；2、单位空间显示所在的部门、工作组、岗位
   return (
     <div className={cls['person-info-container']}>
-      {content}
-      <div className={cls['person-info-company']}>
-        <PersonInfoCompany></PersonInfoCompany>
-      </div>
+      <Layout className={cls.container}>{content}</Layout>
+
+      <Layout className={cls.container}>
+        <Card bordered={false}>
+          <div className={cls['person-info-company']}>
+            <PersonInfoCompany></PersonInfoCompany>
+          </div>
+        </Card>
+      </Layout>
     </div>
   );
 };
