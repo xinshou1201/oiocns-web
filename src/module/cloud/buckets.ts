@@ -113,8 +113,8 @@ class Bucket {
    * 获取内容区数据
    * @returns 返回内容区数据
    */
-  public GetContent = async () => {
-    let children = await this.Current.GetChildren();
+  public GetContent = async (reload?: boolean) => {
+    let children = await this.Current.GetChildren(reload);
     return children;
   };
 }

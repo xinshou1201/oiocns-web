@@ -14,7 +14,6 @@ const StoreClassifyTree: React.FC = () => {
     getTreeData();
   }, []);
   useEffect(() => {
-    console.log(CloudStore.cloudTree);
     setGData(CloudStore.cloudTree);
   }, [CloudStore.cloudTree]);
   const getTreeData = () => {
@@ -34,13 +33,9 @@ const StoreClassifyTree: React.FC = () => {
   //   // setGData(info.node.props.data.children);
   // };
   const onLoadData = async (node: any) => {
-    // new Promise<void>( (resolve) => {
     const res = await Bucket.GetLeftTree(node.props.data);
     Bucket.HandleTree(gData, res, node.Key);
-    setGData(gData);
     CloudStore.setCloudTree(gData);
-    // resolve();
-    // });
   };
   return (
     <div>

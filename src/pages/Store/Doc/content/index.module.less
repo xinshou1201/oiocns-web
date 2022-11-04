@@ -49,15 +49,28 @@
   flex-direction: column;
 }
 .fileBox {
+  cursor: pointer;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   height: 100%;
 }
+.fileBox:hover {
+  background-color: #f8f7f9;
+}
 .fileImg {
   width: 90%;
   height: 100px;
+}
+.onfileBox {
+  cursor: pointer;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  background-color: #f8f7f9;
 }
 .fileName {
   width: 100%;
@@ -69,4 +82,13 @@
   -webkit-line-clamp: 2; //显示一行
   white-space: pre-line;
   text-align: center;
+}
+.circle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgb(175, 221, 255);
+  left: 15px;
+  top: 10px;
 }

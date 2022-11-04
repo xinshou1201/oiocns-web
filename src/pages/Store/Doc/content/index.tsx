@@ -8,8 +8,8 @@ import {
 } from '@ant-design/icons';
 import useCloudStore from '@/store/cloud';
 import Bucket from '@/module/cloud/buckets';
-import passport from '@/assets/icons/default_root_folder_opened.svg';
 import cls from './index.module.less';
+import IconImg from './icon';
 
 const LeftTree = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,6 +17,8 @@ const LeftTree = () => {
   const [fileList, setFileList] = useState<any[]>([]);
   const [gData, setGData] = useState<any[]>([]);
   const [key, setKey] = useState<string>('');
+  const [loading, setLoading] = useState<boolean>(false);
+  const [onIndex, setOnIndex] = useState<any>(null);
 
   const CloudStore: any = useCloudStore();
   useEffect(() => {
@@ -33,8 +35,8 @@ const LeftTree = () => {
     setKey(btoa(unescape(encodeURIComponent(keys.join('/')))));
   }, [Bucket.Current]);
 
-  const getBaseFileList = async () => {
-    const res = await Bucket.GetContent();
+  const getBaseFileList = async (reload?: boolean) => {
+    const res = await Bucket.GetContent(reload);
     setFileList(res);
   };
   const openModal = async () => {
@@ -42,6 +44,31 @@ const LeftTree = () => {
   };
   const handleCancel = () => {
     setIsModalOpen(false);
+  };
+  // 点击空白处
+  const bankClick = () => {
+    setOnIndex(null);
+  };
+  // 点击文件
+  const fileClick = (e: any, index: number) => {
+    e.stopPropagation();
+    setOnIndex(index);
+  };
+  // 双击文件
+  const fileDoubleClick = async (e: any, data: any) => {
+    setOnIndex(null);
+    e.stopPropagation();
+    Bucket.Current = data;
+    const res = await Bucket.GetContent();
+    CloudStore.setChoudData(res);
+  };
+  //  刷新
+  const fileReload = async () => {
+    setLoading(true);
+    await getBaseFileList(true); // 渲染文档
+    CloudStore.setCloudTree(gData);
+    setOnIndex(null);
+    setLoading(false);
   };
   const handleOk = async () => {
     if (!createFileName || createFileName == '') {
@@ -63,6 +90,7 @@ const LeftTree = () => {
     headers: {
       authorization: sessionStorage.Token,
     },
+    showUploadList: false,
     async onChange(info) {
       if (info.file.status !== 'uploading') {
         console.log(info.file, info.fileList);
@@ -82,7 +110,14 @@ const LeftTree = () => {
         <div className={cls.topBox}>
           <Button shape="circle" type="text" icon={<LeftOutlined />}></Button>
           <Button shape="circle" type="text" icon={<RightOutlined />}></Button>
-          <Button shape="circle" type="text" icon={<SyncOutlined />}></Button>
+          <Button
+            shape="circle"
+            loading={loading}
+            type="text"
+            onClick={() => {
+              fileReload();
+            }}
+            icon={<SyncOutlined />}></Button>
         </div>
         <div className={cls.breadcrumb}></div>
       </div>
@@ -106,15 +141,34 @@ const LeftTree = () => {
             新建文件夹
           </Button>
         </div>
-        <div className={cls.file}>
+        <div
+          className={cls.file}
+          onClick={() => {
+            bankClick();
+          }}>
           <Row gutter={[16, 16]}>
-            {fileList.map((el: any) => {
+            {fileList.map((el: any, index: number) => {
               return (
-                <Col key={el.Key} span={2}>
-                  <div className={cls.fileBox}>
-                    <img className={cls.fileImg} src={passport} alt="" />
+                <Col
+                  key={el.Key}
+                  span={2}
+                  onDoubleClick={(e) => {
+                    fileDoubleClick(e, el);
+                  }}
+                  onClick={(e) => {
+                    fileClick(e, index);
+                  }}>
+                  <div className={cls.onfileBox}>
+                    <IconImg iconData={el}></IconImg>
+                    {index == onIndex ? <div className={cls.circle}></div> : ''}
+
                     <div className={cls.fileName}>{el.Name}</div>
                   </div>
+
+                  {/* <div className={cls.fileBox}>
+                    <img className={cls.fileImg} src={passport} alt="" />
+                    <div className={cls.fileName}>{el.Name}</div>
+                  </div> */}
                 </Col>
               );
             })}
