@@ -1,46 +1,37 @@
 // 市场业务
-import API from '@/services';
-
 export default class CommonClass {
-  protected spaceName: string; //命名空间--用于区分功能
+  public nameSpace: string; //命名空间--用于区分功能
   // 接口注册
-  protected searchApi: Function; // 查 数据
-  protected createApi: Function; // 增 数据
-  protected deleteApi: Function; // 删 数据
-  protected updateApi: Function; // 改 数据
-  protected joinTargetApi?: Function; // 向...加入
-  protected quitTargetApi?: Function; // 从...退出
+  protected searchApi: Function | undefined; // 查 数据
+  protected createApi: Function | undefined; // 增 数据
+  protected deleteApi: Function | undefined; // 删 数据
+  protected updateApi: Function | undefined; // 改 数据
+  protected joinTargetApi?: Function | undefined; // 向...加入
+  protected quitTargetApi?: Function | undefined; // 从...退出
   // 功能数据
   public List: any[] = []; //列表数据
   public Total: number = 0; //列表 总数
   public QueryParams: any = {}; //记录历史请求参数
   constructor(data: {
-    spaceName: string; //命名空间--用于区分功能
-    searchApi?: string; // 查 数据
-    createApi?: string; // 增 数据
-    deleteApi?: string; // 删 数据
-    updateApi?: string; // 改 数据
-    joinTargetApi?: string; // 向...加入
-    quitTargetApi?: string; // 从...退出
+    nameSpace: string; //命名空间--用于区分功能
+    searchApi?: Function | undefined; // 查 数据
+    createApi?: Function | undefined; // 增 数据
+    deleteApi?: Function | undefined; // 删 数据
+    updateApi?: Function | undefined; // 改 数据
+    joinTargetApi?: Function | undefined; // 向...加入
+    quitTargetApi?: Function | undefined; // 从...退出
   }) {
-    this.spaceName = data.spaceName;
-    // this[`${data.spaceName}List`] = []; //列表 数据
-    // this[`${data.spaceName}Total`] = 0; //列表 总数
+    this.nameSpace = data.nameSpace;
+    // this[`${data.nameSpace}List`] = []; //列表 数据
+    // this[`${data.nameSpace}Total`] = 0; //列表 总数
     // 接口注册
-    this.searchApi = this._handleApi(data.searchApi);
-    this.createApi = this._handleApi(data.createApi);
-    this.deleteApi = this._handleApi(data.deleteApi);
-    this.updateApi = this._handleApi(data.updateApi);
-    this.joinTargetApi = this._handleApi(data.joinTargetApi);
-    this.quitTargetApi = this._handleApi(data.quitTargetApi);
+    this.searchApi = data.searchApi;
+    this.createApi = data.createApi;
+    this.deleteApi = data.deleteApi;
+    this.updateApi = data.updateApi;
+    this.joinTargetApi = data.joinTargetApi;
+    this.quitTargetApi = data.quitTargetApi;
   }
-  private _handleApi = (apiName?: string) => {
-    if (!apiName) {
-      return null;
-    }
-    let arr = apiName?.split('.');
-    return API[arr[0]][arr[1]];
-  };
   private _resetParams = <T extends { page: number; pageSize: number }>(params: T) => {
     const { page, pageSize, ...rest } = params;
 
@@ -55,6 +46,7 @@ export default class CommonClass {
   public async getList<T extends { page: number; pageSize: number }>(
     params: T,
   ): Promise<void> {
+    if (!this.searchApi) return;
     const { data, success } = await this.searchApi({
       data: this._resetParams<T>(params),
     });
@@ -73,6 +65,7 @@ export default class CommonClass {
    * @return {*}
    */
   public async creatItem<T>(params: T): Promise<void> {
+    if (!this.createApi) return;
     const { success } = await this.createApi({
       data: params,
     });
@@ -87,6 +80,7 @@ export default class CommonClass {
    * @return {*}
    */
   public async updateItem<T>(params: T) {
+    if (!this.updateApi) return;
     const { success } = await this.updateApi({
       data: params,
     });
@@ -101,6 +95,7 @@ export default class CommonClass {
    * @return {*}
    */
   public async deleteItem(id: string) {
+    if (!this.deleteApi) return;
     const { success } = await this.deleteApi({
       data: { id },
     });

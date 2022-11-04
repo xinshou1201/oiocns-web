@@ -8,7 +8,7 @@ import { Menu } from 'antd';
 import React, { useState } from 'react';
 
 import cls from './index.module.less';
-import MarketClassifyTree from './Tree';
+import MarketClassifyTree from '@/components/CustomTreeComp';
 
 const MarketClassify: React.FC<any> = ({ history }) => {
   const [selectMenu, setSelectMenu] = useState<string>('');

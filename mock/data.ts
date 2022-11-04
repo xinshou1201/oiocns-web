@@ -34,11 +34,11 @@ export default [
   {
     url: '/api/test',
     timeout: 1000,
-    method: 'get',
+    method: 'post',
     response: () => {
       return {
-        code: 0,
-        data: [{ msg: '测试mock成功' }],
+        code: 200,
+        data: { msg: '测试mock成功', list },
       };
     },
   },

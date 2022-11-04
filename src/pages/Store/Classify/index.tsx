@@ -9,7 +9,7 @@ import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
 import cls from './index.module.less';
-import StoreClassifyTree from './Tree';
+import StoreClassifyTree from '@/components/CustomTreeComp';
 
 const StoreClassify: React.FC = () => {
   const history = useHistory();

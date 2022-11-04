@@ -17,7 +17,6 @@ type BasicLayoutProps = {
 
 const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   const token: any = sessionStorage.getItem('Token');
-
   const { route, history } = props;
   const { getUserInfo } = useStore((state) => ({ ...state }));
   const { RecvMsg, getChats }: any = useChatStore();

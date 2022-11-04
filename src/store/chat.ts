@@ -24,6 +24,18 @@ const useChatStore = create((set, get: any) => ({
   qunPersons: [],
   connection: chat.connection,
   anyStore: chat.anyStore,
+  sessionChats: [], // 会话列表
+  currentPeople: {}, // 当前对话框对象
+  sendPeople: {}, // 当前发送消息的对象
+  // 添加进会话列表
+  addSessionList: () => {
+    let arr: any = get().sessionChats || [];
+    if (get().sendPeople && get().sendPeople.spaceId === get().currentPeople.spaceId) {
+      arr.push(get().currentPeople);
+    }
+    let newArr = [...new Set(arr)];
+    set({ sessionChats: newArr });
+  },
   // 新消息hook
   onMessage: (callback: (data: any) => void) => {
     get().messageCallback = callback;
@@ -31,8 +43,6 @@ const useChatStore = create((set, get: any) => ({
   // 接收消息
   RecvMsg: () => {
     chat.connection.on('RecvMsg', (data: any) => {
-      console.log('接受消息新', data.msgBody);
-
       get()._recvMsg(data);
     });
   },
@@ -65,9 +75,9 @@ const useChatStore = create((set, get: any) => ({
   },
   // 发送消息
   sendMsg: async (data: any) => {
+    set({ sendPeople: data });
     if (get().authed && data) {
       // data.msgBody = StringPako.deflate(data.msgBody);
-
       // TODO: 临时去除加密,用于开发测试数据接受情况
       return await get().connection.invoke('SendMsg', data);
     }
@@ -123,6 +133,7 @@ const useChatStore = create((set, get: any) => ({
   },
   // 设置当前会话
   setCurrent: async (chat: any) => {
+    set({ currentPeople: chat });
     if (get().authed) {
       if (get().curChat) {
         get().openChats = get().openChats.filter((item: any) => {
@@ -270,9 +281,7 @@ const useChatStore = create((set, get: any) => ({
             return new Date(b.msgTime).getTime() - new Date(a.msgTime).getTime();
           });
         });
-        console.log('打印会话列表');
         set({ chats: [...groups] });
-        // get().chats = [...groups];
         get()._cacheChats();
       }
       return res;
@@ -289,8 +298,6 @@ const useChatStore = create((set, get: any) => ({
     }
   },
   _handlerMsg(data: any) {
-    console.log('_handlerMsg', data, get().chats, get().curMsgs);
-
     if (get().chats.length < 1) {
       setTimeout(() => {
         set({ chats: chat.chats[0].chats });
@@ -439,7 +446,7 @@ const useChatStore = create((set, get: any) => ({
     //     operation: 'replaceAll',
     //     data: {
     //       name: '我的消息',
-    //       chats: chat.chats,
+    //       sessionChats: get().sessionChats,
     //       nameMap: chat.nameMap,
     //       openChats: chat.openChats,
     //       lastMsg: chat.lastMsg,
@@ -447,6 +454,10 @@ const useChatStore = create((set, get: any) => ({
     //   },
     //   'user',
     // );
+  },
+  _cacheSession: () => {
+    // TODO:
+    get().anyStore.update('sessionChats', get().sessionChat, 'user');
   },
   _cacheMsg: (sessionId: string, data: any) => {
     if (data.msgType === 'recall') {

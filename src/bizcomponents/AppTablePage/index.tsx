@@ -3,15 +3,24 @@ import cls from './index.module.less';
 
 import CardOrTable from '@/components/CardOrTableComp';
 import AppCard from '@/components/AppCardComp';
-import { columns } from '@/components/CardOrTableComp/config';
 import { MarketTypes } from 'typings/marketType';
 import { IdPage } from '@/module/typings';
 import { MarketServiceType } from '@/module/appstore/market';
 import { sleep } from '@/store/sleep';
+import type { ProColumns } from '@ant-design/pro-components';
+import useDebounce from '@/hooks/useDebounce';
 interface AppShowCompType {
   service: MarketServiceType;
+  searchParams: {};
+  columns: ProColumns<any>[];
+  renderOperation?: any; //渲染操作按钮
 }
-const AppShowComp: React.FC<AppShowCompType> = ({ service }) => {
+const AppShowComp: React.FC<AppShowCompType> = ({
+  service,
+  searchParams,
+  columns,
+  renderOperation,
+}) => {
   const [list, setList] = useState<MarketTypes.ProductType[]>([]);
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
@@ -21,14 +30,23 @@ const AppShowComp: React.FC<AppShowCompType> = ({ service }) => {
   useEffect(() => {
     getTableList();
   }, []);
-
+  useEffect(() => {
+    //TODO: 其他条件 发出请求
+    // if (Object.keys(searchParams).length == 0) {
+    //   return;
+    // }
+    // getTableList(searchParams, '', true);
+    console.log('其他搜索参数', searchParams, '', true);
+  }, [searchParams]);
   /**
    * @desc: 获取展示列表
    * @param {string} searchKey 搜索关键词
    * @param {boolean} isGofirst 是否返回第一页
    * @return {*}
    */
-  const getTableList = async (req = {}, searchKey = '', isGofirst = false) => {
+  const getTableList = useDebounce(async (params1: any) => {
+    const [req = {}, searchKey = '', isGofirst = false] = params1;
+
     if (isGofirst) {
       setPage(1);
     }
@@ -45,9 +63,12 @@ const AppShowComp: React.FC<AppShowCompType> = ({ service }) => {
     };
 
     await service.getList<IdPage>({ ...params, ...req });
+
+    console.log('获取列表', service['nameSpace'], service.List);
+
     setList([...service.List]);
     setTotal(service.Total);
-  };
+  }, 300);
 
   /**
    * handlePageChage
@@ -56,41 +77,41 @@ const AppShowComp: React.FC<AppShowCompType> = ({ service }) => {
     setPage(page);
     getTableList({ page, pageSize });
   };
-  // 操作内容渲染函数
-  const renderOperation = (
-    item: MarketTypes.ProductType,
-  ): MarketTypes.OperationType[] => {
-    return [
-      {
-        key: 'publish',
-        label: '上架',
-        onClick: () => {
-          console.log('按钮事件', 'publish', item);
-        },
-      },
-      {
-        key: 'share',
-        label: '共享',
-        onClick: () => {
-          console.log('按钮事件', 'share', item);
-        },
-      },
-      {
-        key: 'detail',
-        label: '详情',
-        onClick: () => {
-          console.log('按钮事件', 'detail', item);
-        },
-      },
-      {
-        key: 'publishList',
-        label: '上架列表',
-        onClick: () => {
-          console.log('按钮事件', 'publishList', item);
-        },
-      },
-    ];
-  };
+  // // 操作内容渲染函数
+  // const renderOperation = (
+  //   item: MarketTypes.ProductType,
+  // ): MarketTypes.OperationType[] => {
+  //   return [
+  //     {
+  //       key: 'publish',
+  //       label: '上架',
+  //       onClick: () => {
+  //         console.log('按钮事件', 'publish', item);
+  //       },
+  //     },
+  //     {
+  //       key: 'share',
+  //       label: '共享',
+  //       onClick: () => {
+  //         console.log('按钮事件', 'share', item);
+  //       },
+  //     },
+  //     {
+  //       key: 'detail',
+  //       label: '详情',
+  //       onClick: () => {
+  //         console.log('按钮事件', 'detail', item);
+  //       },
+  //     },
+  //     {
+  //       key: 'publishList',
+  //       label: '上架列表',
+  //       onClick: () => {
+  //         console.log('按钮事件', 'publishList', item);
+  //       },
+  //     },
+  //   ];
+  // };
   // 卡片内容渲染函数
   const renderCardFun = (dataArr: MarketTypes.ProductType[]): React.ReactNode[] => {
     return dataArr.map((item: MarketTypes.ProductType) => {
@@ -120,7 +141,7 @@ const AppShowComp: React.FC<AppShowCompType> = ({ service }) => {
         parentRef={parentRef}
         renderCardContent={renderCardFun}
         operation={renderOperation}
-        columns={columns as any}
+        columns={columns}
         onChange={handlePageChange}
         rowKey={'id'}
       />
