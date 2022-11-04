@@ -17,7 +17,7 @@ interface TreeType {
   searchable?: boolean; //是否展示搜索区域
   menu?: string[]; //更多按钮列表 需提供 string[]
   handleAddClick?: (_item: any) => void; //点击更多按钮事件
-  handleMenuClick?: ({ data, key, item }: { data: any; item: any; key: string }) => void; //点击更多按钮事件
+  handleMenuClick?: ({ data, key }: { data: any; key: string }) => void; //点击更多按钮事件
 }
 
 const x = 2;
@@ -59,42 +59,14 @@ const StoreClassifyTree: React.FC<TreeType> = ({
 }) => {
   const [mouseOverItem, setMouseOverItem] = useState<any>({});
   // 树形控件 更多操作
-  /* [
-            {
-              key: '1',
-              label: '重命名',
-            },
-            {
-              key: '2',
-              label: '创建副本',
-            },
-            {
-              key: '3',
-              label: '拷贝链接',
-            },
-            {
-              key: '4',
-              label: '移动到',
-            },
-            {
-              key: '5',
-              label: '收藏',
-            },
-            {
-              key: '6',
-              label: '删除',
-            },
-          ] */
   const renderMenu = (data: any) => {
     if (!menu) {
       return <></>;
     }
     return (
       <Menu
-        onClick={({ item, key }) =>
-          handleMenuClick && handleMenuClick({ data, item, key })
-        }
-        items={menu.map((item, index) => {
+        onClick={({ key }) => handleMenuClick && handleMenuClick({ data, key })}
+        items={menu.map((item) => {
           return {
             key: item,
             label: item,
@@ -104,7 +76,7 @@ const StoreClassifyTree: React.FC<TreeType> = ({
     );
   };
   //TODO: 树形数据需要切换
-  console.log('树形数据需要切换', treeData);
+  // console.log('树形数据需要切换', treeData);
 
   const [gData, setGData] = useState(defaultData);
   const [expandedKeys] = useState(['0-0', '0-0-0']);
@@ -211,7 +183,7 @@ const StoreClassifyTree: React.FC<TreeType> = ({
   };
 
   return (
-    <div>
+    <div className={cls.customTreeWrap}>
       <div className={cls.title}>全部分类</div>
       {searchable && (
         <div className={cls.title}>
@@ -220,7 +192,7 @@ const StoreClassifyTree: React.FC<TreeType> = ({
       )}
       <Tree
         className="draggable-tree"
-        switcherIcon={<LeftCircleOutlined />}
+        // switcherIcon={<LeftCircleOutlined />}
         titleRender={renderTreeTitle}
         defaultExpandedKeys={expandedKeys}
         draggable={draggable}
