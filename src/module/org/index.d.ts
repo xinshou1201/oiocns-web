@@ -64,6 +64,7 @@ export interface Org {
 }
 
 export interface UserDept {
+  id: React.Key;
   order: number;
   deptId: string;
   deptName: string;

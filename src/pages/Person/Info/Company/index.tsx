@@ -18,14 +18,16 @@ import SearchCompany from '@/bizcomponents/SearchCompany';
  */
 const PersonInfoCompany: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+
   const [list, setList] = useState<UserDept[]>([]);
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
 
+
   useEffect(() => {
     getTableList();
-    console.log(page, total);
     setTotal(10);
+    console.log(page, total);
   }, []);
 
   const showModal = () => {
@@ -59,9 +61,7 @@ const PersonInfoCompany: React.FC = () => {
     getTableList({ page, pageSize });
   };
 
-  const tableAlertRender = (selectedRowKeys: any[], selectedRows: any[]) => {
-    console.log('======', selectedRowKeys, selectedRows);
-  };
+  // const tableAlertRender = (selectedRowKeys: any[], selectedRows: any[]) => {};
 
   /**
    * @desc: 获取展示列表
@@ -76,6 +76,7 @@ const PersonInfoCompany: React.FC = () => {
     console.log(req, searchKey, isGofirst);
     let tt: UserDept[] = [
       {
+        id: 1,
         order: 1,
         deptId: '1',
         deptName: '1',
@@ -85,6 +86,7 @@ const PersonInfoCompany: React.FC = () => {
         joinDate: '2012-10-01',
       },
       {
+        id: 2,
         order: 2,
         deptId: '2',
         deptName: '2',
@@ -102,22 +104,18 @@ const PersonInfoCompany: React.FC = () => {
     {
       title: '序号',
       dataIndex: 'order',
-      key: 'order',
     },
     {
       title: '单位名称',
       dataIndex: 'createCompany',
-      key: 'createCompany',
     },
     {
       title: '单位编码',
       dataIndex: 'createCompanyId',
-      key: 'createCompanyId',
     },
     {
       title: '单位描述',
       dataIndex: 'deptDesc',
-      key: 'deptDesc',
     },
   ];
 
@@ -155,6 +153,15 @@ const PersonInfoCompany: React.FC = () => {
     ];
   };
 
+  const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
+    console.log('selectedRowKeys changed: ', newSelectedRowKeys);
+    
+  };
+
+  const getCheckboxProps = (record: any) => {
+      console.log(record)
+  }
+  
   return (
     <div className={cls['person-info-content-container']}>
       <div className={cls['person-info-content-header']}>
@@ -198,7 +205,6 @@ const PersonInfoCompany: React.FC = () => {
         ]}
       />
 
-      {/* <Table dataSource={data} columns={columns} rowKey={(r) => r.id} /> */}
       <CardOrTable
         dataSource={list}
         total={total}
@@ -207,11 +213,11 @@ const PersonInfoCompany: React.FC = () => {
         columns={columns as any}
         onChange={handlePageChange}
         rowKey={'id'}
+        // bordered
         rowSelection={{
-          selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
-          defaultSelectedRowKeys: [1],
+          onChange: onSelectChange,
+          getCheckboxProps: getCheckboxProps,
         }}
-        tableAlertRender={tableAlertRender}
       />
 
       <Modal
