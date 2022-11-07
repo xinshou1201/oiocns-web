@@ -1,4 +1,4 @@
-import { Layout, Space } from 'antd';
+import { Layout, Menu, Space, MenuProps } from 'antd';
 import React from 'react';
 import { RouteComponentProps, withRouter } from 'react-router-dom';
 
@@ -6,11 +6,14 @@ import { businessRouteList } from '@/routes/utils';
 
 import { IconFont } from '../IconFont';
 import cls from './index.module.less';
+import { MenuClickEventHandler } from 'rc-menu/lib/interface';
 const { Sider } = Layout;
 
 type ContentMenuProps = {
   children?: any;
   location: any;
+  data?: MenuProps[`items`];
+  menuClick?: MenuClickEventHandler;
 };
 
 // 根据数据类型渲染icon
@@ -37,6 +40,9 @@ const ContentMenu: React.FC<RouteComponentProps & ContentMenuProps> = (props) =>
             </div>
           </Space>
         </div>
+      )}
+      {props.data && (
+        <Menu mode="inline" items={props.data} onClick={props.menuClick}></Menu>
       )}
       {props.children}
     </Sider>

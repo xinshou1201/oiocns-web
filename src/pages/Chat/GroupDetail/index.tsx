@@ -9,6 +9,10 @@ import { chat } from '@/module/chat/orgchat';
 import useChatStore from '@/store/chat';
 import detailStyle from './index.module.less';
 
+/* 
+  个人、群聊详情
+*/
+
 interface itemResult {
   code: string;
   createTime: string;

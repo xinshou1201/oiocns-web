@@ -8,6 +8,10 @@ import useChatStore from '@/store/chat';
 import { formatDate } from '@/utils/index';
 import sideStyle from './index.module.less';
 
+/* 
+  会话列表、通讯录
+*/
+
 interface MousePosition {
   left: number;
   top: number;
@@ -22,16 +26,11 @@ interface MenuItemType {
 }
 
 const GroupSideBar: React.FC = () => {
-  const getInfo = () => {
-    const data = chat.chats;
-    if (data.length === 0) {
-      setTimeout(() => {
-        getInfo();
-      }, 300);
-    }
-  };
-  getInfo();
   const ChatStore: any = useChatStore();
+  useEffect(() => {
+    ChatStore.getAddressBook();
+  }, []);
+
   const [searchValue, setSearchValue] = useState<string>(''); // 搜索值
   let [openIdArr, setOpenIdArr] = useState<Array<string>>([]);
   const [isMounted, setIsMounted] = useState<boolean>(false); // 是否已加载--判断是否需要默认打开
@@ -215,7 +214,7 @@ const GroupSideBar: React.FC = () => {
             onContextMenu={(e) => {
               e.preventDefault();
             }}>
-            {chat.chats.map((item: any) => {
+            {ChatStore.chats.map((item: any) => {
               return (
                 <div key={item.id}>
                   <div className={`${sideStyle.group_con} ${sideStyle.item}`}>

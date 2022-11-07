@@ -7,7 +7,6 @@ import { BrowserRouter } from 'react-router-dom';
 
 import routes from '@/routes/config';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 // import enUS from 'antd/es/locale/en_US';
 import zhCN from 'antd/es/locale/zh_CN';
@@ -47,7 +46,7 @@ const App = () => {
             {renderRoutes(routes)}
           </Suspense>
         </ConfigProvider>
-        <ReactQueryDevtools initialIsOpen={true} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>
     </BrowserRouter>
   );

@@ -32,5 +32,6 @@ interface MarketApprovalType extends ApprovalType {
 interface ProductApprovalType extends MarketApprovalType {
   sellAuth: string;
   days: string;
+  price: string | number;
   product: MarketTypes.ProductType;
 }

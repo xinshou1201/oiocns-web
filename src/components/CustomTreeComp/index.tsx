@@ -181,7 +181,6 @@ const StoreClassifyTree: React.FC<TreeType> = ({
       </div>
     );
   };
-
   return (
     <div className={cls.customTreeWrap}>
       <div className={cls.title}>全部分类</div>
@@ -192,7 +191,7 @@ const StoreClassifyTree: React.FC<TreeType> = ({
       )}
       <Tree
         className="draggable-tree"
-        // switcherIcon={<LeftCircleOutlined />}
+        switcherIcon={<LeftCircleOutlined />}
         titleRender={renderTreeTitle}
         defaultExpandedKeys={expandedKeys}
         draggable={draggable}

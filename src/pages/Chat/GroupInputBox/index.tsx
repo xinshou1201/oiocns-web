@@ -4,6 +4,9 @@ import React, { useEffect, useState } from 'react';
 import useChatStore from '@/store/chat';
 import inputboxStyle from './index.module.less';
 
+/* 
+  输入框
+*/
 interface Iprops {
   writeContent: any;
 }

@@ -114,7 +114,7 @@ const TodoStore: React.FC<TodoCommonTableProps> = () => {
       render: (_, record) => {
         return (
           <Space>
-            {record.product?.price || '0.00'}
+            {record?.price || '0.00'}
             <Tag>使用期：{record.days} 天</Tag>
           </Space>
         );
