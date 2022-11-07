@@ -14,11 +14,13 @@ interface AppShowCompType {
   searchParams: {};
   columns: ProColumns<any>[];
   renderOperation?: any; //渲染操作按钮
+  headerTitle?: string; //表格头部文字
 }
 const AppShowComp: React.FC<AppShowCompType> = ({
   service,
   searchParams,
   columns,
+  headerTitle,
   renderOperation,
 }) => {
   const [list, setList] = useState<MarketTypes.ProductType[]>([]);
@@ -64,7 +66,7 @@ const AppShowComp: React.FC<AppShowCompType> = ({
 
     await service.getList<IdPage>({ ...params, ...req });
 
-    console.log('获取列表', service['nameSpace'], service.List);
+    console.log('获取列表', service['nameSpace'], service.List, service.Total);
 
     setList([...service.List]);
     setTotal(service.Total);
@@ -138,6 +140,7 @@ const AppShowComp: React.FC<AppShowCompType> = ({
         dataSource={list}
         total={total}
         page={page}
+        headerTitle={headerTitle}
         parentRef={parentRef}
         renderCardContent={renderCardFun}
         operation={renderOperation}
