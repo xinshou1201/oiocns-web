@@ -2,7 +2,8 @@ import { UserOutlined } from '@ant-design/icons';
 import { Avatar, Button, Card, Descriptions } from 'antd';
 import Layout from 'antd/lib/layout/layout';
 import Title from 'antd/lib/typography/Title';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import useStore from '@/store';
 
 import PersonInfoCompany from './Company';
 import cls from './index.module.less';
@@ -12,6 +13,14 @@ import cls from './index.module.less';
  * @returns
  */
 const PersonInfo: React.FC = () => {
+
+  const { user } = useStore((state) => ({ ...state }));
+
+  useEffect(() => {
+    console.log(user);
+
+  }, []);
+
   // 信息标题
   const title = (
     <div className={cls['person-info-title']}>
@@ -33,12 +42,12 @@ const PersonInfo: React.FC = () => {
     <div className={cls['person-info-info']}>
       <Card bordered={false}>
         <Descriptions title={title} column={2}>
-          <Descriptions.Item label="姓名">Zhou Maomao</Descriptions.Item>
-          <Descriptions.Item label="性别">1810000000</Descriptions.Item>
-          <Descriptions.Item label="邮箱">Hangzhou, Zhejiang</Descriptions.Item>
-          <Descriptions.Item label="联系方式">empty</Descriptions.Item>
-          <Descriptions.Item label="家庭地址" span={2}>
-            No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
+          <Descriptions.Item label="姓名">{user.userName}</Descriptions.Item>
+          {/* <Descriptions.Item label="性别">{}</Descriptions.Item>
+          <Descriptions.Item label="邮箱">{}</Descriptions.Item> */}
+          <Descriptions.Item label="联系方式">{user.team.code}</Descriptions.Item>
+          <Descriptions.Item label="联系地址" span={2}>
+            {user.motto}
           </Descriptions.Item>
         </Descriptions>
       </Card>

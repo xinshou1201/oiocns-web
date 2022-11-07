@@ -79,9 +79,9 @@ const PersonInfoCompany: React.FC = () => {
         id: 1,
         order: 1,
         deptId: '1',
-        deptName: '1',
-        deptDesc: '1',
-        createCompany: '1',
+        deptName: '浙江财政',
+        deptDesc: '单位描述1',
+        createCompany: '浙江财政',
         createCompanyId: 1,
         joinDate: '2012-10-01',
       },
@@ -89,11 +89,11 @@ const PersonInfoCompany: React.FC = () => {
         id: 2,
         order: 2,
         deptId: '2',
-        deptName: '2',
-        deptDesc: '2',
-        createCompany: '2',
+        deptName: '杭电',
+        deptDesc: '单位描述2',
+        createCompany: '杭州电子科技大学',
         createCompanyId: 2,
-        joinDate: '2012-11-01',
+        joinDate: '2019-11-01',
       },
     ];
 
@@ -123,31 +123,24 @@ const PersonInfoCompany: React.FC = () => {
   const renderOperation = (item: UserDept): User.OperationType[] => {
     return [
       {
-        key: 'publish',
-        label: '上架',
+        key: 'companyInfo',
+        label: '单位信息维护',
         onClick: () => {
           console.log('按钮事件', 'publish', item);
         },
       },
       {
-        key: 'share',
-        label: '共享',
+        key: 'getJoinGroup',
+        label: '查看申请记录',
         onClick: () => {
           console.log('按钮事件', 'share', item);
         },
       },
       {
-        key: 'detail',
-        label: '详情',
+        key: 'joinGroup',
+        label: '加入集团',
         onClick: () => {
           console.log('按钮事件', 'detail', item);
-        },
-      },
-      {
-        key: 'publishList',
-        label: '上架列表',
-        onClick: () => {
-          console.log('按钮事件', 'publishList', item);
         },
       },
     ];
