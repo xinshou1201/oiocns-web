@@ -69,14 +69,15 @@ export default class OrgChat extends Object {
       this.authed = false;
       this.reconnect('disconnected from orgchat, await 5s reconnect.');
     });
-    this.connection.on('RecvMsg', (data: any) => {
-      this._recvMsg(data);
-    });
+    // this.connection.on('RecvMsg', (data: any) => {
+    //   this._recvMsg(data);
+    // });
     this.connection.on('ChatRefresh', async () => {
       await this.getChats();
     });
     this.anyStore = AnyStore.getInstance();
     this.anyStore.subscribed('orgChat', 'user', (data) => {
+      console.log('不是启动的链接', data);
       this._loadChats(data);
     });
   }
@@ -92,6 +93,7 @@ export default class OrgChat extends Object {
    * @param {string} accessToken 授权token
    */
   public async start(accessToken: string) {
+    console.log('start启动连接');
     if (this.accessToken != accessToken) {
       await this.stop();
       let res = await api.person.tokenInfo({});
@@ -118,6 +120,7 @@ export default class OrgChat extends Object {
             if (!this.authed) {
               this.anyStore.get('orgChat', 'user').then((res) => {
                 if (res.success) {
+                  console.log('获取用户大对象', res.data);
                   this._loadChats(res.data);
                 }
               });
@@ -529,8 +532,12 @@ export default class OrgChat extends Object {
     if (!data) return;
     if (data.chats) {
       this.chats = [];
+      console.log('this.chats2', this.chats);
+      console.log('this.chats3', data.chats);
       data.chats.forEach((item: ImMsgType) => {
         if (item.id === this.spaceId) {
+          console.log('item.id', item.id);
+          console.log('this.spaceId', this.spaceId);
           this.chats.unshift(item);
         } else {
           this.chats.push(item);
