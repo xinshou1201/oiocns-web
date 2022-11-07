@@ -9,6 +9,8 @@ const product = '/orginone/appstore/product';
 const appstore = '/orginone/appstore/market';
 const collection = '/orginone/anydata/collection';
 const object = '/orginone/anydata/object';
+const wflow = '/orginone/organization/workflow';
+const bucket = '/orginone/anydata';
 export default {
   // 人员接口
   person: {
@@ -262,6 +264,37 @@ export default {
     approvalPublish: appstore + '/approval/publish', // 审批商品上架申请
     pullTarget: appstore + '/pull/target',
     searchPublishApply: appstore + '/search/publish/apply', // 发起者:查询产品上架申请
+  },
+  wflow: {
+    approvalTask: wflow + '/approval/task', //流程节点审批
+    createDefine: wflow + '/create/define', //创建流程定义
+    updateDefine: wflow + '/update/define', //更新流程定义
+    createRelation: wflow + '/create/flowrelation', //创建流程绑定
+    createInstance: wflow + '/create/instance', //创建流程实例
+    deleteDefine: wflow + '/delete/define', //删除流程定义
+    deleteInstance: wflow + '/delete/instance', //删除流程实例
+    deleteRelation: wflow + '/delete/relation', //删除流程绑定
+    queryDefine: wflow + '/query/define', //查询流程定义
+    queryInstance: wflow + '/query/instance', //查询发起的流程实例
+    queryRecord: wflow + '/query/record', //查询审批记录
+    queryTask: wflow + '/query/task', //查询待审批任务
+    resetDefine: wflow + '/reset/define', //重置流程定义
+    findall: wflow + '/procdef/findall', //搜索多个流程
+    addDef: wflow + '/procdef/add', //流程定义新增
+    updateDef: wflow + '/procdef/update', //流程定义修改
+  },
+  bucket: {
+    bucketObjects: bucket + '/Bucket/Objects', //获取云盘
+    bucketShare: bucket + '/Bucket/Share', //云盘分享
+    bucketLink: bucket + '/Bucket/Link', //获取云盘
+    bucketCreate: bucket + '/Bucket/Create', //创建文件夹
+    bucketUpload: bucket + '/Bucket/Upload', //上传
+    bucketUploadChunk: bucket + '/Bucket/UploadChunk', //切片上传
+    bucketRename: bucket + '/Bucket/Rename', //重命名
+    bucketMove: bucket + '/Bucket/Move', //移动
+    bucketCopy: bucket + '/Bucket/Copy', //复制
+    bucketDelete: bucket + '/Bucket/Delete', //删除文件or文件夹
+    bucketDownload: bucket + '/Bucket/Download', //下载文件
   },
   object: {
     get: (objName: string) => object + '/get/' + objName,
