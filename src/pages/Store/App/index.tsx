@@ -4,7 +4,7 @@ import API from '@/services';
 import AppShowComp from '@/bizcomponents/AppTablePage';
 import MarketService from '@/module/appstore/market';
 import cls from './index.module.less';
-import { useHistory } from 'react-router-dom';
+import { Route, useHistory } from 'react-router-dom';
 import { BtnGroupDiv } from '@/components/CommonComp';
 import PutawayComp from '../components/PutawayComp'; // 上架弹窗
 import PublishList from '../components/PublishList'; // 上架列表
@@ -22,7 +22,6 @@ const StoreApp: React.FC = () => {
   const history = useHistory();
   const [statusKey, setStatusKey] = useState('merchandise');
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [showPublishListModal, setShowPublishListModal] = useState<boolean>(false);
   const [selectAppInfo, setSelectAppInfo] = useState<MarketTypes.ProductType>(
     {} as MarketTypes.ProductType,
   );
@@ -149,11 +148,11 @@ const StoreApp: React.FC = () => {
         }}>
         <PutawayComp initialValues={{}} form={putawayForm} />
       </Modal>
-      {showPublishListModal ? (
-        <PublishList appId={selectAppInfo.id} setVisible={setShowPublishListModal} />
-      ) : (
-        ''
-      )}
+      {/* 详情页面 */}
+      <Route
+        exact
+        path="/store/app/publish"
+        render={() => <PublishList appId={selectAppInfo.id} />}></Route>
     </div>
   );
 };

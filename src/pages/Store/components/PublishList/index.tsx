@@ -10,8 +10,6 @@ import useDebounce from '@/hooks/useDebounce';
 import { Button } from 'antd';
 interface PublishListType {
   appId: string;
-  // eslint-disable-next-line no-unused-vars
-  setVisible: (viisible: boolean) => void;
 }
 
 const service = new MarketService({
@@ -21,7 +19,7 @@ const service = new MarketService({
   deleteApi: API.product.unpublishMerchandise,
   updateApi: undefined,
 });
-const PublishListComp: React.FC<PublishListType> = ({ appId, setVisible }) => {
+const PublishListComp: React.FC<PublishListType> = ({ appId }) => {
   const [list, setList] = useState<MarketTypes.ProductType[]>([]);
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
@@ -126,8 +124,6 @@ const PublishListComp: React.FC<PublishListType> = ({ appId, setVisible }) => {
             key="2"
             onClick={() => {
               console.log(77);
-
-              setVisible(false);
             }}>
             返回
           </Button>,
