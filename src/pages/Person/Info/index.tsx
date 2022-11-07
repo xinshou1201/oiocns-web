@@ -6,6 +6,7 @@ import React, { useState, useEffect } from 'react';
 import useStore from '@/store';
 
 import PersonInfoCompany from './Company';
+import PersonInfoDepartment from './Department';
 import cls from './index.module.less';
 
 /**
@@ -15,6 +16,9 @@ import cls from './index.module.less';
 const PersonInfo: React.FC = () => {
 
   const { user } = useStore((state) => ({ ...state }));
+  
+  const [showDepartment, setShowDepartment] = useState<boolean>(false);
+
 
   useEffect(() => {
     console.log(user);
@@ -62,7 +66,12 @@ const PersonInfo: React.FC = () => {
       <Layout className={cls.container}>
         <Card bordered={false}>
           <div className={cls['person-info-company']}>
-            <PersonInfoCompany></PersonInfoCompany>
+            {
+            showDepartment? 
+            <PersonInfoDepartment></PersonInfoDepartment>:
+            <PersonInfoCompany setShowDepartment={setShowDepartment}></PersonInfoCompany>
+            }
+            
           </div>
         </Card>
       </Layout>

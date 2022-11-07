@@ -12,16 +12,11 @@ import { User } from 'typings/user';
 import cls from './index.module.less';
 import SearchCompany from '@/bizcomponents/SearchCompany';
 
-
-interface PersonInfoObj {
-  setShowDepartment: (isbool: boolean) => void; // 控制是否显示公司
-}
-
 /**
  * 用户信息-加入的单位(公司)
  * @returns
  */
-const PersonInfoCompany: React.FC<PersonInfoObj> = (props) => {
+const PersonInfoCompany: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [list, setList] = useState<UserDept[]>([]);
@@ -33,13 +28,7 @@ const PersonInfoCompany: React.FC<PersonInfoObj> = (props) => {
     getTableList();
     setTotal(10);
     console.log(page, total);
-    // 显示部门列表
-    props.setShowDepartment(false);
   }, []);
-
-  const showDepartment = () => {
-    props.setShowDepartment(true);
-  }
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -130,7 +119,7 @@ const PersonInfoCompany: React.FC<PersonInfoObj> = (props) => {
     },
   ];
 
-  // 操作内容
+  // 操作内容渲染函数
   const renderOperation = (item: UserDept): User.OperationType[] => {
     return [
       {
@@ -173,7 +162,7 @@ const PersonInfoCompany: React.FC<PersonInfoObj> = (props) => {
           <strong>单位设置</strong>
         </Title>
         <div>
-          <Button type="link" onClick={showDepartment}>
+          <Button type="link" onClick={showModal}>
             部门岗位
           </Button>
           <Button type="link" onClick={showModal}>
