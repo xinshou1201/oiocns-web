@@ -362,8 +362,6 @@ const useChatStore = create((set, get: any) => ({
                   ...data,
                   msgBody: msgBody,
                 });
-                console.log('当前展示消息', arr);
-
                 // set({ curMsgs: arr });
                 set({
                   curMsgs: [

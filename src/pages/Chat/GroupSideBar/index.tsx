@@ -143,7 +143,6 @@ const GroupSideBar: React.FC = () => {
 
   // 右键菜单点击
   const handleContextChange = (item: MenuItemType) => {
-    // console.log('右键菜单点击', item, mousePosition.selectedItem)
     switch (item.value) {
       case 1:
         chat.setToppingSession(mousePosition.selectedItem, true);
