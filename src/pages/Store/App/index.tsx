@@ -106,9 +106,9 @@ const StoreApp: React.FC = () => {
         key: 'publishList',
         label: '上架列表',
         onClick: () => {
-          setShowPublishListModal(true);
+          // setShowPublishListModal(true);
           setSelectAppInfo({ ...item });
-          // history.push({ pathname: '/store/app_publish', state: { appId: item.id } });
+          history.push({ pathname: '/store/app/publish', state: { appId: item.id } });
           console.log('按钮事件', 'publishList', item);
         },
       },
@@ -149,7 +149,11 @@ const StoreApp: React.FC = () => {
         }}>
         <PutawayComp initialValues={{}} form={putawayForm} />
       </Modal>
-      {showPublishListModal ? <PublishList appId={selectAppInfo.id} /> : ''}
+      {showPublishListModal ? (
+        <PublishList appId={selectAppInfo.id} setVisible={setShowPublishListModal} />
+      ) : (
+        ''
+      )}
     </div>
   );
 };

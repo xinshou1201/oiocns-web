@@ -14,6 +14,9 @@ import API from '@/services';
 // import { MarketTypes } from 'typings/marketType';
 import CommonClass from '@/module/commonClass/BaseServiceClass';
 import { Page } from '@/module/typings';
+
+import JsonFrom from '@/bizcomponents/JsonFrom';
+
 const Service = new CommonClass({
   nameSpace: 'shopTree',
   searchApi: API.market.searchOwn,
@@ -28,6 +31,7 @@ const items = [
 const menu = ['重命名', '创建副本', '拷贝链接', '移动到', '收藏', '删除'];
 const StoreClassify: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [open, setOpen] = useState<boolean>(false);
   const [list, setList] = useState<any[]>([]);
   // const [total, setTotal] = useState<number>(0);
   const history = useHistory();
@@ -53,7 +57,17 @@ const StoreClassify: React.FC = () => {
       }),
     );
     // setTotal(Service.Total);
-    console.log('ssss', Service.List);
+    console.log(
+      'ssss',
+      Service.List.map((item, index) => {
+        return {
+          title: item.name,
+          key: `0-${index}`,
+          id: item.id,
+          children: [],
+        };
+      }),
+    );
   };
 
   //菜单跳转
@@ -62,6 +76,7 @@ const StoreClassify: React.FC = () => {
   };
   const handleAddShop = (item: any) => {
     console.log('handleAddShop', item);
+    setOpen(true);
   };
   const handleMenuClick = ({ data, key }: { data: any; key: string }) => {
     console.log('handleMenuClick', data, key);
@@ -100,6 +115,7 @@ const StoreClassify: React.FC = () => {
         }}>
         <SearchSjopComp />
       </Modal>
+      <JsonFrom open={open} setOpen={setOpen} JsonColumns={[]} />
     </>
   );
 };
