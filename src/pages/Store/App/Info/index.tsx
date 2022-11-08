@@ -25,10 +25,10 @@ interface AppInfoType {
 }
 
 const StoreAppInfo: React.FC<AppInfoType> = () => {
-  const { emit, useSubScription } = useContext(EventContext);
+  const { TestSub } = useContext(EventContext);
   const BtnsList = ['编辑应用分配'];
   const history = useHistory();
-  useSubScription('hello1', (s: any) => {
+  TestSub.useSubScription('hello2', (s: any) => {
     console.log('监听2222', s);
   });
   const handleBtnsClick = (item: { text: string }) => {
@@ -51,7 +51,7 @@ const StoreAppInfo: React.FC<AppInfoType> = () => {
         key: 'publish',
         label: '下架',
         onClick: () => {
-          emit('hello1', { aa: '测试订阅修改' });
+          TestSub.emit('hello2', { aa: '测试订阅修改' });
           console.log('按钮事件', 'publish');
         },
       },

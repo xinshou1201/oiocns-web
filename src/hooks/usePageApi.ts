@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
 interface pageApiType {
   nameSpace: string; //命名空间--用于区分功能块

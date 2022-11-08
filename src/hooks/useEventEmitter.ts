@@ -1,12 +1,26 @@
 import { useEffect, useRef } from 'react';
 
 // 定义订阅的事件类型
-// eslint-disable-next-line no-unused-vars
 type SubScription<T> = (val: T) => void;
+
+const generateUUID = () => {
+  let d = new Date().getTime();
+  if (window.performance && typeof window.performance.now === 'function') {
+    d += performance.now();
+  }
+  const uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+    /* eslint-disable no-bitwise */
+    const r = (d + Math.random() * 16) % 16 | 0;
+    d = Math.floor(d / 16);
+    // eslint-disable-next-line no-mixed-operators
+    return (c === '' ? r : (r & 0x3) | 0x8).toString(16);
+  });
+  return uuid;
+};
 class EventEmitter<T> {
   // 定义一个私有属性，用于存储订阅事件
   // set可以保证不会重复订阅重复事件
-  private subscriptions = new Map<string, SubScription<T>>();
+  private subscriptions = new Set<any>();
 
   // 订阅事件
   useSubScription = (eventName: string, callback: SubScription<T>) => {
@@ -14,6 +28,7 @@ class EventEmitter<T> {
     // useEffect的依赖项为空数组，使用ref,可以保证在useEffect中执行的事件是最新的
     const callbackRef = useRef<SubScription<T>>();
     callbackRef.current = callback;
+    const uuid = generateUUID();
 
     useEffect(() => {
       // 增加一层判断，订阅事件的函数存在时，才执行
@@ -23,11 +38,16 @@ class EventEmitter<T> {
         }
       }
       // 订阅事件
-      this.subscriptions.set(eventName, subscription);
+      this.subscriptions.add([eventName, subscription, uuid]);
 
       // 组件销毁时，删除订阅事件
       return () => {
-        this.subscriptions.delete(eventName);
+        // 修复set  delete 无法删除数组的问题
+        let newArr = new Set();
+        for (const item of this.subscriptions) {
+          item[2] !== uuid && newArr.add(item);
+        }
+        this.subscriptions = newArr;
       };
       // 不论组件如何渲染，注册事件，只执行一次
     }, []);
@@ -38,9 +58,10 @@ class EventEmitter<T> {
   // 事件的参数类型是T，与useSubScription订阅的函数的参数eventName一致
   emit = (eventName: string, val: T) => {
     // 遍历事件
-    if (this.subscriptions.has(eventName)) {
-      let Fun: Function | undefined = this.subscriptions.get(eventName);
-      Fun && Fun(val);
+    for (const item of this.subscriptions) {
+      if (item[0] === eventName) {
+        item[1](val);
+      }
     }
   };
 }
