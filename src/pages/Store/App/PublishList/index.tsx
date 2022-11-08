@@ -7,6 +7,8 @@ import { MarketTypes } from 'typings/marketType';
 import { IdPage } from '@/module/typings';
 import MarketService from '@/module/appstore/market';
 import useDebounce from '@/hooks/useDebounce';
+import { Button } from 'antd';
+import { useLocation } from 'react-router-dom';
 interface PublishListType {
   appId: string;
 }
@@ -22,6 +24,9 @@ const PublishListComp: React.FC<PublishListType> = ({ appId }) => {
   const [list, setList] = useState<MarketTypes.ProductType[]>([]);
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
+  const { state } = useLocation();
+
+  console.log('路由参数', state);
 
   const parentRef = useRef<any>(null); //父级容器Dom
 
@@ -117,6 +122,16 @@ const PublishListComp: React.FC<PublishListType> = ({ appId }) => {
         columns={service.getPublishColumns()}
         onChange={handlePageChange}
         rowKey={'id'}
+        toolBarRender={() => [
+          <Button
+            type="link"
+            key="2"
+            onClick={() => {
+              console.log(77);
+            }}>
+            返回
+          </Button>,
+        ]}
       />
     </div>
   );

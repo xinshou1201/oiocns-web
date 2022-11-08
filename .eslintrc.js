@@ -39,8 +39,8 @@ module.exports = {
     //解决ts中，本身是可以有空的构造函数的误判问题 START
     'no-useless-constructor': 'off',
     // '@typescript-eslint/no-useless-constructor': 'error',
-    'no-unused-vars': 'error',
-    // '@typescript-eslint/no-unused-vars': 'error',
+    'no-unused-vars': ['error', { varsIgnorePattern: '.*', args: 'none' }],
+    '@typescript-eslint/no-unused-vars': 'off',
     'no-empty-function': 'off',
     //解决导出类型时，no-undef报错问题
     'no-undef': 'off',

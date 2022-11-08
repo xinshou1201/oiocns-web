@@ -6,8 +6,8 @@ interface pageApiType {
   createApi?: Function; // 增 数据
   deleteApi?: Function; // 删 数据
   updateApi?: Function; // 改 数据
-  joinTargetApi?: Function; // 向...加入
-  quitTargetApi?: Function; // 从...退出
+  //   joinTargetApi?: Function; // 向...加入
+  //   quitTargetApi?: Function; // 从...退出
 }
 interface PagequeryParamsBaseType {
   page: number;
@@ -25,9 +25,9 @@ const usePageApi = <T extends PagequeryParamsBaseType, P extends any>({
   createApi,
   deleteApi,
   updateApi,
-  joinTargetApi,
-  quitTargetApi,
-}: pageApiType) => {
+}: // joinTargetApi,
+// quitTargetApi,
+pageApiType) => {
   const [list, setList] = useState<P[]>([]);
   const [total, setTotal] = useState<number>(0);
   const [queryParams, setqueryParams] = useState<any>({});
@@ -146,49 +146,39 @@ const usePageApi = <T extends PagequeryParamsBaseType, P extends any>({
     }
   }
 
-  /**
-   * @desc: 从...中退出
-   * @param {string} targetId 目标Id
-   * @return {*}
-   */
-  async function quitTarget(targetId: string | number) {
-    if (!quitTargetApi) {
-      return console.log('未注册 退出功能');
-    }
-    const { success } = await quitTargetApi({
-      data: { id: targetId },
-    });
-    if (success) {
-      await refresh;
-    }
-  }
-  /**
-   * @desc: 向...中加入
-   * @param {string} targetId 目标Id
-   * @return {*}
-   */
-  async function joinTarget(targetId: string | number) {
-    if (!joinTargetApi) {
-      return console.log('未注册 加入功能');
-    }
-    const { success } = await joinTargetApi({
-      data: { id: targetId },
-    });
-    if (success) {
-      await refresh;
-    }
-  }
-  return [
-    queryData,
-    list,
-    total,
-    creatFun,
-    deleteFun,
-    updateFun,
-    quitTarget,
-    joinTarget,
-    refresh,
-  ];
+  // /**
+  //  * @desc: 从...中退出
+  //  * @param {string} targetId 目标Id
+  //  * @return {*}
+  //  */
+  // async function quitTarget(targetId: string | number) {
+  //   if (!quitTargetApi) {
+  //     return console.log('未注册 退出功能');
+  //   }
+  //   const { success } = await quitTargetApi({
+  //     data: { id: targetId },
+  //   });
+  //   if (success) {
+  //     await refresh;
+  //   }
+  // }
+  // /**
+  //  * @desc: 向...中加入
+  //  * @param {string} targetId 目标Id
+  //  * @return {*}
+  //  */
+  // async function joinTarget(targetId: string | number) {
+  //   if (!joinTargetApi) {
+  //     return console.log('未注册 加入功能');
+  //   }
+  //   const { success } = await joinTargetApi({
+  //     data: { id: targetId },
+  //   });
+  //   if (success) {
+  //     await refresh;
+  //   }
+  // }
+  return [queryData, list, total, creatFun, deleteFun, updateFun, refresh];
 
   // return {
   //   [`query${resNameSpaceStr}Data`]: queryData,

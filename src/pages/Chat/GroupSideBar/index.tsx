@@ -13,11 +13,11 @@ import sideStyle from './index.module.less';
 */
 
 interface MousePosition {
-  left: number;
-  top: number;
-  isShowContext: boolean;
-  selectedItem: ImMsgChildType;
-  selectMenu?: MenuItemType[];
+  left: number; // 右键弹窗离左侧的位置
+  top: number; // 右键弹窗离上面的位置
+  isShowContext: boolean; // 控制右键弹窗是否显示
+  selectedItem: ImMsgChildType; // 被选中的某一项
+  selectMenu?: MenuItemType[]; // 选择菜单
 }
 
 interface MenuItemType {
@@ -26,16 +26,11 @@ interface MenuItemType {
 }
 
 const GroupSideBar: React.FC = () => {
-  const getInfo = () => {
-    const data = chat.chats;
-    if (data.length === 0) {
-      setTimeout(() => {
-        getInfo();
-      }, 300);
-    }
-  };
-  getInfo();
   const ChatStore: any = useChatStore();
+  useEffect(() => {
+    ChatStore.getAddressBook();
+  }, []);
+
   const [searchValue, setSearchValue] = useState<string>(''); // 搜索值
   let [openIdArr, setOpenIdArr] = useState<Array<string>>([]);
   const [isMounted, setIsMounted] = useState<boolean>(false); // 是否已加载--判断是否需要默认打开
@@ -145,22 +140,39 @@ const GroupSideBar: React.FC = () => {
       selectMenu: item.isTop ? menuList.slice(1, 3) : menuList.slice(0, 2),
     });
   };
-  // 关闭右侧点击出现的弹框
-  // const closecontextmenu = () => {
-  //   setMousePosition({
-  //     isShowContext: false,
-  //     left: 0,
-  //     top: 0,
-  //     selectedItem: {} as ImMsgChildType,
-  //   });
-  // };
+
+  // 右键菜单点击
+  const handleContextChange = (item: MenuItemType) => {
+    switch (item.value) {
+      case 1:
+        chat.setToppingSession(mousePosition.selectedItem, true);
+        break;
+      case 2:
+        // props.clearHistoryMsg()
+        break;
+      case 3:
+        chat.setToppingSession(mousePosition.selectedItem, false);
+        break;
+
+      default:
+        break;
+    }
+  };
+  // 关闭右侧点击出现的弹框;
+  const _handleClick = (event: any) => {
+    setMousePosition({
+      isShowContext: false,
+      left: 0,
+      top: 0,
+      selectedItem: {} as ImMsgChildType,
+    });
+  };
   useEffect(() => {
-    // window.addEventListener('click');
-    // console.log('biubiu', window.addEventListener('click'));
-    // return () => {
-    //   // 组件卸载移除事件
-    //   document.removeEventListener('click', closecontextmenu);
-    // };
+    // 监听点击事件，关闭弹窗
+    document.addEventListener('click', _handleClick);
+    return () => {
+      document.removeEventListener('click', _handleClick);
+    };
   }, []);
 
   return (
@@ -219,7 +231,7 @@ const GroupSideBar: React.FC = () => {
             onContextMenu={(e) => {
               e.preventDefault();
             }}>
-            {chat.chats.map((item: any) => {
+            {ChatStore.chats.map((item: any) => {
               return (
                 <div key={item.id}>
                   <div className={`${sideStyle.group_con} ${sideStyle.item}`}>
@@ -349,7 +361,12 @@ const GroupSideBar: React.FC = () => {
           style={{ left: `${mousePosition.left}px`, top: `${mousePosition.top}px` }}>
           {mousePosition.selectMenu?.map((item) => {
             return (
-              <div key={item.value} className={sideStyle.context_menu_item}>
+              <div
+                key={item.value}
+                className={sideStyle.context_menu_item}
+                onClick={() => {
+                  handleContextChange(item);
+                }}>
                 {item.label}
               </div>
             );
