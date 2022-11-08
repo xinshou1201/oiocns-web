@@ -189,19 +189,13 @@ const SettingDept: React.FC = () => {
       {content}
       {deptCount}
       {/* 编辑单位 */}
-      <EditCustomModal
-        open={isopen}
-        title={'请编辑单位信息'}
-        onOk={onOk}
-        handleOk={handleOk}
-      />
+      <EditCustomModal open={isopen} title={'编辑'} onOk={onOk} handleOk={handleOk} />
       {/* 添加成员 */}
       <AddPersonModal
-        title={'搜索人员'}
+        title={'添加成员'}
         open={isAddOpen}
         onOk={onOk}
         handleOk={handleOk}
-        columns={columns}
       />
     </div>
   );

@@ -1,5 +1,5 @@
 import { Card, Form, Modal } from 'antd';
-import React, { useState } from 'react';
+import React, { useState, createContext } from 'react';
 import API from '@/services';
 import AppShowComp from '@/bizcomponents/AppTablePage';
 import MarketService from '@/module/appstore/market';
@@ -11,6 +11,7 @@ import PublishList from './PublishList'; // 上架列表
 import AppInfo from './Info'; //应用信息页面
 import StoreRecent from '../components/Recent';
 import { MarketTypes } from 'typings/marketType';
+import useEventEmitter from '@/hooks/useEventEmitter';
 const service = new MarketService({
   nameSpace: 'myApp',
   searchApi: API.product.searchOwnProduct,
@@ -18,6 +19,13 @@ const service = new MarketService({
   deleteApi: API.product.delete,
   updateApi: API.product.update,
 });
+interface submitEmmit {
+  aa: string;
+}
+export const EventContext = createContext({
+  emit: undefined,
+  useSubScription: undefined,
+} as { emit: any; useSubScription: any });
 
 const StoreApp: React.FC = () => {
   const history = useHistory();
@@ -27,6 +35,11 @@ const StoreApp: React.FC = () => {
     {} as MarketTypes.ProductType,
   );
   const [putawayForm] = Form.useForm();
+
+  const { useSubScription, emit } = useEventEmitter<submitEmmit>();
+  useSubScription('hello', (data) => {
+    console.log('订阅', data);
+  });
 
   const items = [
     {
@@ -59,6 +72,7 @@ const StoreApp: React.FC = () => {
         history.push('/market/app');
         break;
       case '创建':
+        emit('hello', { aa: '700' });
         console.log('点击事件', '创建');
         break;
       case '暂存':
@@ -81,6 +95,28 @@ const StoreApp: React.FC = () => {
   ): MarketTypes.OperationType[] => {
     return [
       {
+        key: 'open',
+        label: '打开',
+        onClick: () => {
+          console.log('按钮事件', 'open', item);
+        },
+      },
+      {
+        key: 'detail',
+        label: '详情',
+        onClick: () => {
+          history.push({ pathname: '/store/app/info', state: { appId: item.id } });
+          console.log('按钮事件', 'detail', item);
+        },
+      },
+      {
+        key: 'manage',
+        label: '管理',
+        onClick: () => {
+          console.log('按钮事件', 'manage', item);
+        },
+      },
+      {
         key: 'publish',
         label: '上架',
         onClick: () => {
@@ -96,21 +132,20 @@ const StoreApp: React.FC = () => {
         },
       },
       {
-        key: 'detail',
-        label: '详情',
+        key: 'share2',
+        label: '分配',
         onClick: () => {
-          history.push({ pathname: '/store/app/Info', state: { appId: item.id } });
-          console.log('按钮事件', 'detail', item);
+          console.log('按钮事件', 'share2', item);
         },
       },
       {
-        key: 'publishList',
-        label: '上架列表',
+        key: 'save',
+        label: '暂存',
         onClick: () => {
           // setShowPublishListModal(true);
           setSelectAppInfo({ ...item });
           history.push({ pathname: '/store/app/publish', state: { appId: item.id } });
-          console.log('按钮事件', 'publishList', item);
+          console.log('按钮事件', 'save', item);
         },
       },
     ];
@@ -151,16 +186,18 @@ const StoreApp: React.FC = () => {
           }}>
           <PutawayComp initialValues={{}} form={putawayForm} />
         </Modal>
-        {/* 详情页面 /store/app/Info*/}
+        {/* 详情页面 /store/app/info*/}
       </div>
-      <Route
-        exact
-        path="/store/app/Info"
-        render={() => <AppInfo appId={selectAppInfo.id} />}></Route>
-      <Route
-        exact
-        path="/store/app/publish"
-        render={() => <PublishList appId={selectAppInfo.id} />}></Route>
+      <EventContext.Provider value={{ useSubScription, emit }}>
+        <Route
+          exact
+          path="/store/app/info"
+          render={() => <AppInfo appId={selectAppInfo.id} />}></Route>
+        <Route
+          exact
+          path="/store/app/publish"
+          render={() => <PublishList appId={selectAppInfo.id} />}></Route>
+      </EventContext.Provider>
     </>
   );
 };

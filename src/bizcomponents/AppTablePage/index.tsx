@@ -140,6 +140,7 @@ const AppShowComp: React.FC<AppShowCompType> = ({
         dataSource={list}
         total={total}
         page={page}
+        stripe
         headerTitle={headerTitle}
         parentRef={parentRef}
         renderCardContent={renderCardFun}
