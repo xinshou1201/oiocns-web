@@ -19,7 +19,7 @@ const HeaderNav: React.FC<RouteComponentProps> = () => {
       icon: 'icon-message',
     },
     {
-      path: '/todo/store',
+      path: '/todo/friend',
       title: '待办',
       icon: 'icon-todo',
     },
