@@ -8,7 +8,6 @@ import useCloudStore from '@/store/cloud';
 import cls from './index.module.less';
 const StoreClassifyTree: React.FC = () => {
   const [gData, setGData] = useState<any[]>([]);
-
   const CloudStore: any = useCloudStore();
   useEffect(() => {
     getTreeData();
@@ -27,15 +26,11 @@ const StoreClassifyTree: React.FC = () => {
     const res = await Bucket.GetContent();
     CloudStore.setChoudData(res);
   };
-  // const onExpand = async (expandedKeysValue: React.Key[], info: any) => {
-  //   const res = await Bucket.GetLeftTree(info.node.props.data);
-  //   setGData(Bucket.HandleTree(gData, res, info.node.Key));
-  //   // setGData(info.node.props.data.children);
-  // };
   const onLoadData = async (node: any) => {
     const res = await Bucket.GetLeftTree(node.props.data);
-    Bucket.HandleTree(gData, res, node.Key);
-    CloudStore.setCloudTree(gData);
+    let orgData = [...gData];
+    Bucket.HandleTree(orgData, res, node.Key);
+    CloudStore.setCloudTree(orgData);
   };
   return (
     <div>
@@ -49,7 +44,7 @@ const StoreClassifyTree: React.FC = () => {
         fieldNames={{
           title: 'Name',
           key: 'Key',
-          children: 'children',
+          children: 'treeData',
         }}
         treeData={gData}
         loadData={onLoadData}

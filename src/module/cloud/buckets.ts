@@ -21,10 +21,11 @@ class Bucket {
    * 获取处理树形
    * @returns 树形
    */
-  public HandleTree(rootData: any, data: any[], key: string) {
+  public HandleTree(rootData: any, data: any, key: string) {
     for (let i = 0; i < rootData.length; i++) {
       if (rootData[i].Key == key) {
-        rootData[i].children = data;
+        rootData[i].children = data.children;
+        rootData[i].treeData = data.treeData;
       } else {
         if (rootData[i].children[0]?.Key) {
           this.HandleTree(rootData[i].children, data, key);
@@ -41,9 +42,40 @@ class Bucket {
       if (rootData[i].Key == data.Key) {
         rootData[i].isLeaf = false;
         rootData[i].children = data.children;
+        let arr: any[] = [];
+        rootData[i].children.forEach((el: ObjectLay) => {
+          if (el.IsDirectory) {
+            arr.push(el);
+          }
+        });
+        rootData[i].treeData = arr;
+        return;
       } else {
         if (rootData[i].children[0]?.Key) {
           this.HandleEchoTree(rootData[i].children, data);
+        }
+      }
+    }
+  }
+  /**
+   * 处理删除文件夹后回显的树形
+   * @returns 树形
+   */
+  public HandleDeleteTree(rootData: any, data: any) {
+    console.log('000000', rootData, data);
+    for (let i = 0; i < rootData.length; i++) {
+      if (rootData[i].Key == data.Key) {
+        let arr: any[] = [];
+        rootData[i].children.forEach((el: ObjectLay) => {
+          if (el.IsDirectory) {
+            arr.push(el);
+          }
+        });
+        rootData[i].treeData = arr;
+        return;
+      } else {
+        if (rootData[i].children[0]?.Key) {
+          this.HandleDeleteTree(rootData[i].children, data);
         }
       }
     }
@@ -84,6 +116,10 @@ class Bucket {
   public GetExpandTree = async (refresh: boolean, data: any) => {
     let arr = await data.GetChildren(refresh);
     let children: any[] = [];
+    let obj: any = {
+      children: [],
+      treeData: [],
+    };
     arr.forEach((el: any) => {
       if (el.HasSubDirectories) {
         el.children = [];
@@ -95,7 +131,9 @@ class Bucket {
         children.push(el);
       }
     });
-    return children.length > 0 ? children : [];
+    obj.children = arr;
+    obj.treeData = children;
+    return obj;
   };
   /**
    * 获取顶部导航条
@@ -108,6 +146,13 @@ class Bucket {
    */
   public CreateFile = async (name: string) => {
     await this.Current.Create(name);
+  };
+  /**
+   * 删除文件夹
+   * @returns
+   */
+  public deleteFile = async (data: ObjectLay) => {
+    await data.Delete();
   };
   /**
    * 获取内容区数据

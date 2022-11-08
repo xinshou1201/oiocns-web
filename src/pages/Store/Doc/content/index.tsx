@@ -1,15 +1,29 @@
-import { Card, Button, Modal, Input, Row, Col, message, Upload, UploadProps } from 'antd';
+import {
+  Card,
+  Button,
+  Modal,
+  Input,
+  Row,
+  Col,
+  message,
+  Upload,
+  UploadProps,
+  Dropdown,
+  Menu,
+} from 'antd';
 import React, { useState, useEffect } from 'react';
 import {
   LeftOutlined,
   RightOutlined,
   SyncOutlined,
   CloudUploadOutlined,
+  ExclamationCircleOutlined,
 } from '@ant-design/icons';
 import useCloudStore from '@/store/cloud';
 import Bucket from '@/module/cloud/buckets';
 import cls from './index.module.less';
 import IconImg from './icon';
+const { confirm } = Modal;
 
 const LeftTree = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,12 +33,12 @@ const LeftTree = () => {
   const [key, setKey] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [onIndex, setOnIndex] = useState<any>(null);
-
   const CloudStore: any = useCloudStore();
   useEffect(() => {
     getBaseFileList();
   }, []);
   useEffect(() => {
+    console.log('321', CloudStore.cloudTree);
     setGData(CloudStore.cloudTree);
   }, [CloudStore.cloudTree]);
   useEffect(() => {
@@ -70,19 +84,42 @@ const LeftTree = () => {
     setOnIndex(null);
     setLoading(false);
   };
+  // 新建文件
   const handleOk = async () => {
     if (!createFileName || createFileName == '') {
       message.warning('文件名不能为空');
       return;
     }
-    Bucket.CreateFile(createFileName);
-    Bucket.HandleEchoTree(gData, Bucket.Current);
-    await getBaseFileList(); // 渲染文档
-    CloudStore.setCloudTree(gData);
+    await Bucket.CreateFile(createFileName);
+    let orgData = [...gData];
+    await getBaseFileList(true); // 渲染文档
+    Bucket.HandleEchoTree(orgData, Bucket.Current);
+    CloudStore.setCloudTree(orgData);
     setIsModalOpen(false);
   };
   const changeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCreateFileName(e.target.value);
+  };
+  // 删除文件
+  const delFile = (data: any) => {
+    confirm({
+      title: '确认删除此文件?',
+      icon: <ExclamationCircleOutlined />,
+      okText: '确认',
+      okType: 'danger',
+      cancelText: '取消',
+      async onOk() {
+        await Bucket.deleteFile(data);
+        message.success('文件删除成功');
+        await getBaseFileList(true); // 渲染文档
+        let orgData = [...gData];
+        Bucket.HandleDeleteTree(orgData, Bucket.Current);
+        CloudStore.setCloudTree(orgData);
+      },
+      onCancel() {
+        console.log('Cancel');
+      },
+    });
   };
   const props: UploadProps = {
     name: 'file',
@@ -149,27 +186,47 @@ const LeftTree = () => {
           <Row gutter={[16, 16]}>
             {fileList.map((el: any, index: number) => {
               return (
-                <Col
+                <Dropdown
                   key={el.Key}
-                  span={2}
-                  onDoubleClick={(e) => {
-                    fileDoubleClick(e, el);
-                  }}
-                  onClick={(e) => {
-                    fileClick(e, index);
-                  }}>
-                  <div className={cls.onfileBox}>
-                    <IconImg iconData={el}></IconImg>
-                    {index == onIndex ? <div className={cls.circle}></div> : ''}
+                  overlay={
+                    <Menu
+                      items={[
+                        {
+                          key: '1',
+                          label: (
+                            <div
+                              onClick={() => {
+                                delFile(el);
+                              }}>
+                              删除文件
+                            </div>
+                          ),
+                        },
+                        {
+                          key: '2',
+                          label: <div>移动文件</div>,
+                        },
+                      ]}
+                    />
+                  }
+                  trigger={['contextMenu']}>
+                  <Col
+                    key={el.Key}
+                    span={2}
+                    onDoubleClick={(e) => {
+                      fileDoubleClick(e, el);
+                    }}
+                    onClick={(e) => {
+                      fileClick(e, index);
+                    }}>
+                    <div className={cls.onfileBox}>
+                      <IconImg iconData={el}></IconImg>
+                      {index == onIndex ? <div className={cls.circle}></div> : ''}
 
-                    <div className={cls.fileName}>{el.Name}</div>
-                  </div>
-
-                  {/* <div className={cls.fileBox}>
-                    <img className={cls.fileImg} src={passport} alt="" />
-                    <div className={cls.fileName}>{el.Name}</div>
-                  </div> */}
-                </Col>
+                      <div className={cls.fileName}>{el.Name}</div>
+                    </div>
+                  </Col>
+                </Dropdown>
               );
             })}
           </Row>
