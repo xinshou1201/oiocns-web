@@ -100,6 +100,12 @@ const LeftTree = () => {
   const changeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCreateFileName(e.target.value);
   };
+  // 返回上一级
+  const backFileList = () => {
+    console.log(fileList, Bucket.Current, 123123);
+    Bucket.BackFile();
+    setFileList(Bucket.Current.children);
+  };
   // 删除文件
   const delFile = (data: any) => {
     confirm({
@@ -145,7 +151,13 @@ const LeftTree = () => {
     <Card className={cls.container}>
       <div className={cls.top}>
         <div className={cls.topBox}>
-          <Button shape="circle" type="text" icon={<LeftOutlined />}></Button>
+          <Button
+            shape="circle"
+            onClick={() => {
+              backFileList();
+            }}
+            type="text"
+            icon={<LeftOutlined />}></Button>
           <Button shape="circle" type="text" icon={<RightOutlined />}></Button>
           <Button
             shape="circle"

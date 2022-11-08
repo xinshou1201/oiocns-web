@@ -155,6 +155,17 @@ class Bucket {
     await data.Delete();
   };
   /**
+   * 返回上一级
+   * @returns
+   */
+  public BackFile = async () => {
+    console.log(this.Current.HasParent);
+
+    if (this.Current.HasParent) {
+      this.Current = this.Current.parent;
+    }
+  };
+  /**
    * 获取内容区数据
    * @returns 返回内容区数据
    */

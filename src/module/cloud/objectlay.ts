@@ -12,7 +12,7 @@ export default class ObjectLay {
   public DateModified: string;
   public IsDirectory: boolean;
   public HasSubDirectories: boolean;
-  private parent: ObjectLay;
+  public parent: ObjectLay;
   public children: ObjectLay[];
   public treeData: ObjectLay[];
   public constructor(data: any = null, parent: ObjectLay) {
