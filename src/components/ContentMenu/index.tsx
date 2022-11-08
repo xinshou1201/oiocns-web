@@ -107,7 +107,7 @@ const ContentMenu: React.FC<RouteComponentProps & ContentMenuProps> = (props) =>
       const nextRoute: any = current!.children![0];
 
       if (nextRoute.key === location.pathname) {
-        listenPrev(current);
+        listenPrev(current!);
       }
       if (nextRoute && nextRoute.key) {
         props.history.push(nextRoute?.key);
