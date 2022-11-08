@@ -11,7 +11,7 @@ import type { ProColumns } from '@ant-design/pro-components';
 
 interface AppShowCompType {
   className: string;
-  title: string;
+  headerTitle: string;
   service: MarketServiceType;
   columns: ProColumns<any>[];
 }
@@ -19,7 +19,7 @@ interface AppShowCompType {
 const AppShowComp: React.FC<AppShowCompType> = ({
   service,
   className,
-  title,
+  headerTitle,
   columns,
 }) => {
   const [list, setList] = useState<MarketTypes.ProductType[]>([]);
@@ -143,7 +143,7 @@ const AppShowComp: React.FC<AppShowCompType> = ({
       <CardOrTable
         dataSource={list}
         total={total}
-        headerTitle={title}
+        headerTitle={headerTitle}
         parentRef={parentRef}
         renderCardContent={renderCardFun}
         operation={renderOperation}

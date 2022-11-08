@@ -7,9 +7,9 @@ import { IRouteConfig } from '@/routes/config';
 import StoreClassify from './Classify';
 
 const Store: React.FC<{ route: IRouteConfig }> = ({ route }) => {
-  const sider = <StoreClassify></StoreClassify>;
-
-  return <ContentTemplate sider={sider} content={renderRoutes(route.routes)} />;
+  return (
+    <ContentTemplate sider={<StoreClassify />} content={renderRoutes(route.routes)} />
+  );
 };
 
 export default Store;
