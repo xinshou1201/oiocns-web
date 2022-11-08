@@ -10,12 +10,14 @@ import React, { useEffect, useState } from 'react';
 import SearchSjopComp from '@/bizcomponents/SearchShop';
 import cls from './index.module.less';
 import StoreClassifyTree from '@/components/CustomTreeComp';
+import CloudTreeComp from '@/components/CloudTreeComp';
 import API from '@/services';
 // import { MarketTypes } from 'typings/marketType';
 import CommonClass from '@/module/commonClass/BaseServiceClass';
 import { Page } from '@/module/typings';
 
 import JsonFrom from '@/bizcomponents/JsonFrom';
+import { useLocation } from 'react-router-dom';
 
 const Service = new CommonClass({
   nameSpace: 'shopTree',
@@ -33,11 +35,17 @@ const StoreClassify: React.FC = () => {
   const [showModal, setShowModal] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const [list, setList] = useState<any[]>([]);
+  const location = useLocation();
+  const router = `${location.pathname}${location.search}`;
   // const [total, setTotal] = useState<number>(0);
   // const history = useHistory();
   useEffect(() => {
     getTreeList();
   }, []);
+  useEffect(() => {
+    console.log('3211232131', router);
+  }, [router]);
+
   const getTreeList = async (req = {}, searchKey = '') => {
     const params = {
       page: 1,
@@ -88,14 +96,18 @@ const StoreClassify: React.FC = () => {
         {/* <div> */}
         {/* <div className={cls.subTitle}>常用分类</div>
           <Menu items={items} onClick={goPage} /> */}
-        <StoreClassifyTree
-          menu={menu}
-          searchable
-          draggable
-          treeData={list}
-          handleAddClick={handleAddShop}
-          handleMenuClick={handleMenuClick}
-        />
+        {router == '/store/doc' ? (
+          <CloudTreeComp></CloudTreeComp>
+        ) : (
+          <StoreClassifyTree
+            menu={menu}
+            searchable
+            draggable
+            treeData={list}
+            handleAddClick={handleAddShop}
+            handleMenuClick={handleMenuClick}
+          />
+        )}
         {/* </div> */}
       </div>
       <Modal
