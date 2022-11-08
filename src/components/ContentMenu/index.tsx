@@ -86,7 +86,7 @@ const ContentMenu: React.FC<RouteComponentProps & ContentMenuProps> = (props) =>
       props.history.push(e.key);
     }
   };
-  const listenPrev = (current) => {
+  const listenPrev = (current: MemuItemType | null) => {
     if (!current) {
       setPrevMenuData([]);
       return;
