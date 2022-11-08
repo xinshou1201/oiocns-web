@@ -8,6 +8,7 @@ import { businessRouteList } from '@/routes/utils';
 import { IconFont } from '../IconFont';
 import cls from './index.module.less';
 import { ItemType } from 'rc-menu/lib/interface';
+import { LeftOutlined } from '@ant-design/icons';
 const { Sider } = Layout;
 
 type ContentMenuProps = {
@@ -17,36 +18,33 @@ type ContentMenuProps = {
   menuClick?: MenuProps[`onClick`];
 };
 interface MemuItemType {
-  children?: MemuItemType[];
+  children?: ItemType[];
   fathKey?: string;
   key?: string;
   [key: string]: any;
 }
-/**检查当前路由是否是子路由，如果有则显示当前级菜单 */
+/**检查当前路由是否是子路由，如果有则显示当前级菜单否则为主菜单 */
 const checkRoute = (currentPath: string, routeMenu: MemuItemType[]) => {
-  const current = routeMenu.find((n: any) => n.key === currentPath);
-  if (!current) return null;
-  const currentMenu = routeMenu.filter((n: any) => {
-    if (n.key) {
-      return current.fathKey === n.key;
-    } else if (n.type) {
-      return current.fathKey === n.type;
-    }
+  const current = routeMenu.find((n) => n.key === currentPath);
+  if (!current || !current.fathKey) return null; // 不是子路由
+  const currentMenu = routeMenu.find((n) => {
+    return current.fathKey === n.key;
   });
-  return currentMenu.length > 1 ? currentMenu : currentMenu[0].children;
+  return currentMenu || null;
 };
 
-/** 生成有fathKey为类别的菜单*/
-const flatMenuData = (
-  menuData: ItemType[] | any,
-  fathKey: string = 'group',
-): MemuItemType[] => {
+/** 生成有fathKey为类别的主子混合菜单数据 */
+const flatMenuData = (menuData: ItemType[] | any, fathKey?: string): MemuItemType[] => {
   const data = [];
   for (let index = 0; index < menuData.length; index++) {
     const element = menuData[index];
-    data.push({ ...element, fathKey });
+    if (fathKey) {
+      data.push({ ...element, fathKey });
+    }
     if (element?.children) {
-      data.push(...flatMenuData(element.children, element.key || element.type));
+      //没有type代表不是主菜单
+      if (!element.type) data.push(fathKey ? { ...element, fathKey } : { ...element });
+      data.push(...flatMenuData(element.children, element.key));
     }
   }
   return data;
@@ -62,21 +60,24 @@ const createIcon = (icon?: string | React.Component | React.ReactNode) => {
 };
 
 const ContentMenu: React.FC<RouteComponentProps & ContentMenuProps> = (props) => {
-  const { data: menuData } = props;
-  const [currentMenuData, setCurrentMenuData] = useState<ItemType[] | MemuItemType[]>(
-    menuData || [],
-  );
-  const [activeMenu, setActiveMenu] = useState<string>(location.pathname);
+  const { data: menuData } = props; // 顶级主菜单
+  const [currentMenuData, setCurrentMenuData] = useState<ItemType[] | MemuItemType[]>(); // 当前显示的菜单
+  const [activeMenu, setActiveMenu] = useState<string>(location.pathname); // 当前选中的子菜单
+  const [prevMenuData, setPrevMenuData] = useState<(ItemType[] | MemuItemType[])[]>([]);
   const currentMacthRoute = businessRouteList.find(
     (child) => child.path === props.match.path,
   );
+
   const menuFlat = menuData ? flatMenuData(menuData) : [];
+  /**当页面路径改变时，重新绘制相关的菜单*/
   useEffect(() => {
     setActiveMenu(location.pathname);
     const current = checkRoute(location.pathname, menuFlat);
-    setCurrentMenuData(current || menuData || []);
+    if (menuData) {
+      listenPrev(current);
+    }
   }, [location.pathname]);
-
+  /**菜单点击事件 */
   const menuOnChange: MenuProps[`onClick`] = (e) => {
     setActiveMenu(e.key);
     if (props.menuClick) {
@@ -85,12 +86,30 @@ const ContentMenu: React.FC<RouteComponentProps & ContentMenuProps> = (props) =>
       props.history.push(e.key);
     }
   };
-  // 点击submenu
+  const listenPrev = (current) => {
+    if (!current) {
+      setPrevMenuData([]);
+      return;
+    }
+    if (current?.fathKey) {
+      const _prevMenuData = menuFlat.find((n) => n.key === current?.fathKey);
+      _prevMenuData && setPrevMenuData([...prevMenuData, _prevMenuData?.children || []]);
+    } else {
+      setPrevMenuData([...prevMenuData, menuData!]);
+    }
+    setCurrentMenuData(current?.children || menuData || []);
+  };
+  /**点击submenu  一定有children*/
   const handleChange: MenuProps[`onOpenChange`] = (paths) => {
-    const current = menuFlat.find((n) => n && n?.key && n?.key === paths[0]);
-    if (current && current.children && current.children.length > 0) {
-      const nextRoute = current.children[0];
-      if (nextRoute && nextRoute?.key) {
+    const current = menuFlat.find((n) => n.key === paths[0]);
+    // listenPrev(current);
+    if (current!.children!.length > 0) {
+      const nextRoute: any = current!.children![0];
+
+      if (nextRoute.key === location.pathname) {
+        listenPrev(current);
+      }
+      if (nextRoute && nextRoute.key) {
         props.history.push(nextRoute?.key);
       }
     }
@@ -100,6 +119,17 @@ const ContentMenu: React.FC<RouteComponentProps & ContentMenuProps> = (props) =>
     <Sider className={cls.sider} width={220}>
       {currentMacthRoute && (
         <div className={cls.title}>
+          {prevMenuData.length > 0 && (
+            <LeftOutlined
+              className={cls.backicon}
+              onClick={() => {
+                if (prevMenuData.length > 0) {
+                  setCurrentMenuData(prevMenuData[prevMenuData.length - 1]);
+                  setPrevMenuData(prevMenuData.splice(prevMenuData.length, 1));
+                }
+              }}
+            />
+          )}
           <Space>
             <>{createIcon(currentMacthRoute?.icon)}</>
             <div>
