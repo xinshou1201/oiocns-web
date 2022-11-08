@@ -64,7 +64,6 @@ const ContentMenu: React.FC<RouteComponentProps & ContentMenuProps> = (props) =>
   const [currentMenuData, setCurrentMenuData] = useState<ItemType[] | MemuItemType[]>(); // 当前显示的菜单
   const [activeMenu, setActiveMenu] = useState<string>(location.pathname); // 当前选中的子菜单
   const [prevMenuData, setPrevMenuData] = useState<(ItemType[] | MemuItemType[])[]>([]);
-  console.log(businessRouteList);
   const currentMacthRoute = businessRouteList.find(
     (child) => child.path === props.match.path,
   );

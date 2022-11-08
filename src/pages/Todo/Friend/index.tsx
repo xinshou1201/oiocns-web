@@ -1,13 +1,14 @@
 import CardOrTableComp from '@/components/CardOrTableComp';
+import TableHeaderOptions from '@/components/TableHeaderOptions';
 import PageCard from '../components/PageCard';
 import TableItemCard from '../components/TableItemCard';
 import { TeamApprovalType } from '@/module/todo/typings';
 import { ProColumns } from '@ant-design/pro-table';
-import { Button, message, Space, Tag, Modal } from 'antd';
+import { Button, message, Space, Tag } from 'antd';
 import todoService, { tabStatus } from '@/module/todo';
 import React, { useState, useEffect } from 'react';
 import { IdPage } from '@/module/typings';
-const { confirm } = Modal;
+import { SettingFilled } from '@ant-design/icons';
 // import styles from './index.module.less';
 
 const friendService = new todoService('friend');
@@ -77,6 +78,7 @@ type TodoCommonTableProps = {};
  */
 const TodoFriend: React.FC<TodoCommonTableProps> = () => {
   const [activeKey, setActiveKey] = useState<string>(friendService.activeStatus);
+  const [openHeaderSetting, setOpenHeaderSetting] = useState<boolean>(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
   const [pageData, setPageData] = useState<TeamApprovalType[]>([]);
   const [total, setPageTotal] = useState<number>(0);
@@ -151,27 +153,21 @@ const TodoFriend: React.FC<TodoCommonTableProps> = () => {
             onClick={() => handleApproveSelect(selectedRowKeys)}>
             同意
           </Button>
-          <Button
-            key="2"
-            onClick={() => {
-              confirm({
-                title: 'Do you want to delete these items?',
-                // icon: <ExclamationCircleOutlined />,
-                content:
-                  'When clicked the OK button, this dialog will be closed after 1 second',
-                onOk() {
-                  return new Promise((resolve, reject) => {
-                    setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
-                  }).catch(() => console.log('Oops errors!'));
-                },
-                onCancel() {},
-              });
-            }}>
+          <Button key="2" onClick={() => {}}>
             拒绝
           </Button>
           <Button key="3">打印</Button>
+          <SettingFilled
+            onClick={() => {
+              setOpenHeaderSetting(true);
+            }}
+          />
         </Space>
       }>
+      <TableHeaderOptions
+        open={openHeaderSetting}
+        onCancel={() => setOpenHeaderSetting(false)}
+      />
       <CardOrTableComp
         rowKey={'id'}
         bordered={false}
