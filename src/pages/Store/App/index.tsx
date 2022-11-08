@@ -22,10 +22,7 @@ const service = new MarketService({
 interface submitEmmit {
   aa: string;
 }
-export const EventContext = createContext({
-  emit: undefined,
-  useSubScription: undefined,
-} as { emit: any; useSubScription: any });
+export const EventContext = createContext({} as { TestSub: any });
 
 const StoreApp: React.FC = () => {
   const history = useHistory();
@@ -36,8 +33,8 @@ const StoreApp: React.FC = () => {
   );
   const [putawayForm] = Form.useForm();
 
-  const { useSubScription, emit } = useEventEmitter<submitEmmit>();
-  useSubScription('hello', (data) => {
+  const TestSub = useEventEmitter<submitEmmit>();
+  TestSub.useSubScription('hello', (data) => {
     console.log('订阅', data);
   });
 
@@ -72,7 +69,7 @@ const StoreApp: React.FC = () => {
         history.push('/market/app');
         break;
       case '创建':
-        emit('hello', { aa: '700' });
+        TestSub.emit('hello', { aa: '700' });
         console.log('点击事件', '创建');
         break;
       case '暂存':
@@ -188,7 +185,7 @@ const StoreApp: React.FC = () => {
         </Modal>
         {/* 详情页面 /store/app/info*/}
       </div>
-      <EventContext.Provider value={{ useSubScription, emit }}>
+      <EventContext.Provider value={{ TestSub }}>
         <Route
           exact
           path="/store/app/info"

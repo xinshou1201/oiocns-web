@@ -190,10 +190,10 @@ const StoreRouter: IRouteConfig[] = [
         component: React.lazy(() => import('@/pages/Store/Data')),
       },
       {
-        path: '/store/src',
+        path: '/store/assets',
         title: '资源',
         icon: <DatabaseOutlined />,
-        component: React.lazy(() => import('@/pages/Store/Src')),
+        component: React.lazy(() => import('@/pages/Store/Assets')),
       },
     ],
   },
