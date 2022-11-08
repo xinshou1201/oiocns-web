@@ -22,6 +22,17 @@
   }
 
   :global {
+
+
+    .ogo-pro-card .ogo-pro-card-body {
+      padding-inline: 0;
+      padding-block: 6px;
+    }
+
+    .ogo-table-thead th {
+      background-color: @table-header-background;
+    }
+
     .card-title {
       box-sizing: border-box;
       display: flex;
@@ -48,20 +59,6 @@
   flex: 1;
 }
 
-// 表格布局
-.common-table {
-  height: 100%;
-  flex: 1;
-
-  .ogo-pro-card .ogo-pro-card-body {
-    padding-inline: 0;
-    padding-block: 6px;
-  }
-
-  .ogo-table-thead th {
-    background-color: @table-header-background;
-  }
-}
 
 // 卡片布局
 .common-card {
@@ -72,6 +69,7 @@
   align-content: flex-start;
   overflow-y: auto;
 }
+
 
 .common-table-footer {
   display: flex;

@@ -7,7 +7,8 @@ import cls from './index.module.less';
 import { Route, useHistory } from 'react-router-dom';
 import { BtnGroupDiv } from '@/components/CommonComp';
 import PutawayComp from '../components/PutawayComp'; // 上架弹窗
-import PublishList from '../components/PublishList'; // 上架列表
+import PublishList from './PublishList'; // 上架列表
+import AppInfo from './Info'; //应用信息页面
 import StoreRecent from '../components/Recent';
 import { MarketTypes } from 'typings/marketType';
 const service = new MarketService({
@@ -22,7 +23,6 @@ const StoreApp: React.FC = () => {
   const history = useHistory();
   const [statusKey, setStatusKey] = useState('merchandise');
   const [showModal, setShowModal] = useState<boolean>(false);
-  // const [showPublishListModal, setShowPublishListModal] = useState<boolean>(false);
   const [selectAppInfo, setSelectAppInfo] = useState<MarketTypes.ProductType>(
     {} as MarketTypes.ProductType,
   );
@@ -99,6 +99,7 @@ const StoreApp: React.FC = () => {
         key: 'detail',
         label: '详情',
         onClick: () => {
+          history.push({ pathname: '/store/app/Info', state: { appId: item.id } });
           console.log('按钮事件', 'detail', item);
         },
       },
@@ -115,45 +116,52 @@ const StoreApp: React.FC = () => {
     ];
   };
   return (
-    <div className={`pages-wrap flex flex-direction-col ${cls['pages-wrap']}`}>
-      {<StoreRecent />}
-      <Card
-        title="应用"
-        className={cls['app-tabs']}
-        extra={<BtnGroupDiv list={BtnsList} onClick={handleBtnsClick} />}
-        tabList={items}
-        onTabChange={(key) => {
-          setStatusKey(key);
-        }}
-      />
-      <div className={cls['page-content-table']}>
-        <AppShowComp
-          service={service}
-          searchParams={{ status: statusKey }}
-          columns={service.getMyappColumns()}
-          renderOperation={renderOperation}
+    <>
+      <div className={`pages-wrap flex flex-direction-col ${cls['pages-wrap']}`}>
+        {<StoreRecent />}
+        <Card
+          title="应用"
+          className={cls['app-tabs']}
+          extra={<BtnGroupDiv list={BtnsList} onClick={handleBtnsClick} />}
+          tabList={items}
+          onTabChange={(key) => {
+            setStatusKey(key);
+          }}
         />
+        <div className={cls['page-content-table']}>
+          <AppShowComp
+            service={service}
+            searchParams={{ status: statusKey }}
+            columns={service.getMyappColumns()}
+            renderOperation={renderOperation}
+          />
+        </div>
+        <Modal
+          title="应用上架"
+          width={670}
+          destroyOnClose={true}
+          open={showModal}
+          okText="确定"
+          onOk={() => {
+            handlePutawaySumbit();
+          }}
+          onCancel={() => {
+            console.log(`取消按钮`);
+            setShowModal(false);
+          }}>
+          <PutawayComp initialValues={{}} form={putawayForm} />
+        </Modal>
+        {/* 详情页面 /store/app/Info*/}
       </div>
-      <Modal
-        title="应用上架"
-        width={670}
-        destroyOnClose={true}
-        open={showModal}
-        okText="确定"
-        onOk={() => {
-          handlePutawaySumbit();
-        }}
-        onCancel={() => {
-          console.log(`取消按钮`);
-          setShowModal(false);
-        }}>
-        <PutawayComp initialValues={{}} form={putawayForm} />
-      </Modal>
       <Route
+        exact
+        path="/store/app/Info"
+        render={() => <AppInfo appId={selectAppInfo.id} />}></Route>
+      <Route
+        exact
         path="/store/app/publish"
         render={() => <PublishList appId={selectAppInfo.id} />}></Route>
-      {/* {showPublishListModal ? <PublishList appId={selectAppInfo.id} /> : ''} */}
-    </div>
+    </>
   );
 };
 
