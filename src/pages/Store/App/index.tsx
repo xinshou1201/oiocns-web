@@ -9,6 +9,7 @@ import { BtnGroupDiv } from '@/components/CommonComp';
 import PutawayComp from '../components/PutawayComp'; // 上架弹窗
 import PublishList from './PublishList'; // 上架列表
 import AppInfo from './Info'; //应用信息页面
+import Manage from './Manage'; //应用管理页面
 import StoreRecent from '../components/Recent';
 import { MarketTypes } from 'typings/marketType';
 import useEventEmitter from '@/hooks/useEventEmitter';
@@ -66,7 +67,7 @@ const StoreApp: React.FC = () => {
     // console.log('按钮点击', item);
     switch (item.text) {
       case '购买':
-        history.push('/market/app');
+        history.push('/market/shop');
         break;
       case '创建':
         TestSub.emit('hello', { aa: '700' });
@@ -110,6 +111,7 @@ const StoreApp: React.FC = () => {
         key: 'manage',
         label: '管理',
         onClick: () => {
+          history.push({ pathname: '/store/app/manage', state: { appId: item.id } });
           console.log('按钮事件', 'manage', item);
         },
       },
@@ -194,6 +196,10 @@ const StoreApp: React.FC = () => {
           exact
           path="/store/app/publish"
           render={() => <PublishList appId={selectAppInfo.id} />}></Route>
+        <Route
+          exact
+          path="/store/app/manage"
+          render={() => <Manage appId={selectAppInfo.id} />}></Route>
       </EventContext.Provider>
     </>
   );

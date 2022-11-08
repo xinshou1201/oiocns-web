@@ -17,7 +17,7 @@ const Index: React.FC = () => {
   return (
     <>
       <AppShowComp
-        title="共享仓库"
+        headerTitle="共享仓库"
         className={cls['market-public-wrap']}
         service={service}
         columns={service.getShopappColumns()}

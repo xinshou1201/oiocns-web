@@ -82,8 +82,7 @@ const StoreAppInfo: React.FC<AppInfoType> = () => {
             }}
           />
         }
-        className="app-info"
-        extra={<BtnGroupDiv list={BtnsList} onClick={handleBtnsClick} />}>
+        className="app-info">
         <Meta
           avatar={<img className="appLogo" src={Appimg}></img>}
           style={{ display: 'flex' }}
@@ -116,10 +115,12 @@ const StoreAppInfo: React.FC<AppInfoType> = () => {
       <div className={cls['page-content-table']}>
         <AppShowComp
           service={service}
+          toolBarRender={() => <BtnGroupDiv list={BtnsList} onClick={handleBtnsClick} />}
           headerTitle="已分配单位"
           columns={service.getMyappColumns()}
           renderOperation={renderOperation}
           searchParams={''}
+          style={{ paddingTop: 0 }}
         />
       </div>
     </div>

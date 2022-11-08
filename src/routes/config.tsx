@@ -208,10 +208,10 @@ const MarketRouter: IRouteConfig[] = [
     icon: 'icon-guangshangcheng',
     routes: [
       {
-        path: '/market/app',
+        path: '/market/shop',
         title: '应用市场',
         icon: 'icon-message',
-        component: React.lazy(() => import('@/pages/Market/App')),
+        component: React.lazy(() => import('@/pages/Market/Shop')),
       },
       {
         path: '/market/docx',
@@ -222,7 +222,7 @@ const MarketRouter: IRouteConfig[] = [
       {
         path: '/market',
         title: '市场',
-        render: () => <RouterRedirect to="/market/app" />,
+        render: () => <RouterRedirect to="/market/shop" />,
       },
     ],
   },

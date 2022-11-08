@@ -50,9 +50,8 @@ const StoreAppInfo: React.FC<AppInfoType> = () => {
         className="app-info"
         extra={<BtnGroupDiv list={BtnsList} onClick={handleBtnsClick} />}>
         <Meta
-          avatar={<img className="appLogo" src={Appimg}></img>}
-          style={{ display: 'flex' }}
           title="应用名称"
+          avatar={<img className="appLogo" src={Appimg}></img>}
           description={
             <div className="app-info-con">
               <p className="app-info-con-desc">
