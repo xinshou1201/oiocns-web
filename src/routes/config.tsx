@@ -163,10 +163,16 @@ const StoreRouter: IRouteConfig[] = [
             component: React.lazy(() => import('@/pages/Store/App/PublishList')),
           },
           {
-            path: '/store/app/Info',
+            path: '/store/app/info',
             title: '应用信息',
             icon: '',
             component: React.lazy(() => import('@/pages/Store/App/Info')),
+          },
+          {
+            path: '/store/app/manage',
+            title: '应用管理',
+            icon: '',
+            component: React.lazy(() => import('@/pages/Store/App/Manage')),
           },
         ],
       },

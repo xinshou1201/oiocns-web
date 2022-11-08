@@ -1,36 +1,21 @@
 import { Button, Card, Dropdown, Menu } from 'antd';
-import React, { useContext } from 'react';
-import API from '@/services';
-import AppShowComp from '@/bizcomponents/AppTablePage';
-import MarketService from '@/module/appstore/market';
+import React from 'react';
 import cls from './index.module.less';
 import { BtnGroupDiv } from '@/components/CommonComp';
-import { MarketTypes } from 'typings/marketType';
 import { EllipsisOutlined } from '@ant-design/icons';
 import Meta from 'antd/lib/card/Meta';
 import { IconFont } from '@/components/IconFont';
 import Appimg from '@/assets/img/appLogo.png';
-import { EventContext } from '../index';
 
 import { useHistory } from 'react-router-dom';
-const service = new MarketService({
-  nameSpace: 'myApp',
-  searchApi: API.product.searchOwnProduct,
-  createApi: API.product.register,
-  deleteApi: API.product.delete,
-  updateApi: API.product.update,
-});
+
 interface AppInfoType {
   appId: string;
 }
 
 const StoreAppInfo: React.FC<AppInfoType> = () => {
-  const { emit, useSubScription } = useContext(EventContext);
   const BtnsList = ['编辑应用分配'];
   const history = useHistory();
-  useSubScription('hello1', (s: any) => {
-    console.log('监听2222', s);
-  });
   const handleBtnsClick = (item: { text: string }) => {
     // console.log('按钮点击', item);
     switch (item.text) {
@@ -43,27 +28,7 @@ const StoreAppInfo: React.FC<AppInfoType> = () => {
         break;
     }
   };
-  const renderOperation = (
-    item: MarketTypes.ProductType,
-  ): MarketTypes.OperationType[] => {
-    return [
-      {
-        key: 'publish',
-        label: '下架',
-        onClick: () => {
-          emit('hello1', { aa: '测试订阅修改' });
-          console.log('按钮事件', 'publish');
-        },
-      },
-      {
-        key: 'share',
-        label: '共享',
-        onClick: () => {
-          console.log('按钮事件', 'share', item);
-        },
-      },
-    ];
-  };
+
   const menu = (
     <Menu>
       <Menu.Item>退订</Menu.Item>
@@ -113,15 +78,6 @@ const StoreAppInfo: React.FC<AppInfoType> = () => {
           </Dropdown>
         </div>
       </Card>
-      <div className={cls['page-content-table']}>
-        <AppShowComp
-          service={service}
-          headerTitle="已分配单位"
-          columns={service.getMyappColumns()}
-          renderOperation={renderOperation}
-          searchParams={''}
-        />
-      </div>
     </div>
   );
 };
