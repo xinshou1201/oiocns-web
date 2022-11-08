@@ -1,33 +1,29 @@
 import React from 'react';
-import CardOrTable from '@/components/CardOrTableComp';
-import { Modal, Input } from 'antd';
+import { Modal, Transfer } from 'antd';
 
 interface Iprops {
   title: string;
   open: boolean;
   onOk: () => void;
   handleOk: () => void;
-  columns?: any;
 }
 
 const AddPersonModal = (props: Iprops) => {
-  const { title, open, onOk, handleOk, columns } = props;
-  const columnsPerson = [
-    ...columns,
-    {
-      title: '座右铭',
-      dataIndex: 'caption',
-    },
-  ];
+  const { title, open, onOk, handleOk } = props;
   return (
-    <Modal title={title} open={open} onOk={onOk} onCancel={handleOk} width={800}>
-      <Input placeholder="请输入" style={{ marginBottom: '12px' }} />
-      <CardOrTable
-        dataSource={[]}
-        rowKey={'id'}
-        showChangeBtn={false}
-        hideOperation={true}
-        columns={columnsPerson}
+    <Modal title={title} open={open} onOk={onOk} onCancel={handleOk}>
+      <Transfer
+        showSearch
+        // dataSource={mockData}
+        titles={['Source', 'Target']}
+        // targetKeys={targetKeys}
+        // selectedKeys={selectedKeys}
+        // onChange={handleChange}
+        // onSelectChange={handleSelectChange}
+        // onScroll={handleScroll}
+        // render={(item) => item.title}
+        oneWay
+        style={{ marginBottom: 16 }}
       />
     </Modal>
   );
