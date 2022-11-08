@@ -34,13 +34,12 @@ type ContentTemplateType = {
  * @returns
  */
 const ContentTemplate: React.FC<ContentTemplateType> = (props) => {
-  console.log(props);
   const {
     className,
     content,
     sider,
     siderMenuData,
-    menuClick = () => {},
+    menuClick,
     // contentTop,
     contentTopLeft,
     contentTopRight,

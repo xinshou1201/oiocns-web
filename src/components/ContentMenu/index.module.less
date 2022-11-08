@@ -1,6 +1,9 @@
 @import '~antd/es/style/themes/variable';
 
 .sider {
+  .container {
+    padding: 0 @padding-xs;
+  }
   .title {
     background-color: @system-menu-active-background;
     border-radius: @border-radius-base;
@@ -19,7 +22,9 @@
     font-size: 18px;
     padding-top: 4px;
   }
-
+  :global(.ogo-menu-item-group-title) {
+    padding-left: 0;
+  }
   :global(.ogo-menu-sub.ogo-menu-inline) {
     background: @component-background;
   }
@@ -29,6 +34,8 @@
     background-color: @custom-menu-active-background;
   }
   :global(.ogo-menu-item),
+  :global(.ogo-menu-submenu-expand-icon),
+  :global(.ogo-menu-submenu-arrow),
   :global(.ogo-menu-submenu) {
     color: @system-menu-color;
   }

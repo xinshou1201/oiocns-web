@@ -64,6 +64,7 @@ const ContentMenu: React.FC<RouteComponentProps & ContentMenuProps> = (props) =>
   const [currentMenuData, setCurrentMenuData] = useState<ItemType[] | MemuItemType[]>(); // 当前显示的菜单
   const [activeMenu, setActiveMenu] = useState<string>(location.pathname); // 当前选中的子菜单
   const [prevMenuData, setPrevMenuData] = useState<(ItemType[] | MemuItemType[])[]>([]);
+  console.log(businessRouteList);
   const currentMacthRoute = businessRouteList.find(
     (child) => child.path === props.match.path,
   );
@@ -86,9 +87,11 @@ const ContentMenu: React.FC<RouteComponentProps & ContentMenuProps> = (props) =>
       props.history.push(e.key);
     }
   };
+  /** 监听路由改变或菜单被点击时，当前菜单数据和上级菜单数据*/
   const listenPrev = (current: MemuItemType | null) => {
     if (!current) {
       setPrevMenuData([]);
+      setCurrentMenuData(menuData);
       return;
     }
     if (current?.fathKey) {
@@ -97,7 +100,7 @@ const ContentMenu: React.FC<RouteComponentProps & ContentMenuProps> = (props) =>
     } else {
       setPrevMenuData([...prevMenuData, menuData!]);
     }
-    setCurrentMenuData(current?.children || menuData || []);
+    setCurrentMenuData(current?.children || []);
   };
   /**点击submenu  一定有children*/
   const handleChange: MenuProps[`onOpenChange`] = (paths) => {
@@ -138,18 +141,20 @@ const ContentMenu: React.FC<RouteComponentProps & ContentMenuProps> = (props) =>
           </Space>
         </div>
       )}
-      {props.data && (
-        <Menu
-          // mode="inline"
-          items={currentMenuData as MenuProps[`items`]}
-          onClick={menuOnChange}
-          onOpenChange={handleChange}
-          triggerSubMenuAction="click"
-          selectedKeys={[activeMenu]}
-          openKeys={[]}
-          defaultSelectedKeys={[activeMenu]}></Menu>
-      )}
-      {props.children}
+      <div className={cls.container}>
+        {props.data && (
+          <Menu
+            // mode="inline"
+            items={currentMenuData as MenuProps[`items`]}
+            onClick={menuOnChange}
+            onOpenChange={handleChange}
+            triggerSubMenuAction="click"
+            selectedKeys={[activeMenu]}
+            openKeys={[]}
+            defaultSelectedKeys={[activeMenu]}></Menu>
+        )}
+        {props.children}
+      </div>
     </Sider>
   );
 };
