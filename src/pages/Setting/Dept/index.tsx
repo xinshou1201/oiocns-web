@@ -174,7 +174,7 @@ const SettingDept: React.FC = () => {
           <div className={cls['page-content-table']} ref={parentRef}>
             <CardOrTable
               dataSource={dataSource as any}
-              rowKey={''}
+              rowKey={'id'}
               operation={renderOperation}
               columns={columns as any}
               parentRef={parentRef}
