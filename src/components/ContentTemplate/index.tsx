@@ -34,13 +34,12 @@ type ContentTemplateType = {
  * @returns
  */
 const ContentTemplate: React.FC<ContentTemplateType> = (props) => {
-  console.log(props);
   const {
     className,
     content,
     sider,
     siderMenuData,
-    menuClick = () => {},
+    menuClick,
     // contentTop,
     contentTopLeft,
     contentTopRight,
@@ -50,9 +49,9 @@ const ContentTemplate: React.FC<ContentTemplateType> = (props) => {
   // TODO 布局样式、侧边展开和收缩 侧边栏顶部([icon/名称] 需传入展示)
   return (
     <Layout className={`${className}`} style={{ height: '100%' }}>
-      {sider && (
+      {(sider || siderMenuData) && (
         <ContentMenu data={siderMenuData} menuClick={menuClick}>
-          {sider}
+          {sider && sider}
         </ContentMenu>
       )}
 

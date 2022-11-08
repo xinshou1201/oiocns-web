@@ -12,11 +12,13 @@ export default class ObjectLay {
   public DateModified: string;
   public IsDirectory: boolean;
   public HasSubDirectories: boolean;
-  private parent: ObjectLay;
+  public parent: ObjectLay;
   public children: ObjectLay[];
+  public treeData: ObjectLay[];
   public constructor(data: any = null, parent: ObjectLay) {
     this.parent = parent;
     this.children = [];
+    this.treeData = [];
     this.Key = data?.key ?? '';
     this.Name = data?.name ?? '主文件夹';
     this.IsDirectory = data?.isDirectory ?? true;
@@ -210,11 +212,11 @@ export default class ObjectLay {
    * @returns 格式化后的key
    */
   private formatKey(subName: string = '') {
-    if (!this.Key) {
+    if (!this.Key && !subName) {
       return '';
     }
     try {
-      let keys = [this.Key];
+      let keys = !this.Key ? [] : [this.Key];
       if (subName != '' && subName.length > 0) {
         keys.push(subName);
       }

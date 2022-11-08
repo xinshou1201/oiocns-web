@@ -3,11 +3,11 @@ import PageCard from '../components/PageCard';
 import TableItemCard from '../components/TableItemCard';
 import { TeamApprovalType } from '@/module/todo/typings';
 import { ProColumns } from '@ant-design/pro-table';
-import { Button, message, Space, Tag } from 'antd';
+import { Button, message, Space, Tag, Modal } from 'antd';
 import todoService, { tabStatus } from '@/module/todo';
 import React, { useState, useEffect } from 'react';
 import { IdPage } from '@/module/typings';
-
+const { confirm } = Modal;
 // import styles from './index.module.less';
 
 const friendService = new todoService('friend');
@@ -151,7 +151,24 @@ const TodoFriend: React.FC<TodoCommonTableProps> = () => {
             onClick={() => handleApproveSelect(selectedRowKeys)}>
             同意
           </Button>
-          <Button key="2">拒绝</Button>
+          <Button
+            key="2"
+            onClick={() => {
+              confirm({
+                title: 'Do you want to delete these items?',
+                // icon: <ExclamationCircleOutlined />,
+                content:
+                  'When clicked the OK button, this dialog will be closed after 1 second',
+                onOk() {
+                  return new Promise((resolve, reject) => {
+                    setTimeout(Math.random() > 0.5 ? resolve : reject, 1000);
+                  }).catch(() => console.log('Oops errors!'));
+                },
+                onCancel() {},
+              });
+            }}>
+            拒绝
+          </Button>
           <Button key="3">打印</Button>
         </Space>
       }>

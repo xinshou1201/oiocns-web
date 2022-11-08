@@ -13,6 +13,7 @@
         border: none;
       }
 
+
       .ogo-card-body {
         display: flex;
         justify-content: space-between;
@@ -37,6 +38,7 @@
       .ant-card-meta-title {
         font-size: 18px;
         font-weight: 600;
+        margin-bottom: 10px;
       }
 
       &-con {
@@ -51,11 +53,12 @@
           font-size: 12px;
 
           span {
-            margin-right: 6px;
+            margin-right: 18px;
           }
 
           .linkman {
             color: #154AD8;
+            cursor: pointer;
           }
         }
 
@@ -75,10 +78,20 @@
     }
   }
 
+
+
+  .RouterBackBtn {
+    font-size: 24px;
+    cursor: pointer;
+  }
+
   .page-content-table {
     flex: 1;
     height: calc(100% - 380px);
 
+    .ogo-pro-table-list-toolbar-container {
+      padding-top: 0 !important;
+    }
 
   }
 }

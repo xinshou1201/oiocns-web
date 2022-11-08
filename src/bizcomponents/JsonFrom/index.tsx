@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
-import {
-  ProFormColumnsType,
-  ProFormLayoutType,
-  ProFormSelect,
-} from '@ant-design/pro-components';
+import { ProFormColumnsType, ProFormLayoutType } from '@ant-design/pro-components';
 import { BetaSchemaForm } from '@ant-design/pro-components';
-import { DatePicker, Space } from 'antd';
+import { DatePicker } from 'antd';
 import dayjs from 'dayjs';
 interface Type {
   open: boolean;
@@ -255,11 +251,11 @@ const columns: ProFormColumnsType<DataItem>[] = [
   },
 ];
 
-const JsonFrom: React.FC<Type> = ({ open }) => {
-  const [layoutType, setLayoutType] = useState<ProFormLayoutType>('ModalForm');
+const JsonFrom: React.FC<Type> = ({ open, setOpen }) => {
+  const [layoutType] = useState<ProFormLayoutType>('ModalForm');
   return (
     <>
-      <Space
+      {/* <Space
         style={{
           width: '100%',
         }}
@@ -281,7 +277,7 @@ const JsonFrom: React.FC<Type> = ({ open }) => {
             onChange: (e) => setLayoutType(e),
           }}
         />
-      </Space>
+      </Space> */}
       <BetaSchemaForm<DataItem>
         open={open}
         layoutType={layoutType}
@@ -299,6 +295,7 @@ const JsonFrom: React.FC<Type> = ({ open }) => {
         grid={layoutType !== 'LightFilter' && layoutType !== 'QueryFilter'}
         onFinish={async (values) => {
           console.log(values);
+          setOpen(false);
         }}
         columns={(layoutType === 'StepsForm' ? [columns] : columns) as any}
       />
