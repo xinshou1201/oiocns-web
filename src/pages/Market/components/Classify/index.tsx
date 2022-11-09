@@ -20,7 +20,7 @@ const MarketClassify: React.FC<any> = ({ history }) => {
       children: [
         {
           label: '应用市场',
-          key: '/market/app',
+          key: '/market/shop',
           icon: <AppstoreFilled />,
         }, // 菜单项务必填写 key
         {

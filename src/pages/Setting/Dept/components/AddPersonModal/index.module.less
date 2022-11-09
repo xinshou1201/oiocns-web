@@ -1,0 +1,64 @@
+.add-person-modal {
+  :global {
+    .ogo-modal-content {
+      .ogo-modal-body {
+        .site-card-wrapper {
+          margin-bottom: 12px;
+          .ogo-row {
+            .ogo-col {
+              padding: 0px !important;
+              .ogo-card {
+                height: 300px;
+                overflow-y: auto;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+  .checklist {
+    width: 100%;
+    margin-top: 12px;
+    .checklist-item {
+      width: 100%;
+      justify-content: space-between;
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+      padding: 2px 8px;
+      .checklist-item-deleteicon {
+        cursor: pointer;
+        color: #999;
+      }
+    }
+    :hover {
+      background-color: #ebeef5;
+    }
+  }
+  .cardleft-dept {
+    margin-top: 8px;
+    .cardleft-dept-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      .cardleft-dept-title-name {
+        font-size: 14px;
+      }
+      .cardleft-dept-title-icon {
+        color: #999;
+        font-size: 12px;
+      }
+    }
+    .cardleft-item {
+      .cardleft-item-children {
+        padding: 2px 8px;
+        margin: 6px 0px;
+      }
+      :hover {
+        background-color: #ebeef5;
+      }
+    }
+  }
+}

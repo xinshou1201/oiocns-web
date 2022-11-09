@@ -1,25 +1,81 @@
+/* eslint-disable no-unused-vars */
 import { Card, Button, Descriptions, Space } from 'antd';
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Title from 'antd/lib/typography/Title';
 import cls from './index.module.less';
-import API from '@/services';
-import MarketService from '@/module/appstore/market';
-import AppShowComp from '@/bizcomponents/AppTablePage';
-
-const service = new MarketService({
-  nameSpace: 'publicStore',
-  searchApi: API.appstore.merchandise,
-  createApi: API.appstore.create,
-  deleteApi: API.appstore.marketDel,
-  updateApi: API.appstore.updateMarket,
-});
+import CardOrTable from '@/components/CardOrTableComp';
+import { MarketTypes } from 'typings/marketType';
+import { columns } from './config';
+import { dataSource } from './datamock';
+import EditCustomModal from './components/EditCustomModal';
+import AddPersonModal from './components/AddPersonModal';
 
 /**
  * 部门设置
  * @returns
  */
 const SettingDept: React.FC = () => {
+  const parentRef = useRef<any>(null); //父级容器Dom
+  const [isopen, setIsOpen] = useState<boolean>(false); // 编辑
+  const [isAddOpen, setIsAddOpen] = useState<boolean>(false); // 添加成员
   const [statusKey, setStatusKey] = useState('merchandise');
+  // 操作内容渲染函数
+  const renderOperation = (
+    item: MarketTypes.ProductType,
+  ): MarketTypes.OperationType[] => {
+    return [
+      {
+        key: 'publish',
+        label: '修改信息',
+        onClick: () => {
+          console.log('按钮事件', 'publish', item);
+        },
+      },
+      {
+        key: 'share',
+        label: '变更部门',
+        onClick: () => {
+          console.log('按钮事件', 'share', item);
+        },
+      },
+      {
+        key: 'detail',
+        label: '岗位设置',
+        onClick: () => {
+          console.log('按钮事件', 'detail', item);
+        },
+      },
+      {
+        key: 'publishList',
+        label: '部门设置',
+        onClick: () => {
+          console.log('按钮事件', 'publishList', item);
+        },
+      },
+      {
+        key: 'caption',
+        label: '停用',
+        onClick: () => {
+          console.log('按钮事件', 'publishList', item);
+        },
+      },
+      {
+        key: 'caption1',
+        label: '移出单位',
+        onClick: () => {
+          console.log('按钮事件', 'publishList', item);
+        },
+      },
+    ];
+  };
+  const onOk = () => {
+    setIsOpen(false);
+    setIsAddOpen(false);
+  };
+  const handleOk = () => {
+    setIsOpen(false);
+    setIsAddOpen(false);
+  };
   // 标题tabs页
   const TitleItems = [
     {
@@ -53,7 +109,13 @@ const SettingDept: React.FC = () => {
         <Title level={4}>部门信息</Title>
       </div>
       <div>
-        <Button type="link">编辑</Button>
+        <Button
+          type="link"
+          onClick={() => {
+            setIsOpen(true);
+          }}>
+          编辑
+        </Button>
         <Button type="link">权限管理</Button>
       </div>
     </div>
@@ -83,7 +145,13 @@ const SettingDept: React.FC = () => {
         <Button type="link" onClick={() => {}}>
           岗位设置
         </Button>
-        <Button type="link">添加成员</Button>
+        <Button
+          type="link"
+          onClick={() => {
+            setIsAddOpen(true);
+          }}>
+          添加成员
+        </Button>
         <Button type="link">查看申请</Button>
       </Space>
     );
@@ -103,8 +171,14 @@ const SettingDept: React.FC = () => {
               console.log('切换事件', key);
             }}
           />
-          <div className={cls['page-content-table']}>
-            <AppShowComp service={service} searchParams={{ status: statusKey }} />
+          <div className={cls['page-content-table']} ref={parentRef}>
+            <CardOrTable
+              dataSource={dataSource as any}
+              rowKey={'id'}
+              operation={renderOperation}
+              columns={columns as any}
+              parentRef={parentRef}
+            />
           </div>
         </div>
       </Card>
@@ -114,6 +188,15 @@ const SettingDept: React.FC = () => {
     <div className={cls[`dept-content-box`]}>
       {content}
       {deptCount}
+      {/* 编辑单位 */}
+      <EditCustomModal open={isopen} title={'编辑'} onOk={onOk} handleOk={handleOk} />
+      {/* 添加成员 */}
+      <AddPersonModal
+        title={'添加成员'}
+        open={isAddOpen}
+        onOk={onOk}
+        handleOk={handleOk}
+      />
     </div>
   );
 };

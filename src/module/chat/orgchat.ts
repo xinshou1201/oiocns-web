@@ -69,9 +69,9 @@ export default class OrgChat extends Object {
       this.authed = false;
       this.reconnect('disconnected from orgchat, await 5s reconnect.');
     });
-    this.connection.on('RecvMsg', (data: any) => {
-      this._recvMsg(data);
-    });
+    // this.connection.on('RecvMsg', (data: any) => {
+    //   this._recvMsg(data);
+    // });
     this.connection.on('ChatRefresh', async () => {
       await this.getChats();
     });

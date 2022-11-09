@@ -13,13 +13,19 @@ interface AppShowCompType {
   service: MarketServiceType;
   searchParams: {};
   columns: ProColumns<any>[];
+  toolBarRender?: () => React.ReactNode;
   renderOperation?: any; //渲染操作按钮
+  headerTitle?: string; //表格头部文字
+  style?: React.CSSProperties;
 }
 const AppShowComp: React.FC<AppShowCompType> = ({
   service,
   searchParams,
   columns,
+  headerTitle,
+  toolBarRender,
   renderOperation,
+  style,
 }) => {
   const [list, setList] = useState<MarketTypes.ProductType[]>([]);
   const [page, setPage] = useState<number>(1);
@@ -36,7 +42,6 @@ const AppShowComp: React.FC<AppShowCompType> = ({
     //   return;
     // }
     // getTableList(searchParams, '', true);
-    console.log('其他搜索参数', searchParams, '', true);
   }, [searchParams]);
   /**
    * @desc: 获取展示列表
@@ -64,7 +69,7 @@ const AppShowComp: React.FC<AppShowCompType> = ({
 
     await service.getList<IdPage>({ ...params, ...req });
 
-    console.log('获取列表', service['nameSpace'], service.List);
+    console.log('获取列表', service['nameSpace'], service.List, service.Total);
 
     setList([...service.List]);
     setTotal(service.Total);
@@ -133,17 +138,20 @@ const AppShowComp: React.FC<AppShowCompType> = ({
     });
   };
   return (
-    <div className={cls['app-wrap']} ref={parentRef}>
+    <div className={cls['app-wrap']} ref={parentRef} style={style}>
       <CardOrTable<MarketTypes.ProductType>
         dataSource={list}
         total={total}
         page={page}
+        stripe
+        headerTitle={headerTitle}
         parentRef={parentRef}
         renderCardContent={renderCardFun}
         operation={renderOperation}
         columns={columns}
         onChange={handlePageChange}
         rowKey={'id'}
+        toolBarRender={toolBarRender}
       />
     </div>
   );
