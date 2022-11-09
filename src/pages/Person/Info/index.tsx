@@ -36,7 +36,6 @@ const PersonInfo: React.FC = () => {
       </div>
       <div>
         <Button type="link">修改信息</Button>
-        <Button type="link">修改手机</Button>
         <Button type="link">修改密码</Button>
       </div>
     </div>
@@ -68,7 +67,7 @@ const PersonInfo: React.FC = () => {
           <div className={cls['person-info-company']}>
             {
             showDepartment? 
-            <PersonInfoDepartment></PersonInfoDepartment>:
+            <PersonInfoDepartment setShowDepartment={setShowDepartment}></PersonInfoDepartment>:
             <PersonInfoCompany setShowDepartment={setShowDepartment}></PersonInfoCompany>
             }
             

@@ -12,11 +12,16 @@ import { User } from 'typings/user';
 import cls from './index.module.less';
 import SearchCompany from '@/bizcomponents/SearchCompany';
 
+
+interface PersonInfoObj {
+  setShowDepartment: (isbool: boolean) => void; // 控制是否显示公司
+}
+
 /**
  * 用户信息-加入的单位(公司)
  * @returns
  */
-const PersonInfoCompany: React.FC = () => {
+const PersonInfoCompany: React.FC<PersonInfoObj> = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [list, setList] = useState<UserDept[]>([]);
@@ -29,6 +34,10 @@ const PersonInfoCompany: React.FC = () => {
     setTotal(10);
     console.log(page, total);
   }, []);
+
+  const showCompany = () => {
+    props.setShowDepartment(false);
+  };
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -106,15 +115,15 @@ const PersonInfoCompany: React.FC = () => {
       dataIndex: 'order',
     },
     {
-      title: '单位名称',
+      title: '部门名称',
       dataIndex: 'createCompany',
     },
     {
-      title: '单位编码',
+      title: '部门编码',
       dataIndex: 'createCompanyId',
     },
     {
-      title: '单位描述',
+      title: '创建单位',
       dataIndex: 'deptDesc',
     },
   ];
@@ -159,20 +168,23 @@ const PersonInfoCompany: React.FC = () => {
     <div className={cls['person-info-content-container']}>
       <div className={cls['person-info-content-header']}>
         <Title level={4}>
-          <strong>单位设置</strong>
+          <strong>部门列表</strong>
         </Title>
         <div>
-          <Button type="link" onClick={showModal}>
-            部门岗位
+          <Button type="link" onClick={showCompany}>
+            返回
           </Button>
           <Button type="link" onClick={showModal}>
-            查看申请记录
+            批量删除
           </Button>
           <Button type="link" onClick={showModal}>
-            加入集团
+            新增
           </Button>
           <Button type="link" onClick={showModal}>
-            创建组织
+            部门导出
+          </Button>
+          <Button type="link" onClick={showModal}>
+            部门批量导入
           </Button>
         </div>
       </div>
@@ -181,18 +193,20 @@ const PersonInfoCompany: React.FC = () => {
         defaultActiveKey="1"
         onChange={(key: string) => {
           setTabName(key);
+          // 切换部门 岗位 
+          
         }}
         items={[
           {
-            label: `全部`,
+            label: `部门`,
             key: '1',
           },
           {
-            label: `创建的`,
+            label: `岗位`,
             key: '2',
           },
           {
-            label: `已加入`,
+            label: `应用`,
             key: '3',
           },
         ]}
