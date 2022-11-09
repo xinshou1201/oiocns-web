@@ -4,9 +4,9 @@ import Title from 'antd/lib/typography/Title';
 import React, { useState, useEffect } from 'react';
 
 import CardOrTable from '@/components/CardOrTableComp';
-import { UserDept, Company } from '@/module/org';
-import companyService from '@/module/org/company';
-import { useQuery } from '@tanstack/react-query';
+import { UserDept } from '@/module/org';
+// import companyService from '@/module/org/company';
+// import { useQuery } from '@tanstack/react-query';
 import { User } from 'typings/user';
 
 import cls from './index.module.less';
@@ -23,7 +23,7 @@ interface PersonInfoObj {
 const PersonInfoCompany: React.FC<PersonInfoObj> = (props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [list, setList] = useState<Company[]>([]);
+  const [list, setList] = useState<UserDept[]>([]);
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
 
@@ -31,12 +31,10 @@ const PersonInfoCompany: React.FC<PersonInfoObj> = (props) => {
     getTableList();
     setTotal(10);
     console.log(page, total);
-    // 显示部门列表
-    props.setShowDepartment(false);
   }, []);
 
-  const showDepartment = () => {
-    props.setShowDepartment(true);
+  const showCompany = () => {
+    props.setShowDepartment(false);
   };
 
   const showModal = () => {
@@ -54,6 +52,10 @@ const PersonInfoCompany: React.FC<PersonInfoObj> = (props) => {
   const setTabName = (key: string) => {
     console.log(key);
   };
+
+  // const { data } = useQuery<Company[]>(['company.getJoinedCompany'], () =>
+  //   companyService.getJoinedCompany({ page: 1, pageSize: 1000 }),
+  // );
 
   /**
    * @desc: 页码切换函数
@@ -79,18 +81,30 @@ const PersonInfoCompany: React.FC<PersonInfoObj> = (props) => {
     // setTotal(service.Total);
 
     console.log(req, searchKey, isGofirst);
-    const { data } = await companyService.searchCompany({
-      filter: '91330304254498785G',
-      page: 1,
-      pageSize: 10,
-    });
-    setList(data);
+    let tt: UserDept[] = [
+      {
+        id: 1,
+        order: 1,
+        deptId: '1',
+        deptName: '浙江财政',
+        deptDesc: '单位描述1',
+        createCompany: '浙江财政',
+        createCompanyId: 1,
+        joinDate: '2012-10-01',
+      },
+      {
+        id: 2,
+        order: 2,
+        deptId: '2',
+        deptName: '杭电',
+        deptDesc: '单位描述2',
+        createCompany: '杭州电子科技大学',
+        createCompanyId: 2,
+        joinDate: '2019-11-01',
+      },
+    ];
 
-    const data2 = useQuery<Company[]>(['company.getJoinedCompany'], () =>
-      companyService.getJoinedCompany({ page: 1, pageSize: 1000 }),
-    );
-    console.log(data2);
-    console.log(data);
+    setList(tt);
   };
 
   const columns: ColumnsType<UserDept> = [
@@ -99,20 +113,20 @@ const PersonInfoCompany: React.FC<PersonInfoObj> = (props) => {
       dataIndex: 'order',
     },
     {
-      title: '单位名称',
+      title: '部门名称',
       dataIndex: 'createCompany',
     },
     {
-      title: '单位编码',
+      title: '部门编码',
       dataIndex: 'createCompanyId',
     },
     {
-      title: '单位描述',
+      title: '创建单位',
       dataIndex: 'deptDesc',
     },
   ];
 
-  // 操作内容
+  // 操作内容渲染函数
   const renderOperation = (item: UserDept): User.OperationType[] => {
     return [
       {
@@ -151,20 +165,23 @@ const PersonInfoCompany: React.FC<PersonInfoObj> = (props) => {
     <div className={cls['person-info-content-container']}>
       <div className={cls['person-info-content-header']}>
         <Title level={4}>
-          <strong>单位设置</strong>
+          <strong>部门列表</strong>
         </Title>
         <div>
-          <Button type="link" onClick={showDepartment}>
-            部门岗位
+          <Button type="link" onClick={showCompany}>
+            返回
           </Button>
           <Button type="link" onClick={showModal}>
-            查看申请记录
+            批量删除
           </Button>
           <Button type="link" onClick={showModal}>
-            加入集团
+            新增
           </Button>
           <Button type="link" onClick={showModal}>
-            创建组织
+            部门导出
+          </Button>
+          <Button type="link" onClick={showModal}>
+            部门批量导入
           </Button>
         </div>
       </div>
@@ -173,19 +190,19 @@ const PersonInfoCompany: React.FC<PersonInfoObj> = (props) => {
         defaultActiveKey="1"
         onChange={(key: string) => {
           setTabName(key);
-          // 切换
+          // 切换部门 岗位
         }}
         items={[
           {
-            label: `全部`,
+            label: `部门`,
             key: '1',
           },
           {
-            label: `创建的`,
+            label: `岗位`,
             key: '2',
           },
           {
-            label: `已加入`,
+            label: `应用`,
             key: '3',
           },
         ]}
