@@ -12,7 +12,6 @@ import { User } from 'typings/user';
 import cls from './index.module.less';
 import SearchCompany from '@/bizcomponents/SearchCompany';
 
-
 interface PersonInfoObj {
   setShowDepartment: (isbool: boolean) => void; // 控制是否显示公司
 }
@@ -27,7 +26,6 @@ const PersonInfoCompany: React.FC<PersonInfoObj> = (props) => {
   const [list, setList] = useState<UserDept[]>([]);
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
-
 
   useEffect(() => {
     getTableList();
@@ -157,13 +155,12 @@ const PersonInfoCompany: React.FC<PersonInfoObj> = (props) => {
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     console.log('selectedRowKeys changed: ', newSelectedRowKeys);
-    
   };
 
   const getCheckboxProps = (record: any) => {
-      console.log(record)
-  }
-  
+    console.log(record);
+  };
+
   return (
     <div className={cls['person-info-content-container']}>
       <div className={cls['person-info-content-header']}>

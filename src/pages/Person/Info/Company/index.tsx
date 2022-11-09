@@ -4,7 +4,7 @@ import Title from 'antd/lib/typography/Title';
 import React, { useState, useEffect } from 'react';
 
 import CardOrTable from '@/components/CardOrTableComp';
-import { UserDept,Company } from '@/module/org';
+import { UserDept, Company } from '@/module/org';
 import companyService from '@/module/org/company';
 import { useQuery } from '@tanstack/react-query';
 import { User } from 'typings/user';
@@ -27,7 +27,6 @@ const PersonInfoCompany: React.FC<PersonInfoObj> = (props) => {
   const [page, setPage] = useState<number>(1);
   const [total, setTotal] = useState<number>(0);
 
-
   useEffect(() => {
     getTableList();
     setTotal(10);
@@ -38,7 +37,7 @@ const PersonInfoCompany: React.FC<PersonInfoObj> = (props) => {
 
   const showDepartment = () => {
     props.setShowDepartment(true);
-  }
+  };
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -92,7 +91,6 @@ const PersonInfoCompany: React.FC<PersonInfoObj> = (props) => {
     );
     console.log(data2);
     console.log(data);
-
   };
 
   const columns: ColumnsType<UserDept> = [
@@ -143,13 +141,12 @@ const PersonInfoCompany: React.FC<PersonInfoObj> = (props) => {
 
   const onSelectChange = (newSelectedRowKeys: React.Key[]) => {
     console.log('selectedRowKeys changed: ', newSelectedRowKeys);
-    
   };
 
   const getCheckboxProps = (record: any) => {
-      console.log(record)
-  }
-  
+    console.log(record);
+  };
+
   return (
     <div className={cls['person-info-content-container']}>
       <div className={cls['person-info-content-header']}>

@@ -14,15 +14,12 @@ import cls from './index.module.less';
  * @returns
  */
 const PersonInfo: React.FC = () => {
-
   const { user } = useStore((state) => ({ ...state }));
-  
-  const [showDepartment, setShowDepartment] = useState<boolean>(false);
 
+  const [showDepartment, setShowDepartment] = useState<boolean>(false);
 
   useEffect(() => {
     console.log(user);
-
   }, []);
 
   // 信息标题
@@ -65,12 +62,13 @@ const PersonInfo: React.FC = () => {
       <Layout className={cls.container}>
         <Card bordered={false}>
           <div className={cls['person-info-company']}>
-            {
-            showDepartment? 
-            <PersonInfoDepartment setShowDepartment={setShowDepartment}></PersonInfoDepartment>:
-            <PersonInfoCompany setShowDepartment={setShowDepartment}></PersonInfoCompany>
-            }
-            
+            {showDepartment ? (
+              <PersonInfoDepartment
+                setShowDepartment={setShowDepartment}></PersonInfoDepartment>
+            ) : (
+              <PersonInfoCompany
+                setShowDepartment={setShowDepartment}></PersonInfoCompany>
+            )}
           </div>
         </Card>
       </Layout>

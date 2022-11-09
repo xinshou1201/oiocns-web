@@ -63,6 +63,7 @@ const StoreApp: React.FC = () => {
   ];
 
   const BtnsList = ['购买', '创建', '暂存'];
+  const openShareModal = () => {};
   const handleBtnsClick = (item: { text: string }) => {
     // console.log('按钮点击', item);
     switch (item.text) {
@@ -127,7 +128,7 @@ const StoreApp: React.FC = () => {
         key: 'share',
         label: '共享',
         onClick: () => {
-          console.log('按钮事件', 'share', item);
+          openShareModal();
         },
       },
       {
