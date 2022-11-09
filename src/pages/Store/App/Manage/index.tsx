@@ -1,9 +1,14 @@
-import { Button, Card, Dropdown, Menu } from 'antd';
+import { Button, Card, Dropdown, Menu, Tag, Tooltip } from 'antd';
 import React from 'react';
 import cls from './index.module.less';
-import { BtnGroupDiv } from '@/components/CommonComp';
-import { EllipsisOutlined } from '@ant-design/icons';
-import Meta from 'antd/lib/card/Meta';
+import {
+  CheckCircleOutlined,
+  EditOutlined,
+  EllipsisOutlined,
+  SendOutlined,
+  TwitterOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import { IconFont } from '@/components/IconFont';
 import Appimg from '@/assets/img/appLogo.png';
 
@@ -14,30 +19,110 @@ interface AppInfoType {
 }
 
 const StoreAppInfo: React.FC<AppInfoType> = () => {
-  const BtnsList = ['编辑应用分配'];
   const history = useHistory();
-  const handleBtnsClick = (item: { text: string }) => {
-    // console.log('按钮点击', item);
-    switch (item.text) {
-      case '编辑应用分配':
-        console.log('编辑应用分配编辑应用分配');
-
-        break;
-      default:
-        console.log('点击事件未注册', item.text);
-        break;
-    }
+  const renderBaseInfo = () => {
+    return (
+      <ul className={`${cls['base-info']} flex flex-direction-col`}>
+        <li className={`${cls['con']} flex `}>
+          <div className={cls['con-title']}>应用名称</div>
+          <EditOutlined
+            className={cls['con-name-edit-btn']}
+            style={{ fontSize: '1.5em' }}
+          />
+        </li>
+        <li className={`${cls['con']} flex flex-direction-col`}>
+          <span className={cls['con-label']}>应用图标</span>
+          <img className={cls['con-img']} src={Appimg} alt="" />
+        </li>
+        <li className={`${cls['con']} flex `}>
+          <div className={cls['con-info']}>
+            <span className={cls['con-label']}>应用名称</span>
+            <Tooltip title="prompt text">
+              <div className={cls['con-name']}>应用名称应用名称应用名称应用名称</div>
+            </Tooltip>
+          </div>
+          <div className={cls['con-info']}>
+            <span className={cls['con-label']}>应用描述</span>
+            <Tooltip title={''}>
+              <div className={cls['con-name']}>应用名称应用名称应用名称应用名称</div>
+            </Tooltip>
+          </div>
+        </li>
+        <li className={`${cls['con']} ${cls['endBox']} flex `}>
+          <p style={{ marginRight: '14px' }}>
+            创建人：<span>测试名称</span>
+          </p>
+          <p>
+            创建时间：<span>2023-1-1</span>
+          </p>
+        </li>
+      </ul>
+    );
+  };
+  const renderManageInfo = () => {
+    return (
+      <ul className={cls['manage-info']}>
+        <li className={`${cls['con']} flex `}>
+          <div className={cls['con-name']}>后台设置</div>
+          <span className={cls['blue-txt']}>
+            打开应用管理后台
+            <SendOutlined className={cls['blue-txt-icon']} rotate={-45} />
+          </span>
+        </li>
+        <li className={`${cls['con']} flex `}>
+          <div className={cls['con-name']}>应用分配</div>
+          <span className={cls['blue-txt']}>编辑</span>
+        </li>
+        <li className={`${cls['con']} flex `}>
+          <div className={cls['con-name']}></div>
+          <div className={cls['user-show']}>
+            {userCard({
+              userList: [{ name: '测试1' }, { name: '测试2' }, { name: '测试3' }],
+              roleName: '应用角色1',
+            })}
+            {userCard({ roleName: '应用角色33' })}
+          </div>
+        </li>
+      </ul>
+    );
   };
 
-  const menu = (
-    <Menu>
-      <Menu.Item>退订</Menu.Item>
-      <Menu.Item>菜单项二</Menu.Item>
-    </Menu>
-  );
+  const userCard = (userInfo: any) => {
+    const { userList = [], roleName = '应用角色' } = userInfo;
+    console.log('菜市场', userList);
+
+    return (
+      <ul className={`${cls['user-card']} flex flex-direction-col`}>
+        <li className={cls['card-title']}>
+          <UserOutlined className={cls['card-title-icon']} />
+          {roleName}
+        </li>
+        <li className={cls['card-con']}>
+          {userList.length > 0 ? (
+            userList.map((item: any, index: number) => {
+              return (
+                <Tag
+                  icon={<CheckCircleOutlined />}
+                  className={cls['user-tags']}
+                  color="success"
+                  key={index}>
+                  {item.name}
+                </Tag>
+              );
+            })
+          ) : (
+            <Tag icon={<TwitterOutlined />} className={cls['user-tags']} key={'22'}>
+              未分配
+            </Tag>
+          )}
+        </li>
+      </ul>
+    );
+  };
   return (
     <div className={`pages-wrap flex flex-direction-col ${cls['pages-wrap']}`}>
       <Card
+        className="base-info-wrap"
         title={
           <IconFont
             type="icon-jiantou-left"
@@ -47,35 +132,24 @@ const StoreAppInfo: React.FC<AppInfoType> = () => {
             }}
           />
         }
-        className="app-info"
-        extra={<BtnGroupDiv list={BtnsList} onClick={handleBtnsClick} />}>
-        <Meta
-          title="应用名称"
-          avatar={<img className="appLogo" src={Appimg}></img>}
-          description={
-            <div className="app-info-con">
-              <p className="app-info-con-desc">
-                应用描述应用描述应用描述应用描述应用描述应用描述
-              </p>
-              <p className="app-info-con-txt">
-                <span className="vision">版本号 ：2.3.16</span>
-                <span className="lastTime">订阅到期时间 ：2025-12-12</span>
-                <span className="linkman">遇到问题? 联系运维</span>
-              </p>
-            </div>
-          }
-        />
-        <div className="btns">
-          <Button className="btn" type="primary" shape="round">
-            续费
-          </Button>
-          <Dropdown overlay={menu} placement="bottom">
+        extra={
+          <Dropdown
+            overlay={
+              <Menu>
+                <Menu.Item>删除</Menu.Item>
+              </Menu>
+            }
+            placement="bottom">
             <EllipsisOutlined
               style={{ fontSize: '20px', marginLeft: '10px', cursor: 'pointer' }}
               rotate={90}
             />
           </Dropdown>
-        </div>
+        }>
+        {renderBaseInfo()}
+      </Card>
+      <Card className="manage-info-wrap" title={'应用管理'}>
+        {renderManageInfo()}
       </Card>
     </div>
   );
