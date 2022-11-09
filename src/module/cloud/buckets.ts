@@ -34,6 +34,36 @@ class Bucket {
     }
   }
   /**
+   * 重命名后处理的树形
+   * @returns 树形
+   */
+  public HandleReNameTree(rootData: any, key: string, name: string) {
+    for (let i = 0; i < rootData.length; i++) {
+      if (rootData[i].Key == key) {
+        rootData[i].Name = name;
+        let key = rootData[i].Key.substring(0, rootData[i].Key.lastIndexOf('/') + 1);
+        rootData[i].Key = key + name;
+        let arr: any[] = [];
+        rootData[i].children.forEach((el: ObjectLay) => {
+          if (el.IsDirectory) {
+            arr.push(el);
+          }
+        });
+        rootData[i].treeData = arr;
+        return;
+      }
+      if (rootData[i].children.length > 0) {
+        this.HandleReNameTree(rootData[i].children, key, name);
+      }
+    }
+    // let newData: any[] = [];
+    // for (let i = 0; i < rootData.length; i++) {
+    //   const c = rootData[i].children.filter((child: any) => child.IsDirectory);
+    //   newData[i] = { ...rootData[i], treeData: c };
+    // }
+    // return newData;
+  }
+  /**
    * 处理新建文件夹后回显的树形
    * @returns 树形
    */
@@ -113,6 +143,10 @@ class Bucket {
     return children;
   };
 
+  /**
+   * 获取展开树形
+   * @returns 树形下级数据
+   */
   public GetExpandTree = async (refresh: boolean, data: any) => {
     let arr = await data.GetChildren(refresh);
     let children: any[] = [];
@@ -164,6 +198,13 @@ class Bucket {
     if (this.Current.HasParent) {
       this.Current = this.Current.parent;
     }
+  };
+  /**
+   * 重命名
+   * @returns
+   */
+  public FileReName = async (data: ObjectLay, name: string) => {
+    await data.Rename(name);
   };
   /**
    * 获取内容区数据

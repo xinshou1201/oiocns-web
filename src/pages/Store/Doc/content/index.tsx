@@ -23,10 +23,14 @@ import useCloudStore from '@/store/cloud';
 import Bucket from '@/module/cloud/buckets';
 import cls from './index.module.less';
 import IconImg from './icon';
+import ObjectLay from '@/module/cloud/objectlay';
 const { confirm } = Modal;
 
 const LeftTree = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [reNameOpen, setReNameOpen] = useState(false);
+  const [reNameString, setReNameString] = useState<string>('');
+  const [reNameDefault, setReNameDefault] = useState<ObjectLay>({} as ObjectLay);
   const [createFileName, setCreateFileName] = useState<any>();
   const [fileList, setFileList] = useState<any[]>([]);
   const [gData, setGData] = useState<any[]>([]);
@@ -38,7 +42,6 @@ const LeftTree = () => {
     getBaseFileList();
   }, []);
   useEffect(() => {
-    console.log('321', CloudStore.cloudTree);
     setGData(CloudStore.cloudTree);
   }, [CloudStore.cloudTree]);
   useEffect(() => {
@@ -58,6 +61,23 @@ const LeftTree = () => {
   };
   const handleCancel = () => {
     setIsModalOpen(false);
+  };
+  // 重命名
+  const handleReName = async () => {
+    await Bucket.FileReName(reNameDefault, reNameString);
+    if (reNameDefault.IsDirectory) {
+      let orgData = [...gData];
+      Bucket.HandleReNameTree(orgData, reNameDefault.Key, reNameString);
+      CloudStore.setCloudTree(orgData);
+      await getBaseFileList(true); // 渲染文档
+    } else {
+      await getBaseFileList(true); // 渲染文档
+    }
+
+    setReNameOpen(false);
+  };
+  const handleReNameCancel = () => {
+    setReNameOpen(false);
   };
   // 点击空白处
   const bankClick = () => {
@@ -100,11 +120,20 @@ const LeftTree = () => {
   const changeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCreateFileName(e.target.value);
   };
+  const renameInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setReNameString(e.target.value);
+  };
   // 返回上一级
   const backFileList = () => {
-    console.log(fileList, Bucket.Current, 123123);
     Bucket.BackFile();
     setFileList(Bucket.Current.children);
+  };
+  const fileReName = (data: ObjectLay) => {
+    console.log('=========', data);
+
+    setReNameDefault(data);
+    setReNameString(data.Name);
+    setReNameOpen(true);
   };
   // 删除文件
   const delFile = (data: any) => {
@@ -216,6 +245,17 @@ const LeftTree = () => {
                         },
                         {
                           key: '2',
+                          label: (
+                            <div
+                              onClick={() => {
+                                fileReName(el);
+                              }}>
+                              重命名
+                            </div>
+                          ),
+                        },
+                        {
+                          key: '3',
                           label: <div>移动文件</div>,
                         },
                       ]}
@@ -251,6 +291,18 @@ const LeftTree = () => {
         onOk={handleOk}
         onCancel={handleCancel}>
         <Input onChange={changeInput} placeholder="Basic usage" />
+      </Modal>
+      <Modal
+        destroyOnClose
+        title="重命名"
+        open={reNameOpen}
+        onOk={handleReName}
+        onCancel={handleReNameCancel}>
+        <Input
+          onChange={renameInput}
+          placeholder="Basic usage"
+          defaultValue={reNameString}
+        />
       </Modal>
     </Card>
   );
