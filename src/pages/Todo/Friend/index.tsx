@@ -1,21 +1,17 @@
 import CardOrTableComp from '@/components/CardOrTableComp';
+import TableHeaderOptions from '@/components/TableHeaderOptions';
 import PageCard from '../components/PageCard';
 import TableItemCard from '../components/TableItemCard';
-import { ApprovalType } from '@/module/todo/typings';
+import { TeamApprovalType } from '@/module/todo/typings';
 import { ProColumns } from '@ant-design/pro-table';
-import API from '@/services';
 import { Button, message, Space, Tag } from 'antd';
-import todoService from '@/module/todo';
+import todoService, { tabStatus } from '@/module/todo';
 import React, { useState, useEffect } from 'react';
-
+import { IdPage } from '@/module/typings';
+import { SettingFilled } from '@ant-design/icons';
 // import styles from './index.module.less';
 
-const friendService = new todoService({
-  applyApi: API.person.applyJoin,
-  retractApi: API.person.cancelJoin,
-  approveApi: API.person.joinSuccess,
-  refuseApi: API.person.joinRefuse,
-});
+const friendService = new todoService('friend');
 /**
  * 批量同意
  * @param ids  React.Key[] 选中的数据id数组
@@ -31,14 +27,14 @@ const handleApproveSelect = async (ids: React.Key[]) => {
   }
 };
 // 生成说明数据
-const remarkText = (activeKey: string, item: ApprovalType) => {
+const remarkText = (activeKey: string, item: TeamApprovalType) => {
   return activeKey === '2'
     ? '请求添加' + item.team.name + '为好友'
     : item.target.name + '请求添加好友';
 };
 
 // 生成说明数据
-const tableOperation = (activeKey: string, item: ApprovalType) => {
+const tableOperation = (activeKey: string, item: TeamApprovalType) => {
   return activeKey == '1'
     ? [
         {
@@ -69,21 +65,24 @@ const tableOperation = (activeKey: string, item: ApprovalType) => {
         },
       ];
 };
-
-// 卡片渲染
-type TodoCommonTableProps = {
-  // columns: ProColumns<ApprovalType>[],
+// 根据状态值渲染标签
+const renderItemStatus = (record: TeamApprovalType) => {
+  const status = friendService.statusMap[record.status];
+  return <Tag color={status.color}>{status.text}</Tag>;
 };
+// 卡片渲染
+type TodoCommonTableProps = {};
 /**
  * 办事-好友申请
  * @returns
  */
 const TodoFriend: React.FC<TodoCommonTableProps> = () => {
-  const [activeKey, setActiveKey] = useState<string>('1');
+  const [activeKey, setActiveKey] = useState<string>(friendService.activeStatus);
+  const [openHeaderSetting, setOpenHeaderSetting] = useState<boolean>(false);
   const [selectedRowKeys, setSelectedRowKeys] = useState<React.Key[]>([]);
-  const [pageData, setPageData] = useState<ApprovalType[]>([]);
+  const [pageData, setPageData] = useState<TeamApprovalType[]>([]);
   const [total, setPageTotal] = useState<number>(0);
-  const columns: ProColumns<ApprovalType>[] = [
+  const columns: ProColumns<TeamApprovalType>[] = [
     {
       title: '序号',
       dataIndex: 'index',
@@ -105,6 +104,13 @@ const TodoFriend: React.FC<TodoCommonTableProps> = () => {
       },
     },
     {
+      title: '状态',
+      dataIndex: 'status',
+      render: (_, record) => {
+        return renderItemStatus(record);
+      },
+    },
+    {
       title: '申请人',
       dataIndex: '',
       render: (_, row) => {
@@ -119,9 +125,7 @@ const TodoFriend: React.FC<TodoCommonTableProps> = () => {
   ];
   // 获取申请/审核列表
   const handlePageChange = async (page: number, pageSize: number) => {
-    const { data = [], total } = await friendService[
-      activeKey == '1' ? 'getApprove' : 'getApply'
-    ]({
+    const { data = [], total } = await friendService.getList<TeamApprovalType, IdPage>({
       id: '0',
       page: page,
       pageSize: pageSize,
@@ -135,8 +139,10 @@ const TodoFriend: React.FC<TodoCommonTableProps> = () => {
 
   return (
     <PageCard
+      tabList={friendService.statusList}
       activeTabKey={activeKey}
       onTabChange={(key: string) => {
+        friendService.activeStatus = key as tabStatus;
         setActiveKey(key as string);
       }}
       tabBarExtraContent={
@@ -147,10 +153,21 @@ const TodoFriend: React.FC<TodoCommonTableProps> = () => {
             onClick={() => handleApproveSelect(selectedRowKeys)}>
             同意
           </Button>
-          <Button key="2">拒绝</Button>
+          <Button key="2" onClick={() => {}}>
+            拒绝
+          </Button>
           <Button key="3">打印</Button>
+          <SettingFilled
+            onClick={() => {
+              setOpenHeaderSetting(true);
+            }}
+          />
         </Space>
       }>
+      <TableHeaderOptions
+        open={openHeaderSetting}
+        onCancel={() => setOpenHeaderSetting(false)}
+      />
       <CardOrTableComp
         rowKey={'id'}
         bordered={false}
@@ -158,12 +175,13 @@ const TodoFriend: React.FC<TodoCommonTableProps> = () => {
         dataSource={pageData}
         total={total}
         onChange={handlePageChange}
-        operation={(item: ApprovalType) => tableOperation(activeKey, item)}
+        operation={(item: TeamApprovalType) => tableOperation(activeKey, item)}
         renderCardContent={(arr) => (
-          <TableItemCard<ApprovalType>
+          <TableItemCard<TeamApprovalType>
             data={arr}
-            statusType={'好友'}
+            statusType={(item) => renderItemStatus(item)}
             targetOrTeam="team"
+            operation={(item) => tableOperation(activeKey, item)}
           />
         )}
         rowSelection={{

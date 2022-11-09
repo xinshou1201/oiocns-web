@@ -1,6 +1,6 @@
-import { Breadcrumb, Menu } from 'antd';
+import { Breadcrumb, Menu, Space, Typography } from 'antd';
 import React, { ReactNode } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import routes, { IRouteConfig } from '../../routes/config';
 import { IconFont } from '../IconFont';
@@ -38,6 +38,7 @@ const BreadCrumb: React.FC = () => {
   initMap(routes);
 
   const location = useLocation();
+  const history = useHistory();
   const pathSnippets = location.pathname.split('/').filter((i) => i);
 
   // TODO 面包屑下拉菜单
@@ -49,25 +50,21 @@ const BreadCrumb: React.FC = () => {
         return {
           key: r.path,
           label: (
-            <div>
-              <Link to={r.path}>
-                {createIcon(r.icon)}
-                {r.title}
-              </Link>
-            </div>
+            <Space onClick={() => history.push(r.path)}>
+              {/* <Link to={r.path}> */}
+              {createIcon(r.icon)}
+              {r.title}
+              {/* </Link> */}
+            </Space>
           ),
         };
       });
-      menu = (
-        <>
-          <Menu items={items}></Menu>
-        </>
-      );
+      menu = <Menu items={items}></Menu>;
     }
     return (
       <Breadcrumb.Item key={url} className={cls['comp-breadcrumb']} overlay={menu}>
-        {createIcon(breadcrumbNameMap[url].icon)}
-        <Link to={url}>{breadcrumbNameMap[url].title}</Link>
+        {location.pathname === url && createIcon(breadcrumbNameMap[url].icon)}
+        <Typography.Text>{breadcrumbNameMap[url].title}</Typography.Text>
       </Breadcrumb.Item>
     );
   });

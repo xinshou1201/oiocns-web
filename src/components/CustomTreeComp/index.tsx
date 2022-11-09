@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import {
   EllipsisOutlined,
   LeftCircleOutlined,
@@ -11,44 +12,19 @@ import cls from './index.module.less';
 import { renderNum } from '@/utils/tools';
 
 interface TreeType {
-  treeType?: string;
+  treeData?: any[];
+  draggable?: boolean; //是否可拖拽
+  searchable?: boolean; //是否展示搜索区域
+  menu?: string[]; //更多按钮列表 需提供 string[]
+  handleAddClick?: (_item: any) => void; //点击更多按钮事件
+  handleMenuClick?: ({ data, key }: { data: any; key: string }) => void; //点击更多按钮事件
 }
 
-const x = 3;
+const x = 2;
 const y = 2;
 const z = 1;
 const defaultData: DataNode[] = [];
-// 树形控件 更多操作
-const menu = (
-  <Menu
-    items={[
-      {
-        key: '1',
-        label: '重命名',
-      },
-      {
-        key: '2',
-        label: '创建副本',
-      },
-      {
-        key: '3',
-        label: '拷贝链接',
-      },
-      {
-        key: '4',
-        label: '移动到',
-      },
-      {
-        key: '5',
-        label: '收藏',
-      },
-      {
-        key: '6',
-        label: '删除',
-      },
-    ]}
-  />
-);
+
 const nameArr = '擦传递火炬方法合并VS阿我认为有任务和感受到风清热'.split('');
 const generateData = (_level: number, _preKey?: React.Key, _tns?: DataNode[]) => {
   const preKey = _preKey || '0';
@@ -73,21 +49,46 @@ const generateData = (_level: number, _preKey?: React.Key, _tns?: DataNode[]) =>
 };
 generateData(z);
 
-const StoreClassifyTree: React.FC<TreeType> = ({ treeType }) => {
+const StoreClassifyTree: React.FC<TreeType> = ({
+  treeData,
+  menu,
+  searchable = false,
+  draggable = false,
+  handleAddClick,
+  handleMenuClick,
+}) => {
+  const [mouseOverItem, setMouseOverItem] = useState<any>({});
+  // 树形控件 更多操作
+  const renderMenu = (data: any) => {
+    if (!menu) {
+      return <></>;
+    }
+    return (
+      <Menu
+        onClick={({ key }) => handleMenuClick && handleMenuClick({ data, key })}
+        items={menu.map((item) => {
+          return {
+            key: item,
+            label: item,
+          };
+        })}
+      />
+    );
+  };
   //TODO: 树形数据需要切换
-  console.log('树形数据需要切换', treeType);
+  // console.log('树形数据需要切换', treeData);
 
   const [gData, setGData] = useState(defaultData);
-  const [expandedKeys] = useState(['0-0', '0-0-0', '0-0-0-0']);
+  const [expandedKeys] = useState(['0-0', '0-0-0']);
 
   const onDragEnter: TreeProps['onDragEnter'] = (info) => {
-    console.log(info);
+    console.log('拖拽', info);
     // expandedKeys 需要受控时设置
     // setExpandedKeys(info.expandedKeys)
   };
 
   const onDrop: TreeProps['onDrop'] = (info) => {
-    console.log(info);
+    console.log('拖拽2', info);
     const dropKey = info.node.key;
     const dragKey = info.dragNode.key;
     const dropPos = info.node.pos.split('-');
@@ -153,34 +154,51 @@ const StoreClassifyTree: React.FC<TreeType> = ({ treeType }) => {
   };
   const renderTreeTitle = (node: any) => {
     return (
-      <div className={cls.treeTitleBox}>
+      <div
+        className={cls.treeTitleBox}
+        onMouseOver={() => {
+          setMouseOverItem(node);
+        }}
+        onMouseLeave={() => {
+          setMouseOverItem({});
+        }}>
         <div>{node.title}</div>
         <div className={cls.treeTitleBoxBtns} onClick={(e: any) => e.stopPropagation()}>
-          <PlusOutlined className={cls.titleIcon} />
-          <Dropdown overlay={menu} placement="bottom" trigger={['click']}>
-            <EllipsisOutlined className={cls.titleIcon} rotate={90} />
-          </Dropdown>
+          {mouseOverItem.key === node.key ? (
+            <>
+              <PlusOutlined
+                className={cls.titleIcon}
+                onClick={() => handleAddClick && handleAddClick(node)}
+              />
+              <Dropdown overlay={renderMenu(node)} placement="bottom" trigger={['click']}>
+                <EllipsisOutlined className={cls.titleIcon} rotate={90} />
+              </Dropdown>
+            </>
+          ) : (
+            ''
+          )}
         </div>
       </div>
     );
   };
-
   return (
-    <div>
+    <div className={cls.customTreeWrap}>
       <div className={cls.title}>全部分类</div>
-      <div className={cls.title}>
-        <Input size="small" prefix={<SearchOutlined />} placeholder="搜索分类" />
-      </div>
+      {searchable && (
+        <div className={cls.title}>
+          <Input prefix={<SearchOutlined />} placeholder="搜索分类" />
+        </div>
+      )}
       <Tree
         className="draggable-tree"
         switcherIcon={<LeftCircleOutlined />}
         titleRender={renderTreeTitle}
         defaultExpandedKeys={expandedKeys}
-        draggable
+        draggable={draggable}
         blockNode
         onDragEnter={onDragEnter}
         onDrop={onDrop}
-        treeData={gData}
+        treeData={treeData}
       />
     </div>
   );

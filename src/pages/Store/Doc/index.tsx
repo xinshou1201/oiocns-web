@@ -1,12 +1,11 @@
-import { Card } from 'antd';
 import React from 'react';
-
+import Content from './content';
 /**
  * 仓库-文档
  * @returns
  */
 const StoreDoc: React.FC = () => {
-  return <Card>仓库-文档</Card>;
+  return <Content></Content>;
 };
 
 export default StoreDoc;

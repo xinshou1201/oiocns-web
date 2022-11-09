@@ -120,21 +120,23 @@ const TodoRouter: IRouteConfig[] = [
         component: React.lazy(() => import('@/pages/Todo/Org')),
       },
       {
+        path: '/todo/app',
+        title: '应用上架',
+        icon: <ShopOutlined />,
+        component: React.lazy(() => import('@/pages/Todo/Product')),
+      },
+      {
         path: '/todo/store',
-        title: '商店审核',
+        title: '加入市场',
         icon: <ShopOutlined />,
         component: React.lazy(() => import('@/pages/Todo/Store')),
       },
+
       {
         path: '/todo/order',
         title: '订单审核',
         icon: <UnorderedListOutlined />,
         component: React.lazy(() => import('@/pages/Todo/Order')),
-      },
-      {
-        path: '/todo',
-        title: '办事',
-        render: () => <RouterRedirect to="/todo/friend" />,
       },
     ],
   },
@@ -153,7 +155,28 @@ const StoreRouter: IRouteConfig[] = [
         title: '应用',
         icon: <AppstoreOutlined />,
         component: React.lazy(() => import('@/pages/Store/App')),
+        routes: [
+          {
+            path: '/store/app/publish',
+            title: '应用上架列表',
+            icon: '',
+            component: React.lazy(() => import('@/pages/Store/App/PublishList')),
+          },
+          {
+            path: '/store/app/info',
+            title: '应用信息',
+            icon: '',
+            component: React.lazy(() => import('@/pages/Store/App/Info')),
+          },
+          {
+            path: '/store/app/manage',
+            title: '应用管理',
+            icon: '',
+            component: React.lazy(() => import('@/pages/Store/App/Manage')),
+          },
+        ],
       },
+
       {
         path: '/store/doc',
         title: '文档',
@@ -167,10 +190,10 @@ const StoreRouter: IRouteConfig[] = [
         component: React.lazy(() => import('@/pages/Store/Data')),
       },
       {
-        path: '/store/src',
+        path: '/store/assets',
         title: '资源',
         icon: <DatabaseOutlined />,
-        component: React.lazy(() => import('@/pages/Store/Src')),
+        component: React.lazy(() => import('@/pages/Store/Assets')),
       },
     ],
   },
@@ -185,10 +208,10 @@ const MarketRouter: IRouteConfig[] = [
     icon: 'icon-guangshangcheng',
     routes: [
       {
-        path: '/market/app',
+        path: '/market/shop',
         title: '应用市场',
         icon: 'icon-message',
-        component: React.lazy(() => import('@/pages/Market/App')),
+        component: React.lazy(() => import('@/pages/Market/Shop')),
       },
       {
         path: '/market/docx',
@@ -199,7 +222,7 @@ const MarketRouter: IRouteConfig[] = [
       {
         path: '/market',
         title: '市场',
-        render: () => <RouterRedirect to="/market/app" />,
+        render: () => <RouterRedirect to="/market/shop" />,
       },
     ],
   },

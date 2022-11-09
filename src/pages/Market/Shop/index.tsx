@@ -2,8 +2,6 @@ import cls from './index.module.less';
 
 import React from 'react';
 import API from '@/services';
-import { columns } from '@/components/CardOrTableComp/config';
-
 import AppShowComp from '@/bizcomponents/AppTableWithBuy';
 import MarketService from '@/module/appstore/market';
 
@@ -19,10 +17,10 @@ const Index: React.FC = () => {
   return (
     <>
       <AppShowComp
-        title="共享仓库"
+        headerTitle="共享仓库"
         className={cls['market-public-wrap']}
         service={service}
-        columns={columns}
+        columns={service.getShopappColumns()}
       />
     </>
   );
